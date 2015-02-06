@@ -180,27 +180,49 @@ exports.getMonthStar = getMonthStar;
 function getDayStar(aDate) {
     var yearStar = 0;
     var isAdd = true;
-    var yearNum = aDate.getFullYear()
+    var yearNum = aDate.getFullYear();
     var info = comm.getJqData()[yearNum];
 
 
-    var tempDate = new Date(info[21].jiazi);
-    if (aDate < tempDate) { //如果在冬至之前，就找当年夏至
+    var tempDate = new Date(info[9].date);
+    var tempJiazi = new Date(info[9].jiazi);
+
+    if(aDate>=tempDate){
         isAdd = !isAdd;
-        tempDate = new Date(info[9].jiazi);
-        if (aDate < tempDate) { //如果在夏至之前，就找前一年冬至
+        tempDate = new Date(info[21].date);
+        tempJiazi = new Date(info[21].jiazi);
+        if(aDate>=tempDate){
             isAdd = !isAdd;
-            info = comm.getJqData()[yearNum-1];
-            tempDate = new Date(info[21].jiazi);
-            if (aDate < tempDate) { //如果在冬至之前，，就找前一年夏至
-                isAdd = !isAdd;
-                tempDate = new Date(info[9].jiazi);
-            }
+            info = comm.getJqData()[yearNum+1];
+            tempDate = new Date(info[9].date);
+            tempJiazi = new Date(info[9].jiazi);
         }
     }
 
+    if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+        tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+    }
+
+    if(tempJiazi<tempDate){
+        isAdd = !isAdd;
+    }
+
     //获得时间差
-    var ydelta = tools.GetDateDiff(tempDate, aDate, "day");
+    var ydelta;
+    if(aDate<tempJiazi){
+        ydelta = tools.GetDateDiff(aDate, tempJiazi, "day");
+    }else{
+        ydelta = tools.GetDateDiff(tempJiazi, aDate, "day");
+    }
+
+    var zr = (tempDate.getFullYear()-1905)*2
+    if((tempDate.getMonth()+1)==12){
+        zr++;
+    }
+    if(zr%23==0){
+        ydelta=ydelta+6;
+    }
+
     if (isAdd) {
         yearStar = (ydelta % 9) + 1;
     }
@@ -815,6 +837,9 @@ exports.getUserInfo = function(reqData){
 
     //根据本五行基础分值，确定五行基础分值
 	var wxBaseScoreJson = comm.getWxBaseScoreJson();
+    console.log("userInfo.sex="+userInfo.sex)
+    console.log("userInfo.flystar="+userInfo.flystar)
+    console.log("userInfo.bwxNum="+userInfo.bwxNum)
     if(userInfo.bwxNum){
         userInfo.wxBaseScore = wxBaseScoreJson[parseInt(userInfo.sex)][userInfo.flystar.substr(0, 3)][userInfo.bwxNum.toString()];
         userInfo.yuanWxScore = wxBaseScoreJson[parseInt(userInfo.sex)][userInfo.flystar.substr(0, 3)]["0"];

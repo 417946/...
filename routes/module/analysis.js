@@ -1428,6 +1428,60 @@ anylysis.buildUserInfo = function(info){
     });
     return userInfo;
 };
+/**
+ * 比buildUserInfo 只多了个cb
+ * @param info
+ * @param next
+ * @returns {*}
+ */
+anylysis.buildUserInfo2 = function(info,cb){
+    var reqData = {
+        name:			info.name,
+        sex:			parseInt(info.sex),
+        registAddress:	parseInt(info.registAddress)-1,
+        birthAddress:	parseInt(info.birthAddress)-1,
+        year:			parseInt(info.birthday.substr(0, 4)),
+        month:			parseInt(info.birthday.substr(4, 2)),
+        day:			parseInt(info.birthday.substr(6, 2)),
+        clock:			parseInt(info.birthday.substr(8, 2))
+    }
+
+    var userInfo = user.getUserInfo(reqData);
+
+
+    reqData.clock = (reqData.clock + 1) % 24;
+    reqData.clock = Math.floor(reqData.clock / 2);
+
+
+    //查询数据库，获得吉凶值
+    db.getUserLastJxScore(userInfo, function (jxScore) {
+        //  fix userInfo.wxBaseScore
+        /*
+         特殊规定如下：1、3颗财星，不足80分，统一调整80分。
+         2、4颗财星，不足85分，统一调整85分。
+         3、5颗财星，不足92分，统一调整92分。
+         */
+        var wealth_stars = userInfo.wealth_stars;
+        var wealth_stars_three_scores = 80;
+        var wealth_stars_four_scores = 85;
+        var wealth_stars_five_scores = 92;
+        if(wealth_stars == 3){
+            if(userInfo.wxBaseScore < wealth_stars_three_scores){
+                userInfo.wxBaseScore = wealth_stars_three_scores;
+            }
+        }else if(wealth_stars == 4){
+            if(userInfo.wxBaseScore < wealth_stars_four_scores){
+                userInfo.wxBaseScore = wealth_stars_four_scores;
+            }
+        }else if(wealth_stars == 5){
+            if(userInfo.wxBaseScore < wealth_stars_five_scores){
+                userInfo.wxBaseScore = wealth_stars_five_scores;
+            }
+        }
+        userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        cb(userInfo);
+    });
+};
 
 anylysis.getHighScores = function(info,cb){
     var userInfo = anylysis.buildUserInfo(info);
@@ -1490,25 +1544,26 @@ anylysis.getFixationEnergy = function(uid,type,cb){
             cb("没有这个账号");
             return;
         }
-        var userInfo = anylysis.buildUserInfo(info);
         var wxBaseScoreJson = comm.getWxBaseScoreJson();
-        userInfo.wxBaseScore = wxBaseScoreJson[parseInt(userInfo.sex)][userInfo.flystar.substr(0, 3)][userInfo.bwxNum.toString()];
-        userInfo.wxBaseScore = userInfo.wxBaseScore>98?98:userInfo.wxBaseScore;
-        var energy_index_rows = fixation_index[0][type];
-        for(var i = 0; i < energy_index_rows.length; ++i){
-            var range = energy_index_rows[i].range;
-            var range_array = range.split('-');
-            var range_low = parseInt(range_array[1]);
-            var range_high = parseInt(range_array[0]);
-            if((userInfo.wxBaseScore <= (range_high) && userInfo.wxBaseScore >= (range_low))||(userInfo.wxBaseScore <= (range_low) && userInfo.wxBaseScore >= (range_high))){
-                var answer = {};
-                answer.score = userInfo.wxBaseScore + "分。";
-                answer.level = energy_index_rows[i].level;
-                answer.desc = energy_index_rows[i].describe;
-                cb(answer);
-                break;
+        anylysis.buildUserInfo2(info,function(userInfo){
+//            userInfo.wxBaseScore = wxBaseScoreJson[parseInt(userInfo.sex)][userInfo.flystar.substr(0, 3)][userInfo.bwxNum.toString()];
+            userInfo.wxBaseScore = userInfo.wxBaseScore>98?98:userInfo.wxBaseScore;
+            var energy_index_rows = fixation_index[0][type];
+            for(var i = 0; i < energy_index_rows.length; ++i){
+                var range = energy_index_rows[i].range;
+                var range_array = range.split('-');
+                var range_low = parseInt(range_array[1]);
+                var range_high = parseInt(range_array[0]);
+                if((userInfo.wxBaseScore <= (range_high) && userInfo.wxBaseScore >= (range_low))||(userInfo.wxBaseScore <= (range_low) && userInfo.wxBaseScore >= (range_high))){
+                    var answer = {};
+                    answer.score = userInfo.wxBaseScore + "分。";
+                    answer.level = energy_index_rows[i].level;
+                    answer.desc = energy_index_rows[i].describe;
+                    cb(answer);
+                    break;
+                }
             }
-        }
+        });
     });
 };
 
