@@ -3,7 +3,7 @@
  */
 var db = require('./mysql/dboperator');
 var userInfo = require('./userInfo.js').userInfo;
-
+//11
 exports.onAddBless = function(req,res){
     var result = { error: "" };
     var uid = req.body['uid'];
