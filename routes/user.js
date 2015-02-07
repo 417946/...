@@ -187,24 +187,57 @@ function getDayStar(aDate) {
     var tempDate = new Date(info[9].date);
     var tempJiazi = new Date(info[9].jiazi);
 
-    if(aDate>=tempDate){
-        isAdd = !isAdd;
-        tempDate = new Date(info[21].date);
-        tempJiazi = new Date(info[21].jiazi);
-        if(aDate>=tempDate){
-            isAdd = !isAdd;
-            info = comm.getJqData()[yearNum+1];
-            tempDate = new Date(info[9].date);
-            tempJiazi = new Date(info[9].jiazi);
-        }
-    }
-
     if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
         tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
     }
-
-    if(tempJiazi<tempDate){
+    //先找在冬至前还是夏至前
+    if(aDate>=tempJiazi){
         isAdd = !isAdd;
+        tempDate = new Date(info[21].date);
+        tempJiazi = new Date(info[21].jiazi);
+        if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+            tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+        }
+        if(aDate>=tempJiazi){
+            isAdd = !isAdd;
+            yearNum++;
+            info = comm.getJqData()[yearNum];
+            tempDate = new Date(info[9].date);
+            tempJiazi = new Date(info[9].jiazi);
+            if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+                tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+            }
+        }
+    }
+
+//    if(tempJiazi<tempDate){
+//        isAdd = !isAdd;
+//    }
+
+    if(aDate< new Date(info[0].date)){//如果在立春之前 那属于上一年 而且肯定在夏至之前
+        yearNum--;
+        info = comm.getJqData()[yearNum];//年份-1
+        isAdd = false;
+        tempDate=new Date(info[21].date);
+        tempJiazi = new Date(info[21].jiazi);
+        if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+            tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+        }
+        if(aDate>=tempJiazi){
+            isAdd = true;
+            yearNum++;
+            info = comm.getJqData()[yearNum];
+            tempDate=new Date(info[9].date);
+            tempJiazi = new Date(info[9].jiazi);
+            if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+                tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+            }
+        }
+//        else{
+//            isAdd = true;
+//            tempDate=new Date(info[9].date);
+//            tempJiazi = new Date(info[9].jiazi);
+//        }
     }
 
     //获得时间差
@@ -215,14 +248,40 @@ function getDayStar(aDate) {
         ydelta = tools.GetDateDiff(tempJiazi, aDate, "day");
     }
 
-    var zr = (tempDate.getFullYear()-1905)*2
-    if((tempDate.getMonth()+1)==12){
-        zr++;
+    console.log(yearNum);
+    console.log(tempJiazi);
+    var zhirun_dong=[2020,2008,1997,1985,1974,1951];
+    var zhirun_xia=[1963,1940];
+    console.log(tempJiazi);
+    if(isAdd){//如果在夏至之前 也就是冬至到夏至 顺
+        //如果aDate在冬至至闰之后
+        for(var i=0;i<zhirun_xia.length;i++){
+            if(yearNum==zhirun_xia[i]){
+                ydelta=ydelta+2;
+            }
+        }
+    }else{
+        for(var i=0;i<zhirun_dong.length;i++){
+            if(yearNum==zhirun_dong[i]){
+                ydelta=ydelta+2;
+            }
+        }
     }
-    if(zr%23==0){
-        ydelta=ydelta+6;
+    console.log(tempJiazi);
+    if(isAdd){//冬至到夏至(6月前) 往下算 夏至到冬至(12月前)
+        for(var i=0;i<zhirun_xia.length;i++){
+            if(yearNum==zhirun_xia[i]){
+                ydelta=ydelta+7;
+            }
+        }
+    }else{//夏至到冬至(6-12月) 往下算 冬至到夏至 到明年的6月前
+        for(var i=0;i<zhirun_dong.length;i++){
+            if((yearNum-1)==zhirun_dong[i]){
+                ydelta=ydelta+7;
+            }
+        }
     }
-
+    console.log(ydelta);
     if (isAdd) {
         yearStar = (ydelta % 9) + 1;
     }
