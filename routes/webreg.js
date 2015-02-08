@@ -57,8 +57,7 @@ exports.onPostReg = function (req, res) {
 	}
 
 	var userInfo = user.getUserInfo(reqData);
-	
-	
+
 	reqData.clock = (reqData.clock + 1) % 24;
 	reqData.clock = Math.floor(reqData.clock / 2);
 
