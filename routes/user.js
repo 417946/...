@@ -1191,7 +1191,7 @@ var getWxNum = function (userInfo,index) {
     //8土：逢2、5、8、9加分；逢3、4、6、7减分；逢1不加不减。
     //9火：逢3、4、9加分；逢1、2、5、8减分；逢6、7不加不减。
     //1逢1加双倍，2逢2类同
-
+    //20150208  1、1逢1加双倍，2逢2类同去掉 2、加分是+2 3、减分是-2
     var flags = [
                     ["167", "23458", "9"],
                     ["2589", "3467", "1"],
@@ -1210,24 +1210,35 @@ var getWxNum = function (userInfo,index) {
         if (i != index) {
             var star = flystar.charAt(i);
             if (flag[0].indexOf(star) >= 0) {
-                rtn += fxscore[1][i];
+                rtn += 2;
+//                rtn += fxscore[1][i];
                 //1逢1加双倍，2逢2类同
-                if (parseInt(star) == yearstar) {
-                    rtn += fxscore[1][i];
-                }
+//                if (parseInt(star) == yearstar) {
+//                    rtn += fxscore[1][i];
+//                }
             }
             else if (flag[1].indexOf(star) >= 0) {
-                rtn -= fxscore[1][i];
+                rtn -= 2;
+//                rtn -= fxscore[1][i];
             }
             else {
             }
         }
     }
+//    四季
+//    所有+3 +5 变+6
+//    所有-3 -5 变-4
+//
+//    出生地
+//    所有+3 变+2
+
     //四季影响
     var sjIndex = userInfo.sjIndex;
-    rtn += dataJson.sjscore[yearstar - 1][sjIndex];
+    var sjvalue=dataJson.sjscore[yearstar - 1][sjIndex];
+    rtn += (sjvalue==3||sjvalue==5)?6:((sjvalue==-3||sjvalue==-5))?-4:sjvalue;
     //出生地影响
-    rtn += dataJson.csdscore[yearstar - 1][getDirNum(userInfo.birthAddress) - 1];
+    var csvalue=dataJson.csdscore[yearstar - 1][getDirNum(userInfo.birthAddress) - 1];
+    rtn += (csvalue==3)?2:csvalue;
 
 
     //if (index == 2) {
@@ -1236,6 +1247,7 @@ var getWxNum = function (userInfo,index) {
         //生成木，年飞星9、3、4，加生成分值；年飞星1、2、5、8，减生成分值；年飞星6、7，减2分。
         //生成水，年飞星1、3、4，加生成分值；年飞星9、6、7，减生成分值；年飞星2、5、8，减2分。
         //生成火，年飞星9、2、5、8，加生成分值；年飞星6、7、3、4，减生成分值；年飞星1，减2分。
+        //20150208 1、加生成分值 为+2 2、减生成分值 为-2  3、减2分 改为-1
         var flys = [["167", "23458", "9"],
                     ["349", "1258", "67"],
                     ["134", "967", "258"],
@@ -1246,18 +1258,22 @@ var getWxNum = function (userInfo,index) {
         for (var i = 0 ; i < 4 ; i++) {
             if (scwxNum[i] > 0) {
                 if (flys[i][2].indexOf(yearstar) >= 0) {
-                    rtn += -2;
+                    rtn += -1;
+//                    rtn += -2;
                 }
                 else if (flys[i][0].indexOf(yearstar) >= 0) {
-                    rtn += scwxNum[i];
+                    rtn += 2;
+//                    rtn += scwxNum[i];
                 }
                 else {
-                    rtn += -scwxNum[i];
+                    rtn += -2;
+//                    rtn += -scwxNum[i];
                 }
             }
         }
     //}
-    
+    //20150208 出生时辰：旺，加2分；衰，减1分。
+    rtn=(userInfo.scWS ? rtn+2 : rtn-1)
     return rtn;
 }
 exports.getWxNum = getWxNum;
