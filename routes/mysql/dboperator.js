@@ -733,12 +733,332 @@ operater.getUserLastJxScore = function (info, cb) {
                 }
             }
             if (cb) {
+                info.xjStarScore=getxjStarScore(info.flystar);
+                info.baseZyScore=((info.xjStarScore+75)*100/150).toFixed(0);
+                var wealthstars=getWealth_stars(info.flystar);
+                if(wealthstars>0){
+                    info.wealth_stars=wealthstars;
+                }
                 cb.call(null, info.jxScore);
             }
         }
     });
 };
 
+function getWealth_stars(flystar){
+    var wealth_stars=0;
+    if(indexOfNum(flystar,"6")>=3&&flystar.indexOf("2")>=0){
+        wealth_stars=3;
+    }else if(indexOfNum(flystar,"6")>=3&&flystar.indexOf("5")>=0){
+        wealth_stars=3;
+    }else if(indexOfNum(flystar,"6")>=3&&flystar.indexOf("8")>=0){
+        wealth_stars=3;
+    }else if(indexOfNum(flystar,"6")>=2&&flystar.indexOf("7")>=0&&flystar.indexOf("2")>=0){
+        wealth_stars=3;
+    }else if(indexOfNum(flystar,"6")>=2&&flystar.indexOf("7")>=0&&flystar.indexOf("5")>=0){
+        wealth_stars=3;
+    }else if(indexOfNum(flystar,"6")>=2&&flystar.indexOf("7")>=0&&flystar.indexOf("8")>=0){
+        wealth_stars=3;
+    }else if(indexOfNum(flystar,"6")>=2&&flystar.indexOf("2")>=0){
+        wealth_stars=2;
+    }else if(indexOfNum(flystar,"6")>=2&&flystar.indexOf("5")>=0){
+        wealth_stars=2;
+    }else if(indexOfNum(flystar,"6")>=2&&flystar.indexOf("8")>=0){
+        wealth_stars=2;
+    }
+    return wealth_stars;
+}
+
+function getxjStarScore(flystar) {
+    var xjStarScore=0;
+
+    //吉星为1、6、8，1个加15，2个加25分，3个加30分
+    var tmp_num=0;
+    tmp_num+=indexOfNum(flystar,"1");
+    tmp_num+=indexOfNum(flystar,"6");
+    tmp_num+=indexOfNum(flystar,"8");
+    if(tmp_num==1){
+        xjStarScore+=15;
+    }else if(tmp_num==2){
+        xjStarScore+=25;
+    }else if(tmp_num>=3){
+        xjStarScore+=30;
+    }
+
+    //吉星为9，1个加8，2个加20，3个加30分。
+    var tmp_num1=0;
+    tmp_num1+=indexOfNum(flystar,"9");
+    if(tmp_num1==1){
+        xjStarScore+=8;
+    }else if(tmp_num1==2){
+        xjStarScore+=20;
+    }else if(tmp_num1>=3){
+        xjStarScore+=30;
+    }
+
+    //0颗吉星减10分。
+    if(tmp_num==0&&tmp_num1==0){
+        xjStarScore-=10;
+    }
+    //内吉星星盘；同样的数逢两遍或3遍，只加一遍。例如8逢66，只加一遍8-6，加15。
+    //1-6，加15；1-4，加15；1-8，加10；
+    if(flystar.substr(2,1)=="1"){
+        if(flystar.indexOf("6")>=0){
+            xjStarScore+=15;
+        }
+        if(flystar.indexOf("4")>=0){
+            xjStarScore+=15;
+        }
+        if(flystar.indexOf("8")>=0){
+            xjStarScore+=10;
+        }
+    }
+
+    //2-7，加10；
+    if(flystar.substr(2,1)=="2"){
+        if(flystar.indexOf("7")>=0){
+            xjStarScore+=10;
+        }
+    }
+
+    //3-8，加10；
+    if(flystar.substr(2,1)=="3"){
+        if(flystar.indexOf("8")>=0){
+            xjStarScore+=10;
+        }
+    }
+
+    //4-1，加15；4-9，加10；
+    if(flystar.substr(2,1)=="4"){
+        if(flystar.indexOf("1")>=0){
+            xjStarScore+=15;
+        }
+        if(flystar.indexOf("9")>=0){
+            xjStarScore+=10;
+        }
+    }
+
+    //6-8，加15；6-1，15；
+    if(flystar.substr(2,1)=="6"){
+        if(flystar.indexOf("8")>=0){
+            xjStarScore+=15;
+        }
+        if(flystar.indexOf("1")>=0){
+            xjStarScore+=15;
+        }
+    }
+
+    //7-2，加10；
+    if(flystar.substr(2,1)=="7"){
+        if(flystar.indexOf("2")>=0){
+            xjStarScore+=10;
+        }
+    }
+
+    //8-6，加15；8-3，加10；
+    if(flystar.substr(2,1)=="8"){
+        if(flystar.indexOf("6")>=0){
+            xjStarScore+=15;
+        }
+        if(flystar.indexOf("3")>=0){
+            xjStarScore+=10;
+        }
+    }
+
+    //9-4，加10；
+    if(flystar.substr(2,1)=="9"){
+        if(flystar.indexOf("4")>=0){
+            xjStarScore+=10;
+        }
+    }
+    //外吉星星盘；14、41、16、61、68、86，加15。  27、72、38、83、49、94，加10。如遇数值组合重复，只加一遍。例如141，只加14=15。
+    var waifly=flystar.substr(0,2)+flystar.substr(3,3);
+    if(waifly.indexOf("1")>=0&&waifly.indexOf("4")>=0){
+        xjStarScore+=15;
+    }
+    if(waifly.indexOf("1")>=0&&waifly.indexOf("6")>=0){
+        xjStarScore+=15;
+    }
+    if(waifly.indexOf("6")>=0&&waifly.indexOf("8")>=0){
+        xjStarScore+=15;
+    }
+    if(waifly.indexOf("2")>=0&&waifly.indexOf("7")>=0){
+        xjStarScore+=10;
+    }
+    if(waifly.indexOf("3")>=0&&waifly.indexOf("8")>=0){
+        xjStarScore+=10;
+    }
+    if(waifly.indexOf("4")>=0&&waifly.indexOf("9")>=0){
+        xjStarScore+=10;
+    }
+    //6颗星含147、258、369，顺序随便，加30分；
+    if(flystar.indexOf("1")>=0&&flystar.indexOf("4")>=0&&flystar.indexOf("7")>=0){
+        xjStarScore+=30;
+    }
+    if(flystar.indexOf("2")>=0&&flystar.indexOf("5")>=0&&flystar.indexOf("8")>=0){
+        xjStarScore+=30;
+    }
+    if(flystar.indexOf("3")>=0&&flystar.indexOf("6")>=0&&flystar.indexOf("9")>=0){
+        xjStarScore+=30;
+    }
+    //内凶星星盘；同样的数逢两遍或3遍，只减一遍。例如7逢33，只减一遍7-3，减15。
+    //1-5，减10；1-37，减15分。
+    if(flystar.substr(2,1)=="1"){
+        if(flystar.indexOf("5")>=0){
+            xjStarScore-=10;
+        }
+        if(flystar.indexOf("3")>=0&&flystar.indexOf("7")>=0){
+            xjStarScore-=15;
+        }
+    }
+
+    //2-3，减15；2-5，减15（如遇258，不减）。
+    if(flystar.substr(2,1)=="2"){
+        if(flystar.indexOf("3")>=0){
+            xjStarScore-=15;
+        }
+        if(flystar.indexOf("5")>=0&&!flystar.indexOf("8")>=0){
+            xjStarScore-=15;
+        }
+    }
+
+    //3-7，减15；3-2，减15；3-45，减20分。
+    if(flystar.substr(2,1)=="3"){
+        if(flystar.indexOf("7")>=0){
+            xjStarScore-=15;
+        }
+        if(flystar.indexOf("2")>=0){
+            xjStarScore-=15;
+        }
+        if(flystar.indexOf("4")>=0&&flystar.indexOf("5")>=0){
+            xjStarScore-=20;
+        }
+    }
+
+    //4-3，减10；4-7，减15（如遇147，不减）；4-35，减25分。
+    if(flystar.substr(2,1)=="4"){
+        if(flystar.indexOf("3")>=0){
+            xjStarScore-=10;
+        }
+        if(flystar.indexOf("7")>=0&&!flystar.indexOf("1")>=0){
+            xjStarScore-=15;
+        }
+        if(flystar.indexOf("3")>=0&&flystar.indexOf("5")>=0){
+            xjStarScore-=25;
+        }
+    }
+    //5-2，减15（如遇258，不减）； 5-34.减25分； 5-97，减25分；5-9减15（如遇597，不重复减分）；5-7减15（如遇597，不重复减分）；
+    if(flystar.substr(2,1)=="5"){
+        if (flystar.indexOf("2")>=0&&!flystar.indexOf("8")>=0) {
+            xjStarScore -= 15;
+        }
+        if(flystar.indexOf("3")>=0&&flystar.indexOf("4")>=0){
+            xjStarScore-=25;
+        }
+        if(flystar.indexOf("9")>=0&&flystar.indexOf("7")>=0){
+            xjStarScore-=25;
+        }
+        if (flystar.indexOf("9")>=0&&!flystar.indexOf("7")>=0) {
+            xjStarScore -= 15;
+        }
+        if (flystar.indexOf("7")>=0&&!flystar.indexOf("9")>=0) {
+            xjStarScore -= 15;
+        }
+    }
+
+    //6-7减15；6-4，减15。
+    if(flystar.substr(2,1)=="6"){
+        if(flystar.indexOf("7")>=0){
+            xjStarScore-=15;
+        }
+        if(flystar.indexOf("4")>=0){
+            xjStarScore-=15;
+        }
+    }
+
+    //7-3，减15；7-4减10（如遇147，不减），7-6减15；7-59，减20；7-5，7-9，减15。（如遇597，不重复减分）；
+    if(flystar.substr(2,1)=="7"){
+        if(flystar.indexOf("3")>=0){
+            xjStarScore-=15;
+        }
+        if (flystar.indexOf("4")>=0&&!flystar.indexOf("1")>=0) {
+            xjStarScore -= 10;
+        }
+        if(flystar.indexOf("6")>=0){
+            xjStarScore-=15;
+        }
+        if(flystar.indexOf("5")>=0&&flystar.indexOf("9")>=0){
+            xjStarScore-=20;
+        }
+        if (flystar.indexOf("5")>=0&&!flystar.indexOf("9")>=0) {
+            xjStarScore -= 15;
+        }
+        if (flystar.indexOf("9")>=0&&!flystar.indexOf("5")>=0) {
+            xjStarScore -= 15;
+        }
+    }
+
+    //9-7，减15（如遇597，不重复减分）； 9-5，减15（如遇597，不重复减分）。9-57，减25分。
+    if(flystar.substr(2,1)=="9"){
+        if(flystar.indexOf("5")>=0&&flystar.indexOf("7")>=0){
+            xjStarScore-=25;
+        }
+        if (flystar.indexOf("7")>=0&&!flystar.indexOf("5")>=0) {
+            xjStarScore -= 15;
+        }
+        if(flystar.indexOf("5")>=0&&!flystar.indexOf("7")>=0){
+            xjStarScore-=15;
+        }
+    }
+    //外凶星星盘；25、52、37、73、97、79，减10。 95、59，67、76、23、32，减10。
+    if(waifly.indexOf("2")>=0&&waifly.indexOf("5")>=0){
+        xjStarScore-=10;
+    }
+    if(waifly.indexOf("3")>=0&&waifly.indexOf("7")>=0){
+        xjStarScore-=10;
+    }
+    if(waifly.indexOf("7")>=0&&waifly.indexOf("9")>=0){
+        xjStarScore-=10;
+    }
+    if(waifly.indexOf("5")>=0&&waifly.indexOf("9")>=0){
+        xjStarScore-=10;
+    }
+    if(waifly.indexOf("6")>=0&&waifly.indexOf("7")>=0){
+        xjStarScore-=10;
+    }
+    if(waifly.indexOf("2")>=0&&waifly.indexOf("3")>=0){
+        xjStarScore-=10;
+    }
+    //137减20分；345、 957减20。（任意顺序）如与内凶星盘重复，只减1遍，不叠加减分。
+    if(flystar.indexOf("1")>=0&&flystar.indexOf("3")>=0&&flystar.indexOf("7")>=0){
+        xjStarScore-=20;
+    }
+    if(flystar.indexOf("3")>=0&&flystar.indexOf("4")>=0&&flystar.indexOf("5")>=0){
+        xjStarScore-=20;
+    }
+    if(flystar.indexOf("9")>=0&&flystar.indexOf("5")>=0&&flystar.indexOf("7")>=0){
+        if(!flystar.substr(2,1)=="9"&&!flystar.substr(2,1)=="5"&&!flystar.substr(2,1)=="7"){
+            xjStarScore-=20;
+        }
+    }
+    //得分75分以上的，-75分以下的，统一调整成75分和-75分，
+    if(xjStarScore>75){
+        xjStarScore=75;
+    }
+    if(xjStarScore<-75){
+        xjStarScore=-75;
+    }
+    return xjStarScore;
+}
+function indexOfNum(flystar,str1){
+    var num=0;
+    for(var i=0;i<flystar.length;i++){
+        if(flystar.substr(i,1)==str1){
+            num++;
+        }
+    }
+    return num;
+}
 /**
  * set user's colour
  * @param uid
