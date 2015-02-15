@@ -86,7 +86,6 @@ exports.onPostReg = function (req, res) {
                 userInfo.wxBaseScore = wealth_stars_five_scores;
             }
         }
-
         //userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
         userInfo.hightScore = (((userInfo.xjStarScore/3)+userInfo.wxBaseScore)*70).toFixed(0);
 	    res.render('dateresult', {
