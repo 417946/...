@@ -43,7 +43,6 @@ exports.onPostReg = function (req, res) {
 	var strDate = req.body['birthday'];
 	var result = /(\d+).*?(\d+).*?(\d+).*?(\d+)\:(\d+)/g.exec(strDate);
 	
-	
 	//测试功能
 	var reqData = {
 		name:			req.body['username'],
@@ -87,7 +86,9 @@ exports.onPostReg = function (req, res) {
                 userInfo.wxBaseScore = wealth_stars_five_scores;
             }
         }
-        userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+
+        //userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        userInfo.hightScore = (((userInfo.xjStarScore/3)+userInfo.wxBaseScore)*70).toFixed(0);
 	    res.render('dateresult', {
 	        title: '日期结果',
 	        registAddress: aList[reqData.registAddress],			//注册地
@@ -141,6 +142,8 @@ exports.onPostReg = function (req, res) {
 	        hightScore: userInfo.hightScore,
 	        //基础助运分
 	        baseZyScore: userInfo.baseZyScore,
+            //吉凶星分值
+	        xjStarScore: userInfo.xjStarScore,
 	        sjIndex: sjStr[userInfo.sjIndex],
 	        flyStarWx: strFlyStarWx[userInfo.flyStarWx]
 
