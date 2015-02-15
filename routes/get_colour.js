@@ -22,6 +22,10 @@ exports.onGetColour = function(req,res){
         var year_star = parseInt(info["flystar"].charAt(2));
         var sex = info.sex;
         result.day_star = user.getDayStar(new Date());
+        //男女运数区别
+        if(sex == 0){
+            result.day_star = user.getNvYun(result.day_star);
+        }
         var colours = [];
         colours.push({"自我本色":colour_json[sex][0][year_star-1]});
         colours.push({"旺运色":colour_json[sex][1][year_star-1]});
