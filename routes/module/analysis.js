@@ -1384,8 +1384,8 @@ anylysis.buildUserInfo = function(info){
     var reqData = {
         name:			info.name,
         sex:			parseInt(info.sex),
-        registAddress:	parseInt(info.registAddress)-1,
-        birthAddress:	parseInt(info.birthAddress)-1,
+        registAddress:	parseInt(info.registAddress),//-1  web端减一 客户端不减
+        birthAddress:	parseInt(info.birthAddress),//-1
         year:			parseInt(info.birthday.substr(0, 4)),
         month:			parseInt(info.birthday.substr(4, 2)),
         day:			parseInt(info.birthday.substr(6, 2)),
@@ -1424,7 +1424,8 @@ anylysis.buildUserInfo = function(info){
                 userInfo.wxBaseScore = wealth_stars_five_scores;
             }
         }
-        userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        //userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        userInfo.hightScore = (((userInfo.xjStarScore/3)+userInfo.wxBaseScore)*70).toFixed(0);
     });
     return userInfo;
 };
@@ -1478,7 +1479,8 @@ anylysis.buildUserInfo2 = function(info,cb){
                 userInfo.wxBaseScore = wealth_stars_five_scores;
             }
         }
-        userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        //userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        userInfo.hightScore = (((userInfo.xjStarScore/3)+userInfo.wxBaseScore)*70).toFixed(0);
         cb(userInfo);
     });
 };
@@ -1511,7 +1513,8 @@ anylysis.getHighScores = function(info,cb){
                 userInfo.wxBaseScore = wealth_stars_five_scores;
             }
         }
-        userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        //userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        userInfo.hightScore = (((userInfo.xjStarScore/3)+userInfo.wxBaseScore)*70).toFixed(0);
         cb(userInfo.hightScore);
     });
 };
@@ -1628,7 +1631,8 @@ anylysis.getFixationWealth = function(uid,type,cb){
                     userInfo.wxBaseScore = wealth_stars_five_scores;
                 }
             }
-            userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+            //userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+            userInfo.hightScore = (((userInfo.xjStarScore/3)+userInfo.wxBaseScore)*70).toFixed(0);
 
             var wealth_stars = userInfo.wealth_stars;
             var wealth_stars_stores;
