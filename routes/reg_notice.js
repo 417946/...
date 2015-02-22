@@ -26,7 +26,6 @@ exports.onRegNotice = function(req,res){
     }
 
     var userInfo = user.getUserInfo(reqData);
-    var ten=[2008,2007,2006,2014,2013,2012,2011,2010,2009];
     var flag=true;
     var r={}
     while(flag){
@@ -34,7 +33,6 @@ exports.onRegNotice = function(req,res){
             flag=false;
             userInfo.yangSum=userInfo.yangSum1;
             userInfo.year_star=userInfo.nianyun;
-            r.user=userInfo;
             db.getBaseXg(userInfo,function(){
 //                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
                 r.a="您是一位"+userInfo.baseXg;
@@ -42,6 +40,7 @@ exports.onRegNotice = function(req,res){
                 analysis.getYun4Yc(userInfo,4,null,false,"yc",function(desc){
                     r.b="一四年您运程（中等），事业（小衰），在6月左右，"+desc;
 
+                    var ten=[2008,2007,2006,2014,2013,2012,2011,2010,2009];
                     var highWaiStar=0;//取其余星五行分值(已考虑四季，出生地影响) 最高的一颗外飞星
                     var tempHighValue=0;
                     var waiStarList=[userInfo.bigyun,userInfo.smallyun,userInfo.yueyun,userInfo.riyun,userInfo.shiyun]
