@@ -403,6 +403,7 @@ anylysis.getLuck2 = function(uid,time_type,score_type,date,cb){
         var luck_socres_previous = scores[1];
         var luck_index_rows = alteration_index[0][0];
         var luck_index_row;
+        luck_socres = luck_socres>98?98:luck_socres;
         for(var i = 0; i < luck_index_rows.length; ++i){
             if(luck_index_rows.length){
                 var range = luck_index_rows[i].range;
@@ -509,6 +510,7 @@ anylysis.getEnergy = function(uid,time_type,score_type,date,cb){
         var energy_socres_previous = scores[1];
         var energy_index_rows = alteration_index[0][2];
         var energy_index_row;
+        energy_socres = energy_socres>98?98:energy_socres;
         for(var i = 0; i < energy_index_rows.length; ++i){
             if(energy_index_rows.length){
                 var range = energy_index_rows[i].range;
@@ -565,6 +567,7 @@ anylysis.getTravel = function(uid,time_type,score_type,date,cb){
         var travel_socres_previous = scores[1];
         var travel_index_rows = alteration_index[0][3];
         var travel_index_row;
+        travel_socres = travel_socres>98?98:travel_socres;
         for(var i = 0; i < travel_index_rows.length; ++i){
             if(travel_index_rows.length){
                 var range = travel_index_rows[i].range;
@@ -615,6 +618,7 @@ anylysis.getHealth = function(uid,time_type,score_type,date,cb){
         var health_socres_previous = scores[1];
         var health_index_rows = alteration_index[0][4];
         var health_index_row;
+        health_socres = health_socres>98?98:health_socres;
         for(var i = 0; i < health_index_rows.length; ++i){
             if(health_index_rows.length){
                 var range = health_index_rows[i].range;
@@ -671,6 +675,7 @@ anylysis.getWealth = function(uid,time_type,score_type,date,cb){
         var wealth_socres_previous = scores[1];
         var wealth_index_rows = alteration_index[0][5];
         var wealth_index_row;
+        wealth_socres = wealth_socres>98?98:wealth_socres;
         for(var i = 0; i < wealth_index_rows.length; ++i){
             if(wealth_index_rows.length){
                 var range = wealth_index_rows[i].range;
@@ -727,6 +732,7 @@ anylysis.getWealthLose = function(uid,time_type,score_type,date,cb){
         var wealth_lose_socres_previous = scores[1];
         var wealth_lose_index_rows = alteration_index[0][6];
         var wealth_lose_index_row;
+        wealth_lose_socres = wealth_lose_socres>98?98:wealth_lose_socres;
         for(var i = 0; i < wealth_lose_index_rows.length; ++i){
             if(wealth_lose_index_rows.length){
                 var range = wealth_lose_index_rows[i].range;
@@ -783,6 +789,7 @@ anylysis.getShopping = function(uid,time_type,score_type,date,cb){
         var shopping_socres_previous = scores[1];
         var shopping_index_rows = alteration_index[0][7];
         var shopping_index_row;
+        shopping_socres = shopping_socres>98?98:shopping_socres;
         for(var i = 0; i < shopping_index_rows.length; ++i){
             if(shopping_index_rows.length){
                 var range = shopping_index_rows[i].range;
@@ -828,6 +835,7 @@ anylysis.getStudy = function(uid,time_type,score_type,date,cb){
         var study_socres_previous = scores[1];
         var study_index_rows = alteration_index[0][8];
         var study_index_row;
+        study_socres = study_socres>98?98:study_socres;
         for(var i = 0; i < study_index_rows.length; ++i){
             if(study_index_rows.length){
                 var range = study_index_rows[i].range;
@@ -884,6 +892,7 @@ anylysis.getCareer = function(uid,time_type,score_type,date,cb){
         var career_socres_previous = scores[1];
         var career_index_rows = alteration_index[0][9];
         var career_index_row;
+        career_socres = career_socres>98?98:career_socres;
         for(var i = 0; i < career_index_rows.length; ++i){
             if(career_index_rows.length){
                 var range = career_index_rows[i].range;
@@ -940,6 +949,7 @@ anylysis.getPrayForWealth = function(uid,time_type,score_type,date,cb){
         var pray_for_wealth_socres_previous = scores[1];
         var pray_for_wealth_index_rows = alteration_index[0][10];
         var pray_for_wealth_index_row;
+        pray_for_wealth_socres = pray_for_wealth_socres>98?98:pray_for_wealth_socres;
         for(var i = 0; i < pray_for_wealth_index_rows.length; ++i){
             if(pray_for_wealth_index_rows.length){
                 var range = pray_for_wealth_index_rows[i].range;
@@ -983,6 +993,7 @@ anylysis.getEmotion = function(uid,time_type,score_type,date,cb){
         var emotion_socres_previous = scores[1];
         var emotion_index_rows = alteration_index[0][11];
         var emotion_index_row;
+        emotion_socres = emotion_socres>98?98:emotion_socres;
         for(var i = 0; i < emotion_index_rows.length; ++i){
             if(emotion_index_rows.length){
                 var range = emotion_index_rows[i].range;
@@ -1039,6 +1050,7 @@ anylysis.getConfrere = function(uid,time_type,score_type,date,cb){
         var emotion_socres_previous = scores[1];
         var emotion_index_rows = alteration_index[0][12];
         var emotion_index_row;
+        emotion_socres = emotion_socres>98?98:emotion_socres;
         for(var i = 0; i < emotion_index_rows.length; ++i){
             if(emotion_index_rows.length){
                 var range = emotion_index_rows[i].range;
@@ -1088,6 +1100,7 @@ anylysis.getFeeling = function(uid,time_type,score_type,date,cb){
         var emotion_socres_previous = scores[1];
         var emotion_index_rows = alteration_index[0][14];
         var emotion_index_row;
+        emotion_socres = emotion_socres>98?98:emotion_socres;
         for(var i = 0; i < emotion_index_rows.length; ++i){
             if(emotion_index_rows.length){
                 var range = emotion_index_rows[i].range;
@@ -1144,6 +1157,7 @@ anylysis.getPeach = function(uid,time_type,score_type,date,cb){
         var emotion_socres_previous = scores[1];
         var emotion_index_rows = alteration_index[0][13];
         var emotion_index_row;
+        emotion_socres = emotion_socres>98?98:emotion_socres;
         for(var i = 0; i < emotion_index_rows.length; ++i){
             if(emotion_index_rows.length){
                 var range = emotion_index_rows[i].range;
@@ -1203,6 +1217,7 @@ anylysis.getChase = function(uid,time_type,score_type,date,cb){
         var pray_for_wealth_socres_previous = scores[1];
         var pray_for_wealth_index_rows = alteration_index[0][15];
         var pray_for_wealth_index_row;
+        pray_for_wealth_socres = pray_for_wealth_socres>98?98:pray_for_wealth_socres;
         for(var i = 0; i < pray_for_wealth_index_rows.length; ++i){
             if(pray_for_wealth_index_rows.length){
                 var range = pray_for_wealth_index_rows[i].range;
@@ -1522,6 +1537,7 @@ anylysis.getHighScores = function(info,cb){
 anylysis.getFixationBless = function(uid,type,cb){
     anylysis.getInfo(uid, function (info) {
         anylysis.getHighScores(info,function(high_score){
+            high_score = high_score>98?98:high_score;
             var bless_index_rows = fixation_index[0][type];
             for(var i = 0; i < bless_index_rows.length; ++i){
                 var range = bless_index_rows[i].range;
@@ -2907,4 +2923,43 @@ anylysis.getYun = function(uid,time_type,column,cb){
         }
         cb(columnValue);
     });
+}
+/**
+ * 解析data.json 里面的Yun属性的运程属性 适用于男女三件事
+ * @param dataInfo
+ * @param x 第二位查询飞星 如果是查询日，第二位飞星是日，如果是月 第二位飞星是月
+ * @param xx 最高数值外飞星来判断旺衰
+ * @param isWang 来判断旺衰
+ * @param column yc/jk。。。对应 data.json 里面的Yun属性desc里面的属性
+ * @param cb
+ */
+anylysis.getYun4Yc = function(info,x,xx,isWang,column,cb){
+    //需要得到当前时间的飞星
+        var curr=new Date().format("yyyyMMddhhmm");
+        var reqData = {
+            sex: parseInt(info.sex),
+            birthday:curr,
+            year: parseInt(curr.substr(0, 4)),
+            month: parseInt(curr.substr(4, 2)),
+            day: parseInt(curr.substr(6, 2)),
+            clock:parseInt(curr.substr(8, 2)),
+            birthAddress:1,
+            registAddress:info.registAddress
+        }
+        dataInfo = user.getUserInfo(reqData);
+        var currInfo={};
+        currInfo.flystar = dataInfo.bigyun.toString() + dataInfo.smallyun + dataInfo.nianyun + dataInfo.yueyun + dataInfo.riyun + dataInfo.shiyun;
+        var dataJson=comm.getDataJson();
+        var descArray=dataJson["yun"]["desc"][0][info.year_star-1];
+        console.log("code:  "+info.year_star+","+(x));
+        var columnValue="";
+        var dqws=dataJson["yun"]["dqws"][dataInfo.sex][x-1];
+        var columnArray=descArray[x-1][column];
+        var dqwsArray=dqws.split('');
+        if(isWang||dqwsArray.indexOf(xx)>-1){
+            columnValue=columnArray[0];
+        }else{
+            columnValue=columnArray[1];
+        }
+        cb(columnValue);
 }
