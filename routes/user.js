@@ -891,13 +891,10 @@ exports.getUserInfo = function(reqData){
 
     //根据本五行基础分值，确定五行基础分值
 	var wxBaseScoreJson = comm.getWxBaseScoreJson();
-    console.log("userInfo.sex="+userInfo.sex)
-    console.log("userInfo.flystar="+userInfo.flystar)
-    console.log("userInfo.bwxNum="+userInfo.bwxNum)
     if(userInfo.bwxNum){
         userInfo.wxBaseScore = wxBaseScoreJson[parseInt(userInfo.sex)][userInfo.flystar.substr(0, 3)][userInfo.bwxNum.toString()];
-        userInfo.yuanWxScore = wxBaseScoreJson[parseInt(userInfo.sex)][userInfo.flystar.substr(0, 3)]["0"];
     }
+    userInfo.yuanWxScore = wxBaseScoreJson[parseInt(userInfo.sex)][userInfo.flystar.substr(0, 3)]["0"];
     return userInfo;
 }
 

@@ -44,6 +44,7 @@ var get_support_question = require('./routes/get_support_question.js');
 var give_away_bless = require('./routes/give_away_bless.js');
 var get_bless = require('./routes/get_bless.js');
 var get_luck = require('./routes/get_luck.js');
+var reg_notice = require('./routes/reg_notice.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -112,6 +113,7 @@ app.post('/give_away_bless', give_away_bless.onGiveAwayBless);
 app.post('/find_bless', get_bless.onFindNewReceiveBless);
 app.post('/get_bless', get_bless.onGetBless);
 app.post('/get_luck', get_luck.onGetLuck);
+app.get('/reg_notice', reg_notice.onRegNotice);
 
 userManager.GetInstance();
 
