@@ -40,7 +40,8 @@ exports.onRegNotice = function(req,res){
                 analysis.getYun4Yc(userInfo,4,null,false,"yc",function(desc){
                     r.b="一四年您运程（中等），事业（小衰），在6月左右，"+desc;
 
-                    var ten=[2008,2007,2006,2014,2013,2012,2011,2010,2009];
+                    var ten1=[2008,2007,2006,2014,2013,2012,2011,2010,2009];
+                    var ten0=[2013,2014,2006,2007,2008,2009,2010,2011,2012];
                     var highWaiStar=0;//取其余星五行分值(已考虑四季，出生地影响) 最高的一颗外飞星
                     var tempHighValue=0;
                     var waiStarList=[userInfo.bigyun,userInfo.smallyun,userInfo.yueyun,userInfo.riyun,userInfo.shiyun]
@@ -52,7 +53,8 @@ exports.onRegNotice = function(req,res){
                         }
                     }
                     analysis.getYun4Yc(userInfo,8,highWaiStar,null,"yc",function(desc){
-                        r.c="过去10年中，您的运程（顺），事业（中等），在（"+ten[highWaiStar-1]+"）年，"+desc;
+                        var nian=userInfo.sex==0?ten0[highWaiStar-1]:ten1[highWaiStar-1];
+                        r.c="过去10年中，您的运程（顺），事业（中等），在"+nian+"年，"+desc;
                         res.json(r);
                     });
                 });
