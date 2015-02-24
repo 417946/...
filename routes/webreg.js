@@ -3,6 +3,8 @@ var db = require('./mysql/dboperator')
 var mysqlClient = require('./mysql/mysqlclient.js')
 var tools = require('./tools/tools')
 var user = require('./user.js');
+var reg_notice = require('./reg_notice.js');
+var consts = require('./util/consts');
 var analysis = require('./module/analysis');
 var jsconverter = require('./tools/calendar-converter.js');
 var converter = new jsconverter();
@@ -97,85 +99,107 @@ exports.onPostReg = function (req, res) {
 //                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             r.a="您是一位"+userInfo.baseXg;
             console.log(JSON.stringify(userInfo))
-            analysis.getYun4Yc(userInfo,4,null,false,"yc",function(desc){
-                r.b="一四年您运程（中等），事业（小衰），在6月左右，"+desc;
+            var info={
+                sex:reqData.sex,
+                birthAddress:reqData.birthAddress,
+                birthday:result[1]+result[2]+result[3]+result[4]
+            }
+            //去年
+            var uuserInfo = analysis.buildUserInfo(info);
+            analysis.getYun4Yc(userInfo,reqData.sex==0?2:4,null,false,"yc",function(desc){
+                var d=new Date();
+                d.setYear(2014)
+                reg_notice.getCareer(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(level){
+                    reg_notice.getLuck(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_LUCK,d,function(luck){
+                        console.log("luck"+luck)
+                        r.b="一四年您运程"+luck+"，事业"+level+"，在6月左右，"+desc;
 
-                var ten=[2008,2007,2006,2014,2013,2012,2011,2010,2009];
-                var highWaiStar=0;//取其余星五行分值(已考虑四季，出生地影响) 最高的一颗外飞星
-                var tempHighValue=0;
-                var waiStarList=[userInfo.bigyun,userInfo.smallyun,userInfo.yueyun,userInfo.riyun,userInfo.shiyun]
-                for(var i in waiStarList){
-                    var temp=userInfo.wwxNum[waiStarList[i]-1];
-                    if(tempHighValue<temp){
-                        tempHighValue=temp;
-                        highWaiStar=waiStarList[i];
-                    }
-                }
-                analysis.getYun4Yc(userInfo,8,highWaiStar,null,"yc",function(desc){
-                    r.c="过去10年中，您的运程（顺），事业（中等），在（"+ten[highWaiStar-1]+"）年，"+desc;
+                        //过去10年
+                        var ten1=[2008,2007,2006,2014,2013,2012,2011,2010,2009];
+                        var ten0=[2013,2014,2006,2007,2008,2009,2010,2011,2012];
+                        var highWaiStar=0;//取其余星五行分值(已考虑四季，出生地影响) 最高的一颗外飞星
+                        var tempHighValue=0;
+                        var waiStarList=[userInfo.bigyun,userInfo.smallyun,userInfo.yueyun,userInfo.riyun,userInfo.shiyun]
+                        for(var i in waiStarList){
+                            var temp=userInfo.wwxNum[waiStarList[i]-1];
+                            if(tempHighValue<temp){
+                                tempHighValue=temp;
+                                highWaiStar=waiStarList[i];
+                            }
+                        }
+                        analysis.getYun4Yc(userInfo,highWaiStar,highWaiStar,null,"yc",function(desc){
+                            var nian=userInfo.sex==0?ten0[highWaiStar-1]:ten1[highWaiStar-1];
+                            d.setYear(nian)
+                            reg_notice.getCareer2(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,function(level){
+                                reg_notice.getLuck2(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_LUCK,function(luck){
+                                    r.c="过去10年中，您的运程"+luck.level+"，事业"+level+"，在"+nian+"年，"+desc;
+                                   // res.json(r);
+                                    res.render('dateresult', {
+                                        title: '日期结果',
+                                        registAddress: aList[reqData.registAddress],			//注册地
+                                        birthAddress: aList[reqData.birthAddress],          //出生地
+                                        birthWS: (userInfo.birthWS > 0 ? "旺" : userInfo.birthWS < 0 ? "衰" : "平"),
+                                        sjWS: (userInfo.sjWS ? "旺" : "衰"),
+                                        scWS: (userInfo.scWS ? "旺" : "衰"),
+                                        username: reqData.name,                             //姓名
+                                        sex: sexList[reqData.sex],                               //性别
+                                        birthday: reqData.year + "年" + reqData.month + "月" + reqData.day + "日",       //生日
+                                        clock: clockList[reqData.clock],                                                //出生时辰
+                                        //干支
+                                        ngz: userInfo.ngz,
+                                        ygz: userInfo.ygz,
+                                        rgz: userInfo.rgz,
+                                        sgz: userInfo.sgz,
+                                        //运数
+                                        bigyun: userInfo.bigyun,
+                                        smallyun: userInfo.smallyun,
+                                        nianyun: userInfo.nianyun,
+                                        yueyun: userInfo.yueyun,
+                                        riyun: userInfo.riyun,
+                                        shiyun: userInfo.shiyun,
+                                        //太岁
+                                        niants: userInfo.niants,
+                                        yuets: userInfo.yuets,
+                                        rits: userInfo.rits + "日",
+                                        shits: userInfo.shits + "时",
+                                        //岁破
+                                        niansp: userInfo.niansp,
+                                        yuesp: userInfo.yuesp,
+                                        risp: userInfo.risp + "日",
+                                        shisp: userInfo.shisp + "时",
+                                        //星(月)数
+                                        starNum: userInfo.starNum,
+                                        //阳和数
+                                        yangSum1: userInfo.yangSum1,
+                                        yangSum2: userInfo.yangSum2,
+                                        yangSum3: userInfo.yangSum3,
+                                        //缺数
+                                        queNum: userInfo.queNum,
 
-                    res.render('dateresult', {
-                        title: '日期结果',
-                        registAddress: aList[reqData.registAddress],			//注册地
-                        birthAddress: aList[reqData.birthAddress],          //出生地
-                        birthWS: (userInfo.birthWS > 0 ? "旺" : userInfo.birthWS < 0 ? "衰" : "平"),
-                        sjWS: (userInfo.sjWS ? "旺" : "衰"),
-                        scWS: (userInfo.scWS ? "旺" : "衰"),
-                        username: reqData.name,                             //姓名
-                        sex: sexList[reqData.sex],                               //性别
-                        birthday: reqData.year + "年" + reqData.month + "月" + reqData.day + "日",       //生日
-                        clock: clockList[reqData.clock],                                                //出生时辰
-                        //干支
-                        ngz: userInfo.ngz,
-                        ygz: userInfo.ygz,
-                        rgz: userInfo.rgz,
-                        sgz: userInfo.sgz,
-                        //运数
-                        bigyun: userInfo.bigyun,
-                        smallyun: userInfo.smallyun,
-                        nianyun: userInfo.nianyun,
-                        yueyun: userInfo.yueyun,
-                        riyun: userInfo.riyun,
-                        shiyun: userInfo.shiyun,
-                        //太岁
-                        niants: userInfo.niants,
-                        yuets: userInfo.yuets,
-                        rits: userInfo.rits + "日",
-                        shits: userInfo.shits + "时",
-                        //岁破
-                        niansp: userInfo.niansp,
-                        yuesp: userInfo.yuesp,
-                        risp: userInfo.risp + "日",
-                        shisp: userInfo.shisp + "时",
-                        //星(月)数
-                        starNum: userInfo.starNum,
-                        //阳和数
-                        yangSum1: userInfo.yangSum1,
-                        yangSum2: userInfo.yangSum2,
-                        yangSum3: userInfo.yangSum3,
-                        //缺数
-                        queNum: userInfo.queNum,
-
-                        flystar: userInfo.flystar,
-                        wealth_stars: userInfo.wealth_stars,
-                        bwxNum: userInfo.bwxNum,
-                        scwxNum: userInfo.scwxNum,
-                        wwxNum: userInfo.wwxNum,
-                        dwwxNum: userInfo.dwwxNum,
-                        wxBaseScore: userInfo.wxBaseScore,
-                        yuanWxScore: userInfo.yuanWxScore,
-                        hightScore: userInfo.hightScore,
-                        //基础助运分
-                        baseZyScore: userInfo.baseZyScore,
-                        //吉凶星分值
-                        xjStarScore: userInfo.xjStarScore,
-                        sjIndex: sjStr[userInfo.sjIndex],
-                        flyStarWx: strFlyStarWx[userInfo.flyStarWx],
-                        a: r.a,
-                        b: r.b,
-                        c: r.c
-                    });
-                });
+                                        flystar: userInfo.flystar,
+                                        wealth_stars: userInfo.wealth_stars,
+                                        bwxNum: userInfo.bwxNum,
+                                        scwxNum: userInfo.scwxNum,
+                                        wwxNum: userInfo.wwxNum,
+                                        dwwxNum: userInfo.dwwxNum,
+                                        wxBaseScore: userInfo.wxBaseScore,
+                                        yuanWxScore: userInfo.yuanWxScore,
+                                        hightScore: userInfo.hightScore,
+                                        //基础助运分
+                                        baseZyScore: userInfo.baseZyScore,
+                                        //吉凶星分值
+                                        xjStarScore: userInfo.xjStarScore,
+                                        sjIndex: sjStr[userInfo.sjIndex],
+                                        flyStarWx: strFlyStarWx[userInfo.flyStarWx],
+                                        a: r.a,
+                                        b: r.b,
+                                        c: r.c
+                                    });
+                                })
+                            })
+                        });
+                    })
+                })
             });
         })
 	});
