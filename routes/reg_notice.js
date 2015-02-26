@@ -48,40 +48,47 @@ exports.onRegNotice = function(req,res){
                 }
                 //去年
                 var uuserInfo = analysis.buildUserInfo(info);
-                analysis.getYun4Yc(userInfo,reqData.sex==0?2:4,null,false,"yc",function(desc){
-                    var d=new Date();
-                    d.setYear(2014)
-                    exports.getCareer(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(level){
-                        exports.getLuck(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(luck){
-                            console.log("luck"+luck)
-                            r.b="一四年您运程"+luck+"，事业"+level+"，在6月左右，"+desc.replace("注意","易");
-
-                            //过去10年
-                            var ten1=[2008,2007,2006,2014,2013,2012,2011,2010,2009];
-                            var ten0=[2013,2014,2006,2007,2008,2009,2010,2011,2012];
-                            var highWaiStar=0;//取其余星五行分值(已考虑四季，出生地影响) 最高的一颗外飞星
-                            var tempHighValue=0;
-                            var waiStarList=[userInfo.bigyun,userInfo.smallyun,userInfo.yueyun,userInfo.riyun,userInfo.shiyun]
-                            for(var i in waiStarList){
-                                var temp=userInfo.wwxNum[waiStarList[i]-1];
-                                if(tempHighValue<temp){
-                                    tempHighValue=temp;
-                                    highWaiStar=waiStarList[i];
-                                }
-                            }
-                            analysis.getYun4Yc(userInfo,highWaiStar,highWaiStar,null,"yc",function(desc){
-                                var nian=userInfo.sex==0?ten0[highWaiStar-1]:ten1[highWaiStar-1];
-                                d.setYear(nian)
-                                exports.getCareer2(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,function(level){
-                                    exports.getLuck2(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_LUCK,function(luck){
-                                        r.c="过去10年中，您的运程"+luck.level+"，事业"+level+"，在"+nian+"年，"+desc.replace("注意","易");
-                                        res.json(r);
-                                    })
-                                })
-                            });
-                        })
+                analysis.lastYearYC(userInfo,uuserInfo,function(desc) {
+                    r.b = desc;
+                    analysis.lastTenYearYC(userInfo, uuserInfo, function (desc) {
+                        r.c = desc;
+                        res.json(r);
                     })
-                });
+                })
+//                analysis.getYun4Yc(userInfo,reqData.sex==0?2:4,null,false,"yc",function(desc){
+//                    var d=new Date();
+//                    d.setYear(2014)
+//                    exports.getCareer(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(level){
+//                        exports.getLuck(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(luck){
+//                            console.log("luck"+luck)
+//                            r.b="一四年您运程"+luck+"，事业"+level+"，在6月左右，"+desc.replace("注意","易");
+//
+//                            //过去10年
+//                            var ten1=[2008,2007,2006,2014,2013,2012,2011,2010,2009];
+//                            var ten0=[2013,2014,2006,2007,2008,2009,2010,2011,2012];
+//                            var highWaiStar=0;//取其余星五行分值(已考虑四季，出生地影响) 最高的一颗外飞星
+//                            var tempHighValue=0;
+//                            var waiStarList=[userInfo.bigyun,userInfo.smallyun,userInfo.yueyun,userInfo.riyun,userInfo.shiyun]
+//                            for(var i in waiStarList){
+//                                var temp=userInfo.wwxNum[waiStarList[i]-1];
+//                                if(tempHighValue<temp){
+//                                    tempHighValue=temp;
+//                                    highWaiStar=waiStarList[i];
+//                                }
+//                            }
+//                            analysis.getYun4Yc(userInfo,highWaiStar,highWaiStar,null,"yc",function(desc){
+//                                var nian=userInfo.sex==0?ten0[highWaiStar-1]:ten1[highWaiStar-1];
+//                                d.setYear(nian)
+//                                exports.getCareer2(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,function(level){
+//                                    exports.getLuck2(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_LUCK,function(luck){
+//                                        r.c="过去10年中，您的运程"+luck.level+"，事业"+level+"，在"+nian+"年，"+desc.replace("注意","易");
+//                                        res.json(r);
+//                                    })
+//                                })
+//                            });
+//                        })
+//                    })
+//                });
             })
         }
     }
