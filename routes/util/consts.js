@@ -10,7 +10,8 @@ module.exports = {
     },
     FIXATION_TYPE_TIME:{
         TYPE_TIME_THIS_LISE :0,
-        TYPE_TIME_IN_THE_PAST :1
+        TYPE_TIME_IN_THE_PAST :1,
+        TYPE_TIME_IN_THE_PAST_TEN :2
     },
     FIXATION_TYPE_BASE:{
         TYPE_TIME_NATURE:0

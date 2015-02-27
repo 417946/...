@@ -8,6 +8,7 @@ var userInfo = require('./userInfo.js').userInfo;
 var analysis = require('./module/analysis');
 var consts = require('./util/consts');
 var mongodb = require("./nosql/mongodb");
+var user = require('./user.js');
 
 exports.onVoiceQuery = function(req,res){
     var uid = parseInt(req.query["uid"]);
@@ -61,8 +62,11 @@ exports.onVoiceQuery = function(req,res){
         }else if(word_match[m] == "这辈子" || word_match[m] == "一生"|| word_match[m] == "先天"|| word_match[m] == "一辈子"|| word_match[m] == "命中" || word_match[m] == "此生" || word_match[m] == "这生" || word_match[m] == "人生"){
             fixation_time_type = consts.FIXATION_TYPE_TIME.TYPE_TIME_THIS_LISE;
             break;
-        }else if(word_match[m] == "过去" || word_match[m] == "十年" || word_match[m] == "去年" || word_match[m] == "一年"){
+        }else if(word_match[m] == "去年" || word_match[m] == "一年"|| word_match[m] == "1"){
             fixation_time_type = consts.FIXATION_TYPE_TIME.TYPE_TIME_IN_THE_PAST;
+            break;
+        }else if( word_match[m] == "十年"|| word_match[m] == "10"){//word_match[m] == "过去" ||){
+            fixation_time_type = consts.FIXATION_TYPE_TIME.TYPE_TIME_IN_THE_PAST_TEN;
             break;
         }else if(word_match[m] == "特点" || word_match[m] == "不足"){
             fixation_base_type = consts.FIXATION_TYPE_BASE.TYPE_TIME_NATURE;
@@ -391,14 +395,51 @@ exports.onVoiceQuery = function(req,res){
                 res.end(JSON.stringify(result));
             });
             break;
-        }else  if(word_match[m] == "运程" && ("undefined" !== typeof (fixation_time_type)&& fixation_time_type == consts.FIXATION_TYPE_TIME.TYPE_TIME_IN_THE_PAST)){
+        }else  if(word_match[m] == "运程" && ("undefined" !== typeof (fixation_time_type)&& fixation_time_type == consts.FIXATION_TYPE_TIME.TYPE_TIME_IN_THE_PAST||fixation_time_type == consts.FIXATION_TYPE_TIME.TYPE_TIME_IN_THE_PAST_TEN)){
             find = true;
-            analysis.getFixationLuckInThePast(uid,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,function(answer){
-                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-                var result = { answer:answer};
-                mongodb.voice_query_log(uid,voice_content,answer);
-                res.end(JSON.stringify(result));
-            });
+            analysis.getInfo(uid, function (userInfo) {
+                if (!userInfo) {
+                    res.end("没有这个账号");
+                    return;
+                }
+                var reqData = {
+                    sex:			parseInt(userInfo['sex']),
+                    birthAddress:	parseInt(userInfo['birthAddress']),//-1,
+                    year:			parseInt(userInfo.birthday.substr(0, 4)),
+                    month:			parseInt(userInfo.birthday.substr(4, 2)),
+                    day:			parseInt(userInfo.birthday.substr(6, 2)),
+                    clock:			parseInt(userInfo.birthday.substr(8, 2))
+                }
+                reqData.birthday=userInfo.birthday;
+                //去年
+                var u1 = user.getUserInfo(reqData);
+                u1.yangSum=u1.yangSum1;
+                u1.year_star=u1.nianyun;
+                var u2 = analysis.buildUserInfo(reqData);
+                if(fixation_time_type == consts.FIXATION_TYPE_TIME.TYPE_TIME_IN_THE_PAST_TEN){
+                    analysis.lastTenYearYC(u1,u2,function(desc){
+                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                        var answer={"score":"","level":"","desc":desc}
+                        var result = { answer:answer};
+                        mongodb.voice_query_log(uid,voice_content,desc);
+                        res.end(JSON.stringify(result));
+                    })
+                }else{
+                    analysis.lastYearYC(u1,u2,function(desc){
+                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                        var answer={"score":"","level":"","desc":desc}
+                        var result = { answer:answer};
+                        mongodb.voice_query_log(uid,voice_content,desc);
+                        res.end(JSON.stringify(result));
+                    })
+                }
+            })
+//            analysis.getFixationLuckInThePast(uid,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,function(answer){
+//                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+//                var result = { answer:answer};
+//                mongodb.voice_query_log(uid,voice_content,answer);
+//                res.end(JSON.stringify(result));
+//            });
             break;
         }else  if(word_match[m] == "情感" && "undefined" !== typeof (fixation_time_type)){
             find = true;

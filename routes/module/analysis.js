@@ -2973,8 +2973,8 @@ anylysis.lastYearYC = function(userInfo,uuserInfo,cb){
     anylysis.getYun4Yc(userInfo,userInfo.sex==0?2:4,null,false,"yc",function(desc){
         var d=new Date();
         d.setYear(2014)
-        anylysis.getCareer(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(level){
-            anylysis.getLuck(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(luck) {
+        anylysis.getlastYearCareer(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(level){
+            anylysis.getlastYearLuck(uuserInfo,consts.TYPE_TIME.TYPE_TIME_THIS_YEAR,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,d,function(luck) {
                 console.log("luck" + luck)
                 var b = "一四年您运程" + luck + "，事业" + level + "，在6月左右，" + desc.replace("注意", "易");
                 cb(b);
@@ -3006,15 +3006,15 @@ anylysis.lastTenYearYC = function(userInfo,uuserInfo,cb){
         var nian=userInfo.sex==0?ten0[highWaiStar-1]:ten1[highWaiStar-1];
         var d=new Date();
         d.setYear(nian)
-        anylysis.getCareer2(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,function(level){
-            anylysis.getLuck2(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_LUCK,function(luck){
+        anylysis.getlastTenYearCareer(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_WEALTH,function(level){
+            anylysis.getlastTenYearLuck(uuserInfo,consts.TYPE_FIXATION.TYPE_FIXATION_LUCK_LAST_TEN_YEARS,consts.TYPE_SCORE.TYPE_SCORE_LUCK,function(luck){
                 var c="过去10年中，您的运程"+luck.level+"，事业"+level+"，在"+nian+"年，"+desc.replace("注意","易");
                 cb(c)
             })
         })
     });
 }
-anylysis.getCareer=function(info,time_type,score_type,date,cb){
+anylysis.getlastYearCareer=function(info,time_type,score_type,date,cb){
     var scores = anylysis.getScore(info,time_type,score_type,date);
     var career_socres = scores[0];
     var career_socres_previous = scores[1];
@@ -3033,7 +3033,7 @@ anylysis.getCareer=function(info,time_type,score_type,date,cb){
         }
     }
 }
-anylysis.getLuck=function(info,time_type,score_type,date,cb) {
+anylysis.getlastYearLuck=function(info,time_type,score_type,date,cb) {
     var scores = anylysis.getScore(info, time_type, score_type, date);
     var luck_socres = scores[0];
     var luck_socres_previous = scores[1];
@@ -3053,7 +3053,7 @@ anylysis.getLuck=function(info,time_type,score_type,date,cb) {
     }
 }
 //过去十年运程
-anylysis.getLuck2=function(info,type,score_type,cb) {
+anylysis.getlastTenYearLuck=function(info,type,score_type,cb) {
     var luck_in_the_past_index_rows = fixation_index[0][type];
     var currBigStar=user.getBigStar(new Date());
     var currSmallStar=user.getSmallStar(new Date());
@@ -3110,7 +3110,7 @@ anylysis.getLuck2=function(info,type,score_type,cb) {
     }
 }
 //过去十年事业
-anylysis.getCareer2=function(info,time_type,score_type,cb){
+anylysis.getlastTenYearCareer=function(info,time_type,score_type,cb){
     var currBigStar=user.getBigStar(new Date());
     var currSmallStar=user.getSmallStar(new Date());
     //男女运数区别
