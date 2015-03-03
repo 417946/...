@@ -468,150 +468,151 @@ function getSJWS(yearStar,aDate) {
     var jqData = comm.getJqData();
     var key = aDate.getFullYear();
     var info = jqData[key.toString()];
-    if (jqData < (new Date(info[0].date))) {
+//    if (jqData < (new Date(info[0].date))) {
+    if ((new Date(aDate)) < (new Date(info[0].date))) {
         key--;
         info = jqData[key.toString()];
     }
-    
-
     var startDay;
     var days;
     var sjws = false;
     switch (yearStar) {
-        //飞星1白，立秋后72日，立冬后72日，旺，其余衰。
+        //飞星1白，立秋后90天，立冬后90天，旺，其余衰。
         case 1:
-            {
-                startDay = new Date(info[12].date);
+        {
+            startDay = new Date(info[12].date);
+            days = tools.GetDateDiff(startDay, aDate, "day");
+            if (days >= 0 && days <= 90) {
+                sjws = true;
+            }
+            else {
+                startDay = new Date(info[18].date);
                 days = tools.GetDateDiff(startDay, aDate, "day");
-                if (days >= 0 && days <= 72) {
+                console.log("day:"+days);
+                if (days >= 0 && days <= 90) {
                     sjws = true;
                 }
-                else {
-                    startDay = new Date(info[18].date);
-                    days = tools.GetDateDiff(startDay, aDate, "day");
-                    if (days >= 0 && days <= 72) {
-                        sjws = true;
-                    }
-                }
             }
+        }
             break;
         case 2:
         case 5:
-        case 8:
-            {
-                //飞星2黑，立春、立夏、立秋、立冬前18日，立夏后72日，旺，其余衰。
-                //飞星5土，立春、立夏、立秋、立冬前18日，立夏后72日，旺，其余衰。
-                //飞星8土，立春、立夏、立秋、立冬前18日，立夏后72日，旺，其余衰。；
-                startDay = new Date(info[0].date);
-                days = tools.GetDateDiff(aDate,startDay, "day");
-                if (days >= 0 && days <= 18) {
-                    sjws = true;
-                }
-                else {
-                    startDay = new Date(info[6].date);
-                    days = tools.GetDateDiff(aDate, startDay, "day");
-                    if (days >= 0 && days <= 18) {
-                        sjws = true;
-                    }
-                    else{
-                        days = tools.GetDateDiff(startDay,aDate,"day");
-                        if (days >= 0 && days <= 72) {
-                            sjws = true;
-                        }
-                        else {
-                            startDay = new Date(info[12].date);
-                            days = tools.GetDateDiff(aDate, startDay, "day");
-                            if (days >= 0 && days <= 18) {
-                                sjws = true;
-                            }
-                            else {
-                                startDay = new Date(info[18].date);
-                                days = tools.GetDateDiff(aDate, startDay, "day");
-                                if (days >= 0 && days <= 18) {
-                                    sjws = true;
-                                }
-                            }
-                        }
-                    }
-                }
+        {
+            //飞星2黑，立春、立夏、立秋、立冬前18日，旺，其余衰。
+            //飞星5土，立春、立夏、立秋、立冬前18日，旺，其余衰。
+            startDay = new Date(info[0].date);
+            days = tools.GetDateDiff(aDate, startDay, "day");
+            if (days >= 0 && days <= 18) {
+                sjws = true;
             }
-            break;
-        case 3:
-        case 4:
-            {
-                //飞星3木，立春后72日，立冬后72日，旺，其余衰。  
-                //飞星4木，立春后72日，立冬后72日，旺，其余衰。
-                startDay = new Date(info[0].date);
-                days = tools.GetDateDiff(startDay, aDate, "day");
-                if (days >= 0 && days <= 72) {
-                    sjws = true;
-                }
-                else {
-                    startDay = new Date(info[18].date);
-                    days = tools.GetDateDiff(startDay, aDate, "day");
-                    if (days >= 0 && days <= 72) {
-                        sjws = true;
-                    }
-                }
-            }
-            break;
-        case 6:
-        case 7:
-            {
-                //飞星6金，立春、立夏、立秋、立冬前18日，立秋后72日，旺，其余衰。 
-                //飞星7金，立春、立夏、立秋、立冬前18日，立秋后72日，旺，其余衰。；  
-                startDay = new Date(info[0].date);
+            else {
+                startDay = new Date(info[6].date);
                 days = tools.GetDateDiff(aDate, startDay, "day");
                 if (days >= 0 && days <= 18) {
                     sjws = true;
                 }
                 else {
-                    startDay = new Date(info[6].date);
+                    startDay = new Date(info[12].date);
                     days = tools.GetDateDiff(aDate, startDay, "day");
                     if (days >= 0 && days <= 18) {
                         sjws = true;
                     }
                     else {
-                        startDay = new Date(info[12].date);
+                        startDay = new Date(info[18].date);
                         days = tools.GetDateDiff(aDate, startDay, "day");
                         if (days >= 0 && days <= 18) {
                             sjws = true;
                         }
-                        else {
-                            days = tools.GetDateDiff(startDay, aDate, "day");
-                            if (days >= 0 && days <= 72) {
-                                sjws = true;
-                            }
-                            else {
-                                startDay = new Date(info[18].date);
-                                days = tools.GetDateDiff(aDate, startDay, "day");
-                                if (days >= 0 && days <= 18) {
-                                    sjws = true;
-                                }
-                            }
-                        }
                     }
                 }
             }
+        }
             break;
-        case 9:
-            {
-                //飞星9火，立春后72日，立夏后72日，旺，其余衰。
-                startDay = new Date(info[0].date);
+        case 3:
+        case 4:
+        {
+            //飞星3木，立春后90日，立冬后90日，旺，其余衰。
+            //飞星4木，立春后90日，立冬后90日，旺，其余衰。
+            startDay = new Date(info[0].date);
+            days = tools.GetDateDiff(startDay, aDate, "day");
+            if (days >= 0 && days <= 90) {
+                sjws = true;
+            }
+            else {
+                startDay = new Date(info[18].date);
                 days = tools.GetDateDiff(startDay, aDate, "day");
-                if (days >= 0 && days <= 72) {
+                if (days >= 0 && days <= 90) {
                     sjws = true;
                 }
-                else {
-                    startDay = new Date(info[6].date);
-                    days = tools.GetDateDiff(startDay, aDate, "day");
-                    if (days >= 0 && days <= 72) {
-                        sjws = true;
-                    }
+            }
+        }
+            break;
+        case 6:
+        {
+            //飞星6金，立冬前30日，立冬后30日，旺，其余衰。；
+            startDay = new Date(info[18].date);
+            days = tools.GetDateDiff(aDate, startDay, "day");
+            if (days >= 0 && days <= 30) {
+                sjws = true;
+            }
+            else {
+                days = tools.GetDateDiff(startDay, aDate, "day");
+                if (days >= 0 && days <= 30) {
+                    sjws = true;
                 }
             }
+        }
             break;
-        
+        case 7:
+        {
+            //飞星7金，立秋前30日，立秋后90日，旺。其余衰。；
+            startDay = new Date(info[12].date);
+            days = tools.GetDateDiff(aDate, startDay, "day");
+            if (days >= 0 && days <= 30) {
+                sjws = true;
+            }
+            else {
+                days = tools.GetDateDiff(startDay, aDate, "day");
+                if (days >= 0 && days <= 90) {
+                    sjws = true;
+                }
+            }
+        }
+            break;
+        case 8:
+        {
+            //飞星8土，立夏后90日，立春后30日，旺。其余衰。；
+            startDay = new Date(info[0].date);
+            days = tools.GetDateDiff(startDay, aDate, "day");
+            if (days >= 0 && days <= 30) {
+                sjws = true;
+            }
+            else {
+                startDay = new Date(info[6].date);
+                days = tools.GetDateDiff(startDay, aDate, "day");
+                if (days >= 0 && days <= 90) {
+                    sjws = true;
+                }
+            }
+        }
+            break;
+        case 9:
+        {
+            //飞星9火，立春后90天，立夏后90天，旺。其余衰。
+            startDay = new Date(info[0].date);
+            days = tools.GetDateDiff(startDay, aDate, "day");
+            if (days >= 0 && days <= 90) {
+                sjws = true;
+            }
+            else {
+                startDay = new Date(info[6].date);
+                days = tools.GetDateDiff(startDay, aDate, "day");
+                if (days >= 0 && days <= 90) {
+                    sjws = true;
+                }
+            }
+        }
+            break;
     }
     return sjws;
 }
@@ -834,6 +835,7 @@ function buildData(reqData,userInfo){
     //四季五行
 	userInfo.sjIndex = sjIndex;
 	userInfo.birthAddress = baIndex;
+    userInfo.birthday = date;
 }
 
 exports.getUserInfo = function(reqData){
@@ -1230,9 +1232,11 @@ var getWxNum = function (userInfo,index) {
 //    所有+3 变+2
 
     //四季影响
-    var sjIndex = userInfo.sjIndex;
-    var sjvalue=dataJson.sjscore[yearstar - 1][sjIndex];
-    rtn += (sjvalue==3||sjvalue==5)?6:((sjvalue==-3||sjvalue==-5))?-4:sjvalue;
+//    var sjIndex = userInfo.sjIndex;
+//    var sjvalue=dataJson.sjscore[yearstar - 1][sjIndex];
+//    rtn += (sjvalue==3||sjvalue==5)?6:((sjvalue==-3||sjvalue==-5))?-4:sjvalue;
+    var sjIndex = getSJWS(yearstar,userInfo.birthday);
+    rtn += sjIndex?6:-3;
     //出生地影响
     var csvalue=dataJson.csdscore[yearstar - 1][getDirNum(userInfo.birthAddress) - 1];
     rtn += (csvalue==3)?2:csvalue;
