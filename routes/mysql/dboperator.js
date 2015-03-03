@@ -737,8 +737,10 @@ operater.getUserLastJxScore = function (info, cb) {
                 info.baseZyScore=((info.xjStarScore+75)*100/150).toFixed(0);
                 var wealthstars=getWealth_stars(info.flystar);
                 if(wealthstars>0){
-                    info.wealth_stars=wealthstars;
-                }
+                    if(info.wealth_stars<wealthstars){
+                        info.wealth_stars=wealthstars;
+                    }
+                }   
                 cb.call(null, info.jxScore);
             }
         }
