@@ -835,7 +835,7 @@ function buildData(reqData,userInfo){
     //四季五行
 	userInfo.sjIndex = sjIndex;
 	userInfo.birthAddress = baIndex;
-    userInfo.birthday = date;
+    userInfo.birthday = year + month + day +clock;
 }
 
 exports.getUserInfo = function(reqData){
@@ -1235,7 +1235,8 @@ var getWxNum = function (userInfo,index) {
 //    var sjIndex = userInfo.sjIndex;
 //    var sjvalue=dataJson.sjscore[yearstar - 1][sjIndex];
 //    rtn += (sjvalue==3||sjvalue==5)?6:((sjvalue==-3||sjvalue==-5))?-4:sjvalue;
-    var sjIndex = getSJWS(yearstar,userInfo.birthday);
+    var d=new Date(userInfo.birthday.substr(0, 4) + "/" + userInfo.birthday.substr(4, 2) + "/" + userInfo.birthday.substr(6, 2) + " " + userInfo.birthday.substr(8, 2) + ":00:00")
+    var sjIndex = getSJWS(yearstar,d);
     rtn += sjIndex?6:-3;
     //出生地影响
     var csvalue=dataJson.csdscore[yearstar - 1][getDirNum(userInfo.birthAddress) - 1];
