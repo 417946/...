@@ -835,7 +835,7 @@ function buildData(reqData,userInfo){
     //四季五行
 	userInfo.sjIndex = sjIndex;
 	userInfo.birthAddress = baIndex;
-    userInfo.birthday = year + month + day +clock;
+    userInfo.birthday = date.format("yyyyMMddhhmm");
 }
 
 exports.getUserInfo = function(reqData){
