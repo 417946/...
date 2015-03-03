@@ -271,3 +271,29 @@ exports.onPostReg = function (req, res) {
         })
 	});
 };
+
+//当用户点击注册按钮时被触发
+exports.onFlystar = function (req, res) {
+    console.log(JSON.stringify(req.query))
+    //解析生日
+    var strDate = req.body['birthday'];
+    var result = /(\d+).*?(\d+).*?(\d+).*?(\d+)\:(\d+)/g.exec(strDate);
+
+    //测试功能
+    var reqData = {
+        sex:			parseInt(req.body['sex']),
+        birthAddress:	parseInt(req.body['birthaddress'])-1,
+        year:			parseInt(result[1]),
+        month:			parseInt(result[2]),
+        day:			parseInt(result[3]),
+        clock:			parseInt(result[4])
+    }
+
+    var userInfo = user.getUserInfo(reqData);
+    var a={
+        sjWS: (userInfo.sjWS ? "旺" : "衰"),
+        flystar: userInfo.flystar
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify(a));
+}

@@ -81,6 +81,7 @@ app.get('/', routes.index);
 app.post('/login', login.onLogin);
 app.get('/webreg', webreg.reg);
 app.post('/webreg', webreg.onPostReg);
+app.post('/webreg_flystar', webreg.onFlystar);
 app.post('/reg', reg.onReg);
 app.post('/deviceid', deviceid.onPostId);
 app.post('/modifyInfo', modifyInfo.onModify);
