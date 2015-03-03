@@ -46,6 +46,8 @@ var get_bless = require('./routes/get_bless.js');
 var get_luck = require('./routes/get_luck.js');
 var reg_notice = require('./routes/reg_notice.js');
 
+var community = require('./routes/community.js');
+
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
 
@@ -114,6 +116,13 @@ app.post('/find_bless', get_bless.onFindNewReceiveBless);
 app.post('/get_bless', get_bless.onGetBless);
 app.post('/get_luck', get_luck.onGetLuck);
 app.get('/reg_notice', reg_notice.onRegNotice);
+
+app.get('/add_topic', community.onAddTopic);
+app.get('/add_comment', community.onAddComment);
+app.get('/add_topic_user', community.onAddTopicUser);
+app.get('/del_topic', community.onDelTopic);
+app.get('/del_comment', community.onDelComment);
+app.get('/del_topic_user', community.onDelFromTopicUser);
 
 userManager.GetInstance();
 
