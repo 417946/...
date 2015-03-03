@@ -1537,7 +1537,7 @@ anylysis.getHighScores = function(info,cb){
 anylysis.getFixationBless = function(uid,type,cb){
     anylysis.getInfo(uid, function (info) {
         anylysis.getHighScores(info,function(high_score){
-            high_score = high_score>98?98:high_score;
+//            high_score = high_score>98?98:high_score;
             var bless_index_rows = fixation_index[0][type];
             for(var i = 0; i < bless_index_rows.length; ++i){
                 var range = bless_index_rows[i].range;
