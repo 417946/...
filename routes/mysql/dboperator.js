@@ -740,7 +740,7 @@ operater.getUserLastJxScore = function (info, cb) {
                     if(info.wealth_stars<wealthstars){
                         info.wealth_stars=wealthstars;
                     }
-                }   
+                }
                 cb.call(null, info.jxScore);
             }
         }
