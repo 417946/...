@@ -9,20 +9,6 @@ module.exports = {
     Unauthorized : 401 ,//没有授权
     ERROR : 500 ,//服务器内部错误
 
-    AUTHCODE_ERROR : 20, //验证码错误
-    AUTHCODE_DUE : 21 , //验证码过期
-
-
-    /**用户消息定义*/
-    PWD_ERROR : 41 , //密码不正确
-    PWD_FORMAT_ERROR : 42 , //密码不符合规范
-    PHONE_FORMAT_ERROR : 43 , //手机号码格式不正确
-    PHONE_EXIST : 45 , //手机号码已经注册
-
-    BLACKLIST : 44 , //用户被加入黑名单
-    USER_NOT_EXIST : 46 , //用户不存在
-
-
     /**
      * 关于返回格式的说明
      * status : 状态值，具体定义见上面。
