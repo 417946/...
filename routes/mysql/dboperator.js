@@ -252,7 +252,10 @@ operater.getBaseNum = function(info,cb){
         }
         else {
             if (res.length <= 0) {
-                cb.call(null, "没有找到基础数据");
+//                cb.call(null, "没有找到基础数据");
+                info.baseNum = "0";
+                info.jxNum = "0";
+                cb.call(null, false);
             }
             else {
                 info.baseNum = res[0][key];
@@ -277,7 +280,9 @@ operater.getRsjy = function (info, cb) {
         }
         else {
             if (res.length <= 0) {
-                cb.call(null, "没有找到谏言数据");
+//                cb.call(null, "没有找到谏言数据");
+                info.rsjy = "无";
+                cb.call(null, false);
             }
             else {
                 info.rsjy = res[0]['jianyan'];
@@ -303,7 +308,10 @@ operater.getBaseXg = function (info, cb) {
             if (res.length <= 0) {
                 log(sql);
                 log("没有找到基本性格数据");
-                cb.call(null, "没有找到基本性格数据");
+                info.baseXg = "无";
+                info.buchongXg = "无";
+//                cb.call(null, "没有找到基本性格数据");
+                cb.call(null, false);
             }
             else {
                 info.baseXg = res[0]['basexg'];
@@ -321,7 +329,7 @@ operater.getOtherXg = function (info, cb) {
         queNum = "0";
     }
     var sql = "select mainbz,otherxg,otherbz from otherxg_table where quenum =" + queNum + ";";
-    //log(sql);
+//    log(sql);
     mysqlClient.query(sql, null, function (err, res) {
         if (err) {
             console.log("Error ocuor when select * from otherxg_table;");
@@ -332,7 +340,10 @@ operater.getOtherXg = function (info, cb) {
             if (res.length <= 0) {
                 log(sql);
                 log("没有找到其他性格数据");
-                cb.call(null, "没有找到其他性格数据");
+                info.td = "无";
+                info.mainBz = "无";
+                info.qd = "无";
+                cb.call(null, false);
             }
             else {
                 info.td = res[0]['otherxg'];
