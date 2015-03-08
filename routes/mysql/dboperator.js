@@ -1389,3 +1389,16 @@ operater.GetBless2 = function(uid,cb){
         }
     });
 };
+/**
+ * 意见反馈
+ * @param type 是否想知道三件事type=0;三件事性格type=1;三件事去年type=2;三件事过去10年type=3
+ * @param value 0,1,2,...想知道,不想知道  真准,一般,不准
+ * @param memo 备注
+ */
+operater.createSurveyFeedback = function(type,value,memo,cb){
+    var sql = "insert into survey_feedback_table(type, value,memo ) values(?,?,?)";
+    console.log(sql);
+    mysqlClient.query(sql, [type,value,memo], function (err,res) {
+        cb(err,res)
+    });
+};

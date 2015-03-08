@@ -46,7 +46,7 @@ var get_bless = require('./routes/get_bless.js');
 var get_luck = require('./routes/get_luck.js');
 var reg_notice = require('./routes/reg_notice.js');
 var lunar_calendar = require('./routes/lunar_calendar.js');
-
+var survey_feedback = require('./routes/survey_feedback.js');
 var community = require('./routes/community.js');
 
 var segment = require("nodejieba");
@@ -127,6 +127,7 @@ app.get('/del_comment', community.onDelComment);
 app.get('/del_topic_user', community.onDelFromTopicUser);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
+app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
 
 userManager.GetInstance();
 
