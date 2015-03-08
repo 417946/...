@@ -128,6 +128,7 @@ app.get('/del_topic_user', community.onDelFromTopicUser);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
+app.get('/authcode', login.authcode);
 
 userManager.GetInstance();
 
