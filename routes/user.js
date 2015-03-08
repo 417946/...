@@ -616,7 +616,7 @@ function getSJWS(yearStar,aDate) {
     }
     return sjws;
 }
-
+exports.getSJWS = getSJWS;
 //获得四季五行
 function getWx(aDate) {
 
