@@ -13,7 +13,7 @@ var scores_new = require('../../config/scores_new');
 var compass_fly_star = require('../../config/compass_fly_star');
 var compass = require('../../config/compass');
 var match = require('../../config/match');
-var scores_new_addition = require('../../config/scores_new_addition');
+var scores_new_addition_sj = require('../../config/scores_new_addition_sj');
 var comm = require('../../common');
 var calendar = require('../tools/calendar');
 
@@ -236,8 +236,11 @@ anylysis.getScore = function(info,time_type,score_type,date){
     }
 
     //  calc addition
-    var seasons_five_elements = user.getWx(date);
-    seasons_five_elements = anylysis.convert_seasons_five_elements(seasons_five_elements);
+//    var seasons_five_elements = user.getWx(date);
+//    seasons_five_elements = anylysis.convert_seasons_five_elements(seasons_five_elements);
+    var sjws = user.getSJWS(yearStar,date);
+    sjws=(sjws==true?0:1);
+    console.log("四季旺衰："+sjws)
     var current_stars = star_of_query;
     var stars_index;
     var probability = 1;
@@ -247,25 +250,29 @@ anylysis.getScore = function(info,time_type,score_type,date){
         || consts.TYPE_SCORE.TYPE_SCORE_ENERGY == score_type
         || consts.TYPE_SCORE.TYPE_SCORE_PEACH == score_type
         ){
-        var score_new_addition_year_star = scores_new_addition[score_type][info.sex][yearStar - 1];
+        var score_new_addition_year_star = scores_new_addition_sj[score_type][info.sex][yearStar - 1];
         var score_new_addition_year_star_stars_meet;
         var addition;
-        if(consts.TYPE_SCORE.TYPE_SCORE_LUCK == score_type){
-            if(1 == info.flyStarWx){
-                score_new_addition_year_star_stars_meet = score_new_addition_year_star[0].stars_meet1;
-                addition = score_new_addition_year_star[seasons_five_elements + 1].addition1;
-            }else if(0 == info.flyStarWx){
-                score_new_addition_year_star_stars_meet = score_new_addition_year_star[0].stars_meet2;
-                addition = score_new_addition_year_star[seasons_five_elements + 1].addition2;
-            }else if(2 == info.flyStarWx){
-                score_new_addition_year_star_stars_meet = score_new_addition_year_star[0].stars_meet3;
-                addition = score_new_addition_year_star[seasons_five_elements + 1].addition3;
-            }
-        }
-        else{
+//        if(consts.TYPE_SCORE.TYPE_SCORE_LUCK == score_type){
+//            if(1 == info.flyStarWx){
+//                score_new_addition_year_star_stars_meet = score_new_addition_year_star[0].stars_meet1;
+//                addition = score_new_addition_year_star[seasons_five_elements + 1].addition1;
+//            }else if(0 == info.flyStarWx){
+//                score_new_addition_year_star_stars_meet = score_new_addition_year_star[0].stars_meet2;
+//                addition = score_new_addition_year_star[seasons_five_elements + 1].addition2;
+//            }else if(2 == info.flyStarWx){
+//                score_new_addition_year_star_stars_meet = score_new_addition_year_star[0].stars_meet3;
+//                addition = score_new_addition_year_star[seasons_five_elements + 1].addition3;
+//            }
+//        }
+//        else{
+//            score_new_addition_year_star_stars_meet = score_new_addition_year_star[0].stars_meet;
+//            addition = score_new_addition_year_star[seasons_five_elements + 1].addition;
+//        }
             score_new_addition_year_star_stars_meet = score_new_addition_year_star[0].stars_meet;
-            addition = score_new_addition_year_star[seasons_five_elements + 1].addition;
-        }
+            addition = score_new_addition_year_star[sjws + 1].addition;
+//        console.log("stars_meet："+score_new_addition_year_star_stars_meet)
+//        console.log("addition："+addition)
         if(score_new_addition_year_star_stars_meet && addition){
             for(var i = 0; i < score_new_addition_year_star_stars_meet.length; ++i){
                 for(var j = 0; j < score_new_addition_year_star_stars_meet[i].length; ++j){
@@ -277,6 +284,7 @@ anylysis.getScore = function(info,time_type,score_type,date){
             }
             probability = addition[stars_index?stars_index:0];
         }
+//        console.log("probability："+probability)
     }
     if(time_type == consts.TYPE_TIME.TYPE_TIME_THIS_YEAR){
         probability = 1;
@@ -287,6 +295,8 @@ anylysis.getScore = function(info,time_type,score_type,date){
 //    console.log("getScore probability:" + probability);
     var number1 = scores[yearStar -1]*probability;
     var number2 = scores_previous[yearStar-1]*probability;
+//    console.log("number1："+scores[yearStar -1])
+//    console.log("number2："+scores_previous[yearStar-1])
     return [number1.toFixed(1),number2.toFixed(1)];
 };
 
