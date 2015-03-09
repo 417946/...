@@ -83,31 +83,32 @@ exports.authcode = function (req, res) {
         });
         httpReq.end();
     }else if(check.isEmail(arg)){
-        content = authnum+"（验证码）如非本人操作，请忽略本邮件。";
+        content = "<b>您好，感谢您注册万历，<br>验证码:"+authnum+" （在10分钟内有效，10分钟后需要重新提交） </b>"+
+            "<br><br><div style='color:#8d8d8d'>本邮件由系统自动发送，请勿直接回复！如有任何疑问，请联系我们的客服人员。"+
+            "<br>联系方式：QQ：<span style='border-bottom:1px dashed #ccc;z-index:1'>417946;</span></div>";
         //res.json(response.buildError("不是手机号码"));
-//        var transporter = nodemailer.createTransport({
-//            service: 'Gmail',
-//            auth: {
-//                user: 'gmail.user@gmail.com',
-//                pass: 'userpass'
-//            }
-//        });
-//
-//        var mailOptions = {
-//            from: 'foo@blurdybloop.com', // sender address
-//            to: 'bar@blurdybloop.com', // list of receivers
-//            subject: 'Hello', // Subject line
-//            text: 'Hello world', // plaintext body
-//            html: '<b>Hello world </b>' // html body
-//        };
-//
-//        transporter.sendMail(mailOptions, function(error, info){
-//            if(error){
-//                console.log(error);
-//            }else{
-//                console.log('Message sent: ' + info.response);
-//            }
-//        });
+        var transporter = nodemailer.createTransport({
+            service: '163',
+            auth: {
+                user: 'wanli20150309@163.com',
+                pass: '383492'
+            }
+        });
+
+        var mailOptions = {
+            from: '万历<wanli20150309@163.com>', // sender address
+            to: arg, // list of receivers
+            subject: '万历 邮箱激活验证邮件', // Subject line
+            html: content// plaintext body
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error);
+            }else{
+                console.log('Message sent: ' + info.response);
+            }
+        });
     }
     return res.json(response.buildResponse(response.OK , authnum ));
 };
