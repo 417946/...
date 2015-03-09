@@ -1402,3 +1402,57 @@ operater.createSurveyFeedback = function(type,value,memo,cb){
         cb(err,res)
     });
 };
+/**
+ * 缓存能量
+ * @param uid
+ * @param date
+ * @param cb
+ * @constructor
+ */
+operater.getEnergyCache = function(user_id,date,cb){
+    var values = [user_id,date];
+    var sql = "select * from energycache_table where user_id=? and date=?;";
+    console.log(sql);
+    mysqlClient.query(sql, values, function (err,res) {
+        cb(err,res);
+    });
+};
+operater.getEnergyCache = function(user_id,cb){
+    var values = [user_id];
+    var sql = "select * from energycache_table where user_id=?;";
+    console.log(sql);
+    mysqlClient.query(sql, values, function (err,res) {
+        cb(err,res);
+    });
+};
+/**
+ *
+ * @param user_id
+ * @param energy
+ * @param date
+ * @param cb
+ */
+operater.insertEnergyCache = function(user_id,energy,date,cb){
+    var sql = "insert into energycache_table(user_id, energy,date ) values(?,?,?)";
+    console.log(sql);
+    mysqlClient.query(sql, [user_id,energy,date], function (err,res) {
+        cb(err,res)
+    });
+};
+/**
+ *
+ * @param user_id
+ * @param energy
+ * @param date
+ * @param cb
+ */
+operater.updateEnergyCache = function(user_id,energy,date,cb){
+    var values = [energy,date,user_id];
+    var sql = "update energycache_table set energy= ?,date=?  where user_id= ?;";
+    console.log(sql);
+    mysqlClient.update(sql, values, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+};
