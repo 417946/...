@@ -40,41 +40,42 @@ exports.onGetEnergy = function(req,res){
             result.scores = result1[0];
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             res.end(JSON.stringify(result));
-        }
-    });
-    analysis.getInfo(uid,function(info){
-        if(!info){
-            console.log("没有这个账号");
-            return;
-        }
-        var scores = analysis.getScore(info,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,new Date());
-        db.getEnergyCache(user_id,function(err,res2){
-            if(err){
-                result.err=err;
+        }else{
+            analysis.getInfo(uid,function(info){
+                if(!info){
+                    console.log("没有这个账号");
+                    return;
+                }
+                var scores = analysis.getScore(info,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,new Date());
+                db.getEnergyCache(user_id,function(err,res2){
+                    if(err){
+                        result.err=err;
+                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                        res.end(JSON.stringify(result));
+                    }
+                    if(res2.length>0){
+                        db.updateEnergyCache(user_id,scores[0],aDate,function(err){
+                            if(err){
+                                result.err=err;
+                                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                                res.end(JSON.stringify(result));
+                            }
+                        });
+                    }else{
+                        db.insertEnergyCache(user_id,scores[0],aDate,function(err){
+                            if(err){
+                                result.err=err;
+                                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                                res.end(JSON.stringify(result));
+                            }
+                        });
+                    }
+                });
+                result.scores = scores[0];
+                console.log(result);
                 res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
                 res.end(JSON.stringify(result));
-            }
-            if(res2.length>0){
-                db.updateEnergyCache(user_id,scores[0],aDate,function(err){
-                    if(err){
-                        result.err=err;
-                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-                        res.end(JSON.stringify(result));
-                    }
-                });
-            }else{
-                db.insertEnergyCache(user_id,scores[0],aDate,function(err){
-                    if(err){
-                        result.err=err;
-                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-                        res.end(JSON.stringify(result));
-                    }
-                });
-            }
-        });
-        result.scores = scores[0];
-        console.log(result);
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify(result));
+            });
+        }
     });
 };
