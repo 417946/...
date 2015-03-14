@@ -31,3 +31,29 @@ exports.onMatch = function(req,res){
         });
     }
 };
+exports.onMatch2 = function(req,res){
+    var result = { error: "" };
+    var input_type = parseInt(req.query["input_type"]);
+    var uid = parseInt(req.query["uid"]);
+    var type = parseInt(req.query["type"]);
+    console.log("match="+JSON.stringify(req.query))
+    if(consts.TYPE_MATCH_INPUT.TYPE_MATCH_UID == input_type){
+        var target_uid = parseInt(req.query["target_uid"]);
+        analysis.getMatch(uid,target_uid,type,function(answer){
+            result.answer = answer;
+            console.log(answer);
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify(result));
+        });
+    }else if(consts.TYPE_MATCH_INPUT.TYPE_MATCH_USER_INFO == input_type){
+        var birthday = parseInt(req.query["birthday"]);
+        var birthplace = parseInt(req.query["birthplace"]);
+        var sex = parseInt(req.query["sex"]);
+        analysis.getMatch2(uid,birthday,birthplace,sex,type,function(answer){
+            result.answer = answer;
+            console.log(answer);
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify(result));
+        });
+    }
+};

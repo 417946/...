@@ -26,12 +26,12 @@ exports.onReg = function(req,res){
     var dateStr = info.birthday;
     var clock = parseInt(dateStr.substr(8, 2));
     //如果是忘记时辰，就给默认成子时
-    if (clock > 11 || clock == 0) {
-        clock = 0;
-    }
-    else {
-        clock = clock * 2 - 1;
-    }
+//    if (clock > 11 || clock == 0) {
+//        clock = 0;
+//    }
+//    else {
+//        clock = clock * 2 - 1;
+//    }
 
     var reqData = {
                 sex: parseInt(info.sex),
