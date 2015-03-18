@@ -101,6 +101,7 @@ app.post('/contacts', contacts.onContract);
 app.post('/compass', compass.onCompass);
 app.post('/select_date', select_date.onSelectDate);
 app.post('/match', match.onMatch);
+app.get('/match', match.onMatch2);
 app.post('/user_query', user_query.onUserQuery);
 app.post('/add_bless', add_bless.onAddBless);
 app.post('/reg_4_wechat', reg_4_wechat.onRegForWeChat);

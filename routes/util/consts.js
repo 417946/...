@@ -75,7 +75,9 @@ module.exports = {
         TYPE_MATCH_PEACH:4,
         TYPE_MATCH_FRIENDSHIP:5,
         TYPE_MATCH_WEALTH:6,
-        TYPE_MATCH_LUCK:7
+        TYPE_MATCH_LUCK:7,
+        TYPE_MATCH_NATURE_A:8,
+        TYPE_MATCH_NATURE_B:9
     },
     TYPE_MATCH_INPUT:{
         TYPE_MATCH_UID:0,
