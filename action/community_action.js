@@ -1,4 +1,4 @@
-var db = require('./mysql/dboperator');
+var db = require('./../dao/community_dao');
 exports.onAddTopic = function(req,res){
     var result = { error: "" };
     var user_id = req.body['user_id'];
