@@ -66,3 +66,29 @@ operater.delFromTopicUser = function(topic_id,user_id,cb){
         }
     });
 };
+
+operater.getTopicList = function(cb){
+    var sql = "select * from topic_table ";
+    console.log(sql);
+    mysqlClient.query(sql,function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.getTopicByUserId = function(user_id,cb){
+    var values = [user_id];
+    var sql = "select * from topic_table where user_id=? ";
+    console.log(sql);
+    mysqlClient.query(sql, values, function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.getTopicByType = function(type,user_id,cb){
+    var values = [type,user_id];
+    var sql = "select t.* from topic_table t left join topic_user_table tu on t.id=tu.topic_id where tu.type=? and tu.user_id=? ";
+    console.log(sql);
+    mysqlClient.query(sql, values, function (err,res) {
+        cb(err,res);
+    });
+};
