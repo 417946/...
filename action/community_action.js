@@ -1,4 +1,5 @@
 var db = require('./../dao/community_dao');
+var response = require('./common/response');
 exports.onAddTopic = function(req,res){
     var callback=req.query.callback;
     var user_id = req.query.user_id;
