@@ -9,6 +9,7 @@ var alteration_index = require('../config/alteration_index');
 var fixation_index = require('../config/fixation_index');
 var scores_new = require('../config/scores_new');
 var consts = require('./util/consts');
+var response = require('./common/response');
 /**
  * 男女三件事
  * @param req
@@ -17,6 +18,7 @@ var consts = require('./util/consts');
 exports.onRegNotice = function(req,res){
     //解析生日
     var strDate = req.query['birthday'];
+    var callback=req.query.callback;
     console.log(strDate)
     var result = /(\d+).*?(\d+).*?(\d+).*?(\d+)\:(\d+)/g.exec(strDate);
     //测试功能
@@ -52,7 +54,8 @@ exports.onRegNotice = function(req,res){
                     r.b = desc;
                     analysis.lastTenYearYC(userInfo, uuserInfo, function (desc) {
                         r.c = desc;
-                        res.json(r);
+                        response.end(res,response.buildResponse(response.OK,r),callback);
+//                        res.json(r);
                     })
                 })
 //                analysis.getYun4Yc(userInfo,reqData.sex==0?2:4,null,false,"yc",function(desc){
