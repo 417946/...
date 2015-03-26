@@ -1,6 +1,6 @@
 // mysql CRUD
 var operater = module.exports;
-var log = require('../routes/common').log;
+var log = require('../common').log;
 var mysqlClient = require('../routes/mysql/mysqlclient').init();
 var common = require("../common.js");
 

@@ -1,5 +1,5 @@
 var db = require('./../dao/user_dao');
-var response = require('./common/response');
+var response = require('../routes/common/response');
 
 exports.onGetUserDetailById = function(req,res){
     var callback=req.query.callback;

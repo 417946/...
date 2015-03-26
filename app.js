@@ -121,12 +121,12 @@ app.post('/get_bless', get_bless.onGetBless);
 app.post('/get_luck', get_luck.onGetLuck);
 app.get('/reg_notice', reg_notice.onRegNotice);
 
-app.get('/add_topic', community_action.onAddTopic);
-app.get('/add_comment', community_action.onAddComment);
-app.get('/add_topic_user', community_action.onAddTopicUser);
-app.get('/del_topic', community_action.onDelTopic);
-app.get('/del_comment', community_action.onDelComment);
-app.get('/del_topic_user', community_action.onDelFromTopicUser);
+app.get('/add_topic', community.onAddTopic);
+app.get('/add_comment', community.onAddComment);
+app.get('/add_topic_user', community.onAddTopicUser);
+app.get('/del_topic', community.onDelTopic);
+app.get('/del_comment', community.onDelComment);
+app.get('/del_topic_user', community.onDelFromTopicUser);
 
 app.get('/get_user_detail', user_detail.onGetUserDetailById);
 
