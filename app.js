@@ -48,6 +48,7 @@ var reg_notice = require('./routes/reg_notice.js');
 var lunar_calendar = require('./routes/lunar_calendar.js');
 var survey_feedback = require('./routes/survey_feedback.js');
 var community = require('./action/community_action.js');
+var user_detail = require('./action/user_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -126,6 +127,8 @@ app.get('/add_topic_user', community_action.onAddTopicUser);
 app.get('/del_topic', community_action.onDelTopic);
 app.get('/del_comment', community_action.onDelComment);
 app.get('/del_topic_user', community_action.onDelFromTopicUser);
+
+app.get('/get_user_detail', user_detail.onGetUserDetailById);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
