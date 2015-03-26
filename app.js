@@ -47,7 +47,7 @@ var get_luck = require('./routes/get_luck.js');
 var reg_notice = require('./routes/reg_notice.js');
 var lunar_calendar = require('./routes/lunar_calendar.js');
 var survey_feedback = require('./routes/survey_feedback.js');
-var community = require('./routes/community.js');
+var community = require('./action/community_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -120,12 +120,12 @@ app.post('/get_bless', get_bless.onGetBless);
 app.post('/get_luck', get_luck.onGetLuck);
 app.get('/reg_notice', reg_notice.onRegNotice);
 
-app.get('/add_topic', community.onAddTopic);
-app.get('/add_comment', community.onAddComment);
-app.get('/add_topic_user', community.onAddTopicUser);
-app.get('/del_topic', community.onDelTopic);
-app.get('/del_comment', community.onDelComment);
-app.get('/del_topic_user', community.onDelFromTopicUser);
+app.get('/add_topic', community_action.onAddTopic);
+app.get('/add_comment', community_action.onAddComment);
+app.get('/add_topic_user', community_action.onAddTopicUser);
+app.get('/del_topic', community_action.onDelTopic);
+app.get('/del_comment', community_action.onDelComment);
+app.get('/del_topic_user', community_action.onDelFromTopicUser);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
