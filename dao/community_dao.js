@@ -75,9 +75,9 @@ operater.getTopicList = function(cb){
     });
 };
 
-operater.getTopicByUserId = function(user_id,cb){
-    var values = [user_id];
-    var sql = "select * from topic_table where user_id=? ";
+operater.getTopicByUserId = function(user_id,index,cb){
+    var values = [];
+    var sql = "select * from topic_table where user_id="+user_id+" limit 0,"+index;
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);

@@ -80,7 +80,7 @@ exports.onGetTopicList = function(req,res){
 
 exports.onGetTopicByUserId = function(req,res){
     var callback=req.query.callback;
-    db.getTopicByUserId(req.query.user_id,function(err,list){
+    db.getTopicByUserId(req.query.user_id,req.query.index,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }

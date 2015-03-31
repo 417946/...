@@ -127,6 +127,7 @@ app.get('/add_topic_user', community.onAddTopicUser);
 app.get('/del_topic', community.onDelTopic);
 app.get('/del_comment', community.onDelComment);
 app.get('/del_topic_user', community.onDelFromTopicUser);
+app.get('/get_topic_by_uid', community.onGetTopicByUserId);
 
 app.get('/get_user_detail', user_detail.onGetUserDetailById);
 
