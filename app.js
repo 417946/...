@@ -49,6 +49,7 @@ var lunar_calendar = require('./routes/lunar_calendar.js');
 var survey_feedback = require('./routes/survey_feedback.js');
 var community = require('./action/community_action.js');
 var user_detail = require('./action/user_action.js');
+var message = require('./action/message_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -128,6 +129,10 @@ app.get('/del_topic', community.onDelTopic);
 app.get('/del_comment', community.onDelComment);
 app.get('/del_topic_user', community.onDelFromTopicUser);
 app.get('/get_topic_by_uid', community.onGetTopicByUserId);
+app.get('/get_hot_topic', community.onGetHotTopicList);
+app.get('/get_topic_list', community.onGetTopicList);
+
+app.get('/get_msg_list', message.onGetMessageById);
 
 app.get('/get_user_detail', user_detail.onGetUserDetailById);
 
