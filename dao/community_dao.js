@@ -67,8 +67,8 @@ operater.delFromTopicUser = function(topic_id,user_id,cb){
     });
 };
 
-operater.getTopicList = function(cb){
-    var sql = "select * from topic_table ";
+operater.getTopicList = function(index,cb){
+    var sql = "select * from topic_table order by id desc limit 0,"+index;
     console.log(sql);
     mysqlClient.query(sql,function (err,res) {
         cb(err,res);
@@ -80,6 +80,14 @@ operater.getTopicByUserId = function(user_id,index,cb){
     var sql = "select * from topic_table where user_id="+user_id+" limit 0,"+index;
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.getHotTopicList = function(index,cb){
+    var sql = "select t.* from topic_table t left join (select topic_id,count(*) count_t from comment_table group by topic_id) c on c.topic_id=t.id order by c.count_t desc limit 0,"+index;
+    console.log(sql);
+    mysqlClient.query(sql,function (err,res) {
         cb(err,res);
     });
 };

@@ -70,7 +70,7 @@ exports.onDelFromTopicUser = function(req,res){
 
 exports.onGetTopicList = function(req,res){
     var callback=req.query.callback;
-    db.getTopicList(function(err,list){
+    db.getTopicList(req.query.index,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
@@ -81,6 +81,16 @@ exports.onGetTopicList = function(req,res){
 exports.onGetTopicByUserId = function(req,res){
     var callback=req.query.callback;
     db.getTopicByUserId(req.query.user_id,req.query.index,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
+
+exports.onGetHotTopicList = function(req,res){
+    var callback=req.query.callback;
+    db.getHotTopicList(req.query.index,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
