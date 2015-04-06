@@ -75,7 +75,7 @@ exports.dateDetail = function(req, res){
     }
     var ob = new Object();
     var t = tools.timeStr2hour(hour + ":"+min+":"+second);
-    var jd=tools.JD.JD(tools.year2Ayear(year), month, day+t/24);
+    var jd=tools.JD.JD(tools.year2Ayear(parseInt(year)), parseInt(month), parseInt(day)+t/24);
     tools.obb.mingLiBaZi( jd-tools.J2000, 0, ob ); //八字计算
     //阴历
     var lunar = LunarCalendar.solarToLunar(year,month,day);
