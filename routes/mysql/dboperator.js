@@ -26,10 +26,10 @@ function fixStar(star) {
 }
 
 operater.addUser = function(info,cb){
-    var sql = "insert into user_table(user_id, openid,name, sex, birthday,staryear, birthAddress, regAddress,regTime,passwd,viplevel,flystar,sjWs,birthWs,yueNum,yangSum,clockWs,gz,ts,sp,queNum,sjIndex) values('"
+    var sql = "insert into user_table(user_id, openid,name, sex, birthday,staryear, birthAddress, regAddress,regTime,passwd,viplevel,flystar,sjWs,birthWs,yueNum,yangSum,clockWs,gz,ts,sp,queNum,sjIndex,phone,email) values('"
         + info.uid + "','" + (info.openid ? info.openid : "openid") + "','" + info.name + "'," + info.sex + ",'" + info.birthday + "','" + user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2) + "'," + info.birthAddress + ","
         + info.registAddress + ",'" + info.regTime + "','" + info.password + "'," + info.vipLevel + ",'" + info.flystar + "'," + (info.sjWS ? "1" : "0") + "," + info.birthWS + ","
-        + info.starNum + "," + info.yangSum + "," + (info.clockWS ? "1" : "0") + ",'" + info.gz + "','" + info.ts + "','" + info.sp + "','" + info.queNum + "'," + info.sjIndex + ");";
+        + info.starNum + "," + info.yangSum + "," + (info.clockWS ? "1" : "0") + ",'" + info.gz + "','" + info.ts + "','" + info.sp + "','" + info.queNum + "'," + info.sjIndex + ",'" + info.phone + "','" + info.email + "');";
 
     console.log(sql);
 
