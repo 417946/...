@@ -22,6 +22,14 @@ exports.onReg = function(req,res){
     info.birthAddress = req.body['ba'];
     info.vipLevel = 0;
 
+    if(check.isPhone(arg)) {
+        info.phone=req.body['contact'];
+        info.email="";
+    }else if(check.isEmail(arg)){
+        info.phone="";
+        info.email=req.body['contact'];
+    }
+
     //构建轴向数据
     var dateStr = info.birthday;
     var clock = parseInt(dateStr.substr(8, 2));
