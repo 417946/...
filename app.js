@@ -81,6 +81,7 @@ if ('development' == app.get('env')) {
 comm.init();
 
 app.get('/', routes.index);
+app.get('/dateDetail', routes.dateDetail);
 app.post('/login', login.onLogin);
 app.get('/webreg', webreg.reg);
 app.post('/webreg', webreg.onPostReg);

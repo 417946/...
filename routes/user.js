@@ -104,7 +104,7 @@ function getBigStar(aDate) {
     var jqData = comm.getJqData();
     var key = aDate.getFullYear();
     var info = jqData[key.toString()];
-    if(jqData < (new Date(info[0].date))){
+    if(aDate < (new Date(info[0].date))){
         key --;
     }
     var ydelta = key - 1924;
@@ -117,7 +117,7 @@ function getSmallStar(aDate) {
     var jqData = comm.getJqData();
     var key = aDate.getFullYear();
     var info = jqData[key.toString()];
-    if(jqData < (new Date(info[0].date))){
+    if(aDate < (new Date(info[0].date))){
         key --;
     }
     var ydelta = key - 1924;
