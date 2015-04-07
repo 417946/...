@@ -3,6 +3,7 @@
  * Module dependencies.
  */
 var jqData = null;
+var ristarfly = null;
 var fs = require('fs');
 var dataJson = null;
 var scoreJson = null;
@@ -28,7 +29,9 @@ function init(isChild_Process) {
 
     inData = fs.readFileSync("./config/wxbasescore.json");
     wxBaseScoreJson = JSON.parse(inData);
-    
+
+    inData = fs.readFileSync("./config/ristarfly.json");
+    ristarfly = JSON.parse(inData);
    
 
     console.log("jsons loaded!");
@@ -57,6 +60,10 @@ exports.getJqData = function () {
 //获得配置的数据结构
 exports.getDataJson = function () {
     return dataJson;
+}
+
+exports.getRistarfly = function () {
+    return ristarfly;
 }
 
 //获得配置的数据结构

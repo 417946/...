@@ -176,7 +176,91 @@ function getMonthStar(aDate) {
     return 8 - ((mdelta) % 9) + 1;
 }
 exports.getMonthStar = getMonthStar;
+
+/** 无闰法*/
+function getDayStar(aDate){
+    var yearStar = 0;
+    var isAdd = true;
+    var yearNum = aDate.getFullYear();
+    var info = comm.getJqData()[yearNum];
+
+
+    var tempyushui=new Date(info[1].date);
+    var tempguyu=new Date(info[5].date);
+    var tempxiazhi=new Date(info[9].date);
+    var tempchushu=new Date(info[13].date);
+    var tempshuangjiang=new Date(info[17].date);
+    var tempdongzhi=new Date(info[21].date);
+
+    var gz=getGZ(aDate.getFullYear(),aDate.getMonth()+1,aDate.getDate());
+    var ydelta;
+    var isAdd;
+    var seasonindex;
+    if(aDate<tempyushui){//去年冬至到今年立春最后一日
+        seasonindex=0;
+        isAdd=true;
+        ydelta = tools.GetDateDiff(aDate, tempyushui, "day")-1;
+    }else if(aDate>=tempyushui&&aDate<tempguyu){//雨水到清明最后一日
+        seasonindex=1;
+        isAdd=true;
+        ydelta = tools.GetDateDiff(aDate, tempguyu, "day")-1;
+    }else if(aDate>=tempguyu&&aDate<tempxiazhi){//谷雨到芒种最后一日
+        seasonindex=2;
+        isAdd=true;
+        ydelta = tools.GetDateDiff(aDate, tempxiazhi, "day")-1;
+    }else if(aDate>=tempxiazhi&&aDate<tempchushu){//夏至到立秋最后一日
+        seasonindex=3;
+        isAdd=false;
+        ydelta = tools.GetDateDiff(aDate, tempchushu, "day")-1;
+    }else if(aDate>=tempchushu&&aDate<tempshuangjiang){//处暑到寒露最后一日
+        seasonindex=4;
+        isAdd=false;
+        ydelta = tools.GetDateDiff(aDate, tempshuangjiang, "day")-1;
+    }else if(aDate>=tempshuangjiang&&aDate<tempdongzhi){//霜降到大雪最后一日
+        seasonindex=5;
+        isAdd=false;
+        ydelta = tools.GetDateDiff(aDate, tempdongzhi, "day")-1;
+    }else if(aDate>=tempdongzhi){//冬至到明年立春最后一日
+        seasonindex=0;
+        isAdd=true;
+        var tempinfo = comm.getJqData()[yearNum+1];//取明年雨水前一天的干支
+        var tempyushui1=new Date(tempinfo[1].date);
+        ydelta = tools.GetDateDiff(aDate, tempyushui1, "day")-1;
+    }
+
+    for(var i in comm.getRistarfly()){
+        if(i.indexOf(gz)!=-1){
+            return comm.getRistarfly()[i][seasonindex];
+        }
+    }
+//
+//    var startnum=getGzNum(gz,seasonindex);
+//    var yearStar;
+//    if(isAdd){//如果是冬至到夏至(顺)
+//        yearStar=(9-(ydelta%9)+startnum)%9;
+//        if(yearStar==0){
+//            yearStar=9;
+//        }
+//    }else{//如果是夏至到冬至(逆)
+//        yearStar=((ydelta%9)+startnum)%9;
+//        if(yearStar==0){
+//            yearStar=9;
+//        }
+//    }
+    return yearStar;
+}
+
+function getGZ(year,month,day){
+    var ob = new Object();
+    var t = tools.timeStr2hour("12:00:00");
+    var jd=tools.JD.JD(tools.year2Ayear(parseInt(year)), parseInt(month), parseInt(day)+t/24);
+    tools.obb.mingLiBaZi( jd-tools.J2000, 0, ob ); //八字计算
+    return ob.bz_jr;
+}
+
 //获得日运数
+//置闰法
+/**
 function getDayStar(aDate) {
     var yearStar = 0;
     var isAdd = true;
@@ -276,6 +360,7 @@ function getDayStar(aDate) {
     }
     return yearStar;
 }
+ */
 exports.getDayStar = getDayStar;
 //获得时运数
 function getClockStar(aDate) {
