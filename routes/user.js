@@ -193,39 +193,21 @@ function getDayStar(aDate){
     var tempdongzhi=new Date(info[21].date);
 
     var gz=getGZ(aDate.getFullYear(),aDate.getMonth()+1,aDate.getDate());
-    var ydelta;
-    var isAdd;
     var seasonindex;
     if(aDate<tempyushui){//去年冬至到今年立春最后一日
         seasonindex=0;
-        isAdd=true;
-        ydelta = tools.GetDateDiff(aDate, tempyushui, "day")-1;
     }else if(aDate>=tempyushui&&aDate<tempguyu){//雨水到清明最后一日
         seasonindex=1;
-        isAdd=true;
-        ydelta = tools.GetDateDiff(aDate, tempguyu, "day")-1;
     }else if(aDate>=tempguyu&&aDate<tempxiazhi){//谷雨到芒种最后一日
         seasonindex=2;
-        isAdd=true;
-        ydelta = tools.GetDateDiff(aDate, tempxiazhi, "day")-1;
     }else if(aDate>=tempxiazhi&&aDate<tempchushu){//夏至到立秋最后一日
         seasonindex=3;
-        isAdd=false;
-        ydelta = tools.GetDateDiff(aDate, tempchushu, "day")-1;
     }else if(aDate>=tempchushu&&aDate<tempshuangjiang){//处暑到寒露最后一日
         seasonindex=4;
-        isAdd=false;
-        ydelta = tools.GetDateDiff(aDate, tempshuangjiang, "day")-1;
     }else if(aDate>=tempshuangjiang&&aDate<tempdongzhi){//霜降到大雪最后一日
         seasonindex=5;
-        isAdd=false;
-        ydelta = tools.GetDateDiff(aDate, tempdongzhi, "day")-1;
     }else if(aDate>=tempdongzhi){//冬至到明年立春最后一日
         seasonindex=0;
-        isAdd=true;
-        var tempinfo = comm.getJqData()[yearNum+1];//取明年雨水前一天的干支
-        var tempyushui1=new Date(tempinfo[1].date);
-        ydelta = tools.GetDateDiff(aDate, tempyushui1, "day")-1;
     }
 
     for(var i in comm.getRistarfly()){
