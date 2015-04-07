@@ -79,8 +79,8 @@ exports.dateDetail = function(req, res){
     tools.obb.mingLiBaZi( jd-tools.J2000, 0, ob ); //八字计算
     //阴历
     var lunar = LunarCalendar.solarToLunar(year,month,day);
-    var starfly1=getStarfly(new Date(year + "/" + month + "/" + day + " " + hour + ":"+min+":00"),sex)
-    var starfly2=getStarfly(new Date(lunar.lunarYear,lunar.lunarMonth ,lunar.lunarDay , hour,min),sex)
+    var starfly1=getStarfly(new Date(year + "/" + month + "/" + day + " " + hour + ":"+min+":00"),1)
+    var starfly2=getStarfly(new Date(year + "/" + month + "/" + day + " " + hour + ":"+min+":00"),0)
 
     var result='';
     result+='阳历：'+year+'年'+month+'月'+day+'日'+hour+'点'+min+'分\n';
