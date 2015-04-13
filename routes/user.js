@@ -209,7 +209,6 @@ function getDayStar(aDate){
     }else if(aDate>=tempdongzhi){//冬至到明年立春最后一日
         seasonindex=0;
     }
-
     for(var i in comm.getRistarfly()){
         if(i.indexOf(gz)!=-1){
             return comm.getRistarfly()[i][seasonindex];
