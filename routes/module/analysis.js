@@ -286,15 +286,21 @@ anylysis.getScore = function(info,time_type,score_type,date){
         }
 //        console.log("probability："+probability)
     }
-    if(time_type == consts.TYPE_TIME.TYPE_TIME_THIS_YEAR){
-        probability = 1;
-    }
     if(consts.TYPE_SCORE.TYPE_SCORE_WORK == score_type){
         return [scores[yearStar -1],scores_previous[yearStar-1]];
     }
 //    console.log("getScore probability:" + probability);
-    var number1 = scores[yearStar -1]*probability;
-    var number2 = scores_previous[yearStar-1]*probability;
+    var probability1=probability;
+    var probability2=probability;
+    if(time_type == consts.TYPE_TIME.TYPE_TIME_THIS_YEAR){
+        probability1 = 1;
+        probability2 = 1;
+    }
+    if(time_type == consts.TYPE_TIME.TYPE_TIME_THIS_MONTH){
+        probability2 = 1;
+    }
+    var number1 = scores[yearStar -1]*probability1;
+    var number2 = scores_previous[yearStar-1]*probability2;
 //    console.log("number1："+scores[yearStar -1])
 //    console.log("number2："+scores_previous[yearStar-1])
     return [number1.toFixed(1),number2.toFixed(1)];
@@ -427,15 +433,15 @@ anylysis.getLuck2 = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(luck_socres_previous >= 90 && luck_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(luck_socres_previous >= 80 && luck_socres_previous < 89){
+        }else if(luck_socres_previous >= 80 && luck_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(luck_socres_previous >= 60 && luck_socres_previous < 79){
+        }else if(luck_socres_previous >= 60 && luck_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(luck_socres_previous >= 45 && luck_socres_previous < 59){
+        }else if(luck_socres_previous >= 45 && luck_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(luck_socres_previous >= 29 && luck_socres_previous < 44){
+        }else if(luck_socres_previous >= 29 && luck_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(luck_socres_previous >= 0 && luck_socres_previous < 28){
+        }else if(luck_socres_previous >= 0 && luck_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -534,15 +540,15 @@ anylysis.getEnergy = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(energy_socres_previous >= 90 && energy_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(energy_socres_previous >= 80 && energy_socres_previous < 89){
+        }else if(energy_socres_previous >= 80 && energy_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(energy_socres_previous >= 60 && energy_socres_previous < 79){
+        }else if(energy_socres_previous >= 60 && energy_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(energy_socres_previous >= 45 && energy_socres_previous < 59){
+        }else if(energy_socres_previous >= 45 && energy_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(energy_socres_previous >= 29 && energy_socres_previous < 44){
+        }else if(energy_socres_previous >= 29 && energy_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(energy_socres_previous >= 0 && energy_socres_previous < 28){
+        }else if(energy_socres_previous >= 0 && energy_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -642,15 +648,15 @@ anylysis.getHealth = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(health_socres_previous >= 90 && health_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(health_socres_previous >= 80 && health_socres_previous < 89){
+        }else if(health_socres_previous >= 80 && health_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(health_socres_previous >= 60 && health_socres_previous < 79){
+        }else if(health_socres_previous >= 60 && health_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(health_socres_previous >= 45 && health_socres_previous < 59){
+        }else if(health_socres_previous >= 45 && health_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(health_socres_previous >= 29 && health_socres_previous < 44){
+        }else if(health_socres_previous >= 29 && health_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(health_socres_previous >= 0 && health_socres_previous < 28){
+        }else if(health_socres_previous >= 0 && health_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -699,15 +705,15 @@ anylysis.getWealth = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(wealth_socres_previous >= 90 && wealth_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(wealth_socres_previous >= 80 && wealth_socres_previous < 89){
+        }else if(wealth_socres_previous >= 80 && wealth_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(wealth_socres_previous >= 60 && wealth_socres_previous < 79){
+        }else if(wealth_socres_previous >= 60 && wealth_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(wealth_socres_previous >= 45 && wealth_socres_previous < 59){
+        }else if(wealth_socres_previous >= 45 && wealth_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(wealth_socres_previous >= 29 && wealth_socres_previous < 44){
+        }else if(wealth_socres_previous >= 29 && wealth_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(wealth_socres_previous >= 0 && wealth_socres_previous < 28){
+        }else if(wealth_socres_previous >= 0 && wealth_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -756,15 +762,15 @@ anylysis.getWealthLose = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(wealth_lose_socres_previous >= 90 && wealth_lose_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(wealth_lose_socres_previous >= 80 && wealth_lose_socres_previous < 89){
+        }else if(wealth_lose_socres_previous >= 80 && wealth_lose_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(wealth_lose_socres_previous >= 60 && wealth_lose_socres_previous < 79){
+        }else if(wealth_lose_socres_previous >= 60 && wealth_lose_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(wealth_lose_socres_previous >= 45 && wealth_lose_socres_previous < 59){
+        }else if(wealth_lose_socres_previous >= 45 && wealth_lose_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(wealth_lose_socres_previous >= 29 && wealth_lose_socres_previous < 44){
+        }else if(wealth_lose_socres_previous >= 29 && wealth_lose_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(wealth_lose_socres_previous >= 0 && wealth_lose_socres_previous < 28){
+        }else if(wealth_lose_socres_previous >= 0 && wealth_lose_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -813,9 +819,9 @@ anylysis.getShopping = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(shopping_socres_previous >= 75 && shopping_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(shopping_socres_previous >= 60 && shopping_socres_previous < 74){
+        }else if(shopping_socres_previous >= 60 && shopping_socres_previous < 75){
             last_level_describe_index = 1;
-        }else if(shopping_socres_previous >= 0 && shopping_socres_previous < 59){
+        }else if(shopping_socres_previous >= 0 && shopping_socres_previous < 60){
             last_level_describe_index = 2;
         }
         var answer = {};
@@ -859,15 +865,15 @@ anylysis.getStudy = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(study_socres_previous >= 90 && study_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(study_socres_previous >= 80 && study_socres_previous < 89){
+        }else if(study_socres_previous >= 80 && study_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(study_socres_previous >= 60 && study_socres_previous < 79){
+        }else if(study_socres_previous >= 60 && study_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(study_socres_previous >= 45 && study_socres_previous < 59){
+        }else if(study_socres_previous >= 45 && study_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(study_socres_previous >= 29 && study_socres_previous < 44){
+        }else if(study_socres_previous >= 29 && study_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(study_socres_previous >= 0 && study_socres_previous < 28){
+        }else if(study_socres_previous >= 0 && study_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -916,15 +922,15 @@ anylysis.getCareer = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(career_socres_previous >= 90 && career_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(career_socres_previous >= 80 && career_socres_previous < 89){
+        }else if(career_socres_previous >= 80 && career_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(career_socres_previous >= 60 && career_socres_previous < 79){
+        }else if(career_socres_previous >= 60 && career_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(career_socres_previous >= 45 && career_socres_previous < 59){
+        }else if(career_socres_previous >= 45 && career_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(career_socres_previous >= 29 && career_socres_previous < 44){
+        }else if(career_socres_previous >= 29 && career_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(career_socres_previous >= 0 && career_socres_previous < 28){
+        }else if(career_socres_previous >= 0 && career_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -973,9 +979,9 @@ anylysis.getPrayForWealth = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(pray_for_wealth_socres_previous >= 75 && pray_for_wealth_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(pray_for_wealth_socres_previous >= 60 && pray_for_wealth_socres_previous < 74){
+        }else if(pray_for_wealth_socres_previous >= 60 && pray_for_wealth_socres_previous < 75){
             last_level_describe_index = 1;
-        }else if(pray_for_wealth_socres_previous >= 0 && pray_for_wealth_socres_previous < 59){
+        }else if(pray_for_wealth_socres_previous >= 0 && pray_for_wealth_socres_previous < 60){
             last_level_describe_index = 2;
         }
         var answer = {};
@@ -1017,15 +1023,15 @@ anylysis.getEmotion = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(emotion_socres_previous >= 90 && emotion_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(emotion_socres_previous >= 80 && emotion_socres_previous < 89){
+        }else if(emotion_socres_previous >= 80 && emotion_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(emotion_socres_previous >= 60 && emotion_socres_previous < 79){
+        }else if(emotion_socres_previous >= 60 && emotion_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(emotion_socres_previous >= 45 && emotion_socres_previous < 59){
+        }else if(emotion_socres_previous >= 45 && emotion_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(emotion_socres_previous >= 29 && emotion_socres_previous < 44){
+        }else if(emotion_socres_previous >= 29 && emotion_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(emotion_socres_previous >= 0 && emotion_socres_previous < 28){
+        }else if(emotion_socres_previous >= 0 && emotion_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -1074,15 +1080,15 @@ anylysis.getConfrere = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(emotion_socres_previous >= 90 && emotion_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(emotion_socres_previous >= 80 && emotion_socres_previous < 89){
+        }else if(emotion_socres_previous >= 80 && emotion_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(emotion_socres_previous >= 60 && emotion_socres_previous < 79){
+        }else if(emotion_socres_previous >= 60 && emotion_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(emotion_socres_previous >= 45 && emotion_socres_previous < 59){
+        }else if(emotion_socres_previous >= 45 && emotion_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(emotion_socres_previous >= 29 && emotion_socres_previous < 44){
+        }else if(emotion_socres_previous >= 29 && emotion_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(emotion_socres_previous >= 0 && emotion_socres_previous < 28){
+        }else if(emotion_socres_previous >= 0 && emotion_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -1124,15 +1130,15 @@ anylysis.getFeeling = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(emotion_socres_previous >= 90 && emotion_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(emotion_socres_previous >= 80 && emotion_socres_previous < 89){
+        }else if(emotion_socres_previous >= 80 && emotion_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(emotion_socres_previous >= 60 && emotion_socres_previous < 79){
+        }else if(emotion_socres_previous >= 60 && emotion_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(emotion_socres_previous >= 45 && emotion_socres_previous < 59){
+        }else if(emotion_socres_previous >= 45 && emotion_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(emotion_socres_previous >= 29 && emotion_socres_previous < 44){
+        }else if(emotion_socres_previous >= 29 && emotion_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(emotion_socres_previous >= 0 && emotion_socres_previous < 28){
+        }else if(emotion_socres_previous >= 0 && emotion_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -1181,15 +1187,15 @@ anylysis.getPeach = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(emotion_socres_previous >= 90 && emotion_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(emotion_socres_previous >= 80 && emotion_socres_previous < 89){
+        }else if(emotion_socres_previous >= 80 && emotion_socres_previous < 90){
             last_level_describe_index = 1;
-        }else if(emotion_socres_previous >= 60 && emotion_socres_previous < 79){
+        }else if(emotion_socres_previous >= 60 && emotion_socres_previous < 80){
             last_level_describe_index = 2;
-        }else if(emotion_socres_previous >= 45 && emotion_socres_previous < 59){
+        }else if(emotion_socres_previous >= 45 && emotion_socres_previous < 60){
             last_level_describe_index = 3;
-        }else if(emotion_socres_previous >= 29 && emotion_socres_previous < 44){
+        }else if(emotion_socres_previous >= 29 && emotion_socres_previous < 45){
             last_level_describe_index = 4;
-        }else if(emotion_socres_previous >= 0 && emotion_socres_previous < 28){
+        }else if(emotion_socres_previous >= 0 && emotion_socres_previous < 29){
             last_level_describe_index = 5;
         }
         var answer = {};
@@ -1241,9 +1247,9 @@ anylysis.getChase = function(uid,time_type,score_type,date,cb){
         var last_level_describe_index = 0;
         if(pray_for_wealth_socres_previous >= 75 && pray_for_wealth_socres_previous < 98){
             last_level_describe_index = 0;
-        }else if(pray_for_wealth_socres_previous >= 60 && pray_for_wealth_socres_previous < 74){
+        }else if(pray_for_wealth_socres_previous >= 60 && pray_for_wealth_socres_previous < 75){
             last_level_describe_index = 1;
-        }else if(pray_for_wealth_socres_previous >= 0 && pray_for_wealth_socres_previous < 59){
+        }else if(pray_for_wealth_socres_previous >= 0 && pray_for_wealth_socres_previous < 60){
             last_level_describe_index = 2;
         }
         var answer = {};
@@ -1266,15 +1272,15 @@ anylysis.getCompassText = function(type,score){
         case consts.TYPE_COMPASS.TYPE_COMPASS_ENERGY:{
             if(score >= 90 && score <= 98){
                 text = "超高";
-            }else if(score >= 80 && score <= 89){
+            }else if(score >= 80 && score < 90){
                 text = "高";
-            }else if(score >= 60 && score <= 79){
+            }else if(score >= 60 && score < 80){
                 text = "中等";
-            }else if(score >= 45 && score <= 59){
+            }else if(score >= 45 && score < 60){
                 text = "较低";
-            }else if(score >= 29 && score <= 44){
+            }else if(score >= 29 && score < 45){
                 text = "很低";
-            }else if(score >= 0 && score <= 28){
+            }else if(score >= 0 && score < 29){
                 text = "最低";
             }
             break;
@@ -1282,31 +1288,31 @@ anylysis.getCompassText = function(type,score){
         case consts.TYPE_COMPASS.TYPE_COMPASS_WEALTH:{
             if(score >= 90 && score <= 98){
                 text = "滚滚";
-            }else if(score >= 80 && score <= 89){
+            }else if(score >= 80 && score < 90){
                 text = "大利";
-            }else if(score >= 60 && score <= 79){
+            }else if(score >= 60 && score < 80){
                 text = "中等";
-            }else if(score >= 45 && score <= 59){
+            }else if(score >= 45 && score < 60){
                 text = "小损";
-            }else if(score >= 29 && score <= 44){
+            }else if(score >= 29 && score < 45){
                 text = "破财";
-            }else if(score >= 0 && score <= 28){
+            }else if(score >= 0 && score < 29){
                 text = "崩盘";
             }
             break;
         }
         case consts.TYPE_COMPASS.TYPE_COMPASS_LUCK:{
-            if(score >= 90 && score <= 98){
+            if(score >= 90 && score < 98){
                 text = "大顺";
-            }else if(score >= 80 && score <= 89){
+            }else if(score >= 80 && score < 90){
                 text = "顺";
-            }else if(score >= 60 && score <= 79){
+            }else if(score >= 60 && score < 80){
                 text = "一般";
-            }else if(score >= 45 && score <= 59){
+            }else if(score >= 45 && score < 60){
                 text = "不顺";
-            }else if(score >= 29 && score <= 44){
+            }else if(score >= 29 && score < 45){
                 text = "堵塞";
-            }else if(score >= 0 && score <= 28){
+            }else if(score >= 0 && score < 29){
                 text = "崩溃";
             }
             break;
