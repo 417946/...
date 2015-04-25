@@ -68,7 +68,16 @@ operater.delFromTopicUser = function(topic_id,user_id,cb){
 };
 
 operater.getTopicList = function(index,cb){
-    var sql = "select * from topic_table order by id desc limit 0,"+index;
+//    var sql = "select * from topic_table order by id desc limit 0,"+index;
+    var sql = "select t.*,u.name from topic_table t left join user_table u on u.user_id=t.user_id order by id desc limit 0,"+index;
+    console.log(sql);
+    mysqlClient.query(sql,function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.getTopicById = function(tid,cb){
+    var sql = "select t.*,u.name from topic_table t left join user_table u on u.user_id=t.user_id where t.id="+tid;
     console.log(sql);
     mysqlClient.query(sql,function (err,res) {
         cb(err,res);

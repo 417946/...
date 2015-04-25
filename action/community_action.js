@@ -77,6 +77,15 @@ exports.onGetTopicList = function(req,res){
         response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };
+exports.onGetTopicById = function(req,res){
+    var callback=req.query.callback;
+    db.getTopicById(req.query.tid,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
 
 exports.onGetTopicByUserId = function(req,res){
     var callback=req.query.callback;
