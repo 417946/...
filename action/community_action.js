@@ -5,7 +5,8 @@ exports.onAddTopic = function(req,res){
     var user_id = req.query.user_id;
     var title = req.query.title;
     var content = req.query.content;
-    db.addTopic(user_id,title,content,function(err,result){
+    var type = req.query.type;
+    db.addTopic(user_id,title,content,type,function(err,result){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
@@ -70,7 +71,7 @@ exports.onDelFromTopicUser = function(req,res){
 
 exports.onGetTopicList = function(req,res){
     var callback=req.query.callback;
-    db.getTopicList(req.query.index,function(err,list){
+    db.getTopicList(req.query.index,req.query.type,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
@@ -100,6 +101,16 @@ exports.onGetTopicByUserId = function(req,res){
 exports.onGetHotTopicList = function(req,res){
     var callback=req.query.callback;
     db.getHotTopicList(req.query.index,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
+
+exports.onGetCommList = function(req,res){
+    var callback=req.query.callback;
+    db.getCommList(req.query.tid,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }

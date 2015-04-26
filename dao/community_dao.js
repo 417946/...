@@ -5,8 +5,8 @@ var mysqlClient = require('../routes/mysql/mysqlclient').init();
 var common = require("../common.js");
 
 
-operater.addTopic = function(user_id,title,content,cb){
-    var sql = "insert topic_table(user_id,title,content,status) value('" + user_id + "','" + title + "','"+content+"','1')";
+operater.addTopic = function(user_id,title,content,type,cb){
+    var sql = "insert topic_table(user_id,title,content,type,status) value('" + user_id + "','" + title + "','"+content+"','"+type+"','1')";
     console.log(sql);
     mysqlClient.insert(sql, null, function (err) {
         if (cb) {
@@ -67,9 +67,9 @@ operater.delFromTopicUser = function(topic_id,user_id,cb){
     });
 };
 
-operater.getTopicList = function(index,cb){
+operater.getTopicList = function(index,type,cb){
 //    var sql = "select * from topic_table order by id desc limit 0,"+index;
-    var sql = "select t.*,u.name from topic_table t left join user_table u on u.user_id=t.user_id order by id desc limit 0,"+index;
+    var sql = "select t.*,u.name from topic_table t left join user_table u on u.user_id=t.user_id where t.type="+type+" order by id desc limit 0,"+index;
     console.log(sql);
     mysqlClient.query(sql,function (err,res) {
         cb(err,res);
@@ -106,6 +106,15 @@ operater.getTopicByType = function(type,user_id,cb){
     var sql = "select t.* from topic_table t left join topic_user_table tu on t.id=tu.topic_id where tu.type=? and tu.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
+        cb(err,res);
+    });
+};
+
+
+operater.getCommList = function(tid,cb){
+    var sql = "select t.*,c.content comm_content,c.user_id c_user_id,u.name,cu.name c_username from comment_table t left join comment_table c on c.comm_id=t.id left join user_table u on u.user_id=t.user_id left join user_table cu on cu.user_id=c.user_id where t.topic_id="+tid;
+    console.log(sql);
+    mysqlClient.query(sql,function (err,res) {
         cb(err,res);
     });
 };

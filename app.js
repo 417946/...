@@ -131,6 +131,7 @@ app.get('/del_comment', community.onDelComment);
 app.get('/del_topic_user', community.onDelFromTopicUser);
 app.get('/get_topic_by_uid', community.onGetTopicByUserId);
 app.get('/get_hot_topic', community.onGetHotTopicList);
+app.get('/get_comm_list', community.onGetCommList);
 app.get('/get_topic_list', community.onGetTopicList);
 app.get('/get_topic_by_id', community.onGetTopicById);
 
