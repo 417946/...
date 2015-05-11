@@ -759,7 +759,7 @@ function buildData(reqData,userInfo){
 	date = new Date(reqData.year + "/" + reqData.month + "/" + reqData.day + " " + clock + ":00:00");
 	clock = (clock + 1) % 24;
 	clock = Math.floor(clock/2);
-	
+
 	//大小运数 //60年一大运，20年一小运 从1924年2月4日开始 大运2，小运4
 	bigyun = getBigStar(date);
 	smallyun = getSmallStar(date);

@@ -6,6 +6,7 @@ var userInfo = require('./userInfo.js').userInfo;
 var userManager = require('./userManager.js');
 var login = require('./login.js');
 var user = require('./user.js');
+var check =require('./util/check');
 
 //当用户点击登陆按钮时被触发
 exports.onReg = function(req,res){
@@ -22,10 +23,10 @@ exports.onReg = function(req,res){
     info.birthAddress = req.body['ba'];
     info.vipLevel = 0;
 
-    if(check.isPhone(arg)) {
+    if(check.isPhone(req.body['contact'])) {
         info.phone=req.body['contact'];
         info.email="";
-    }else if(check.isEmail(arg)){
+    }else if(check.isEmail(req.body['contact'])){
         info.phone="";
         info.email=req.body['contact'];
     }
@@ -40,7 +41,6 @@ exports.onReg = function(req,res){
 //    else {
 //        clock = clock * 2 - 1;
 //    }
-
     var reqData = {
                 sex: parseInt(info.sex),
                 registAddress: parseInt(info.registAddress),
@@ -50,7 +50,6 @@ exports.onReg = function(req,res){
                 day: parseInt(info.birthday.substr(6, 2)),
                 clock: parseInt(clock)
             }
-
     dataInfo = user.getUserInfo(reqData);
 
 
