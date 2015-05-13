@@ -34,6 +34,7 @@ exports.onRegNotice = function(req,res){
     var userInfo = user.getUserInfo(reqData);
     var flag=true;
     var r={}
+    r.s=user.getSuxie(userInfo);
     while(flag){
         if(userInfo.flystar){
             flag=false;

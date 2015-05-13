@@ -1392,3 +1392,19 @@ var getFlyStarWx = function(userInfo){
     return level;
 }
 exports.getFlyStarWx = getFlyStarWx;
+
+var fs = require('fs');
+
+//计算素写
+var getSuxie = function (userInfo) {
+    var dataJson = comm.getSuxieJson();
+    var sxJson = dataJson[userInfo.sex];
+    var flystar=userInfo.flystar;
+    var fkey=(flystar.substr(2,1)+flystar.substr(4,1)+flystar.substr(5,1));
+    if(sxJson[fkey][flystar.substr(3,1)]){
+        return sxJson[fkey][flystar.substr(3,1)];
+    }else{
+        return sxJson[fkey]["0"];
+   }
+}
+exports.getSuxie = getSuxie;
