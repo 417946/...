@@ -97,6 +97,45 @@ exports.onRegNotice = function(req,res){
         }
     }
 };
+exports.onFriendJy = function(req,res){
+    //解析生日
+    var strDate = req.query['birthday'];
+    var callback=req.query.callback;
+    console.log(strDate)
+    var result = /(\d+).*?(\d+).*?(\d+).*?(\d+)\:(\d+)/g.exec(strDate);
+    //测试功能
+    var reqData = {
+        sex:			parseInt(req.query['sex']),
+        birthAddress:	0,
+        year:			parseInt(result[1]),
+        month:			parseInt(result[2]),
+        day:			parseInt(result[3]),
+        clock:			parseInt(result[4])
+    }
+
+    var userInfo = user.getUserInfo(reqData);
+    if(userInfo.flystar){
+        var push_message = [];
+        //  get push for index
+        var today_energy = analysis.getScore(userInfo,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,new Date());
+        var today_luck = analysis.getScore(userInfo,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_LUCK,new Date());
+        if(today_energy[0] < 60){
+            push_message.push("今日能量较低，请速速补种福田，增幅转运。");
+        }
+        else if(today_luck[0] < 60){
+            push_message.push("今日运程较低，请速速补种福田，增幅转运。");
+        }
+        else if(today_energy[0] > 85){
+            push_message.push("今日能量较高，可以为友送福。");
+        }
+        if(0 == push_message.length){
+            analysis.getLuck3(userInfo,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_LUCK,new Date(),function(answer){
+                push_message.push(answer);
+            });
+        }
+        res.end(JSON.stringify(push_message));
+    }
+};
 exports.getCareer=function(info,time_type,score_type,date,cb){
     var scores = analysis.getScore(info,time_type,score_type,date);
     var career_socres = scores[0];

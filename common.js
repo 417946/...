@@ -8,6 +8,7 @@ var fs = require('fs');
 var dataJson = null;
 var scoreJson = null;
 var wxBaseScoreJson = null;
+var suxieJson = null;
 var child_process = require('child_process');
 
 var worker = null;
@@ -32,7 +33,10 @@ function init(isChild_Process) {
 
     inData = fs.readFileSync("./config/ristarfly.json");
     ristarfly = JSON.parse(inData);
-   
+
+    inData = fs.readFileSync("./config/suxie.json");
+    suxieJson = JSON.parse(inData);
+
 
     console.log("jsons loaded!");
 
@@ -74,6 +78,11 @@ exports.getScoreJson = function () {
 //获得五行基础分值数据结构
 exports.getWxBaseScoreJson = function () {
     return wxBaseScoreJson;
+}
+
+//获得速写
+exports.getSuxieJson = function () {
+    return suxieJson;
 }
 
 exports.init = init;

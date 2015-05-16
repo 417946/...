@@ -50,6 +50,7 @@ var survey_feedback = require('./routes/survey_feedback.js');
 var community = require('./action/community_action.js');
 var user_detail = require('./action/user_action.js');
 var message = require('./action/message_action.js');
+var friend = require('./action/friend_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -74,7 +75,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
 //��ʼ�����
@@ -122,6 +123,7 @@ app.post('/find_bless', get_bless.onFindNewReceiveBless);
 app.post('/get_bless', get_bless.onGetBless);
 app.post('/get_luck', get_luck.onGetLuck);
 app.get('/reg_notice', reg_notice.onRegNotice);
+app.get('/friendjy', reg_notice.onFriendJy);
 
 app.get('/add_topic', community.onAddTopic);
 app.get('/add_comment', community.onAddComment);
@@ -134,6 +136,11 @@ app.get('/get_hot_topic', community.onGetHotTopicList);
 app.get('/get_comm_list', community.onGetCommList);
 app.get('/get_topic_list', community.onGetTopicList);
 app.get('/get_topic_by_id', community.onGetTopicById);
+
+app.get('/add_friend', friend.onAddFriend);
+app.get('/del_friend', friend.onDelFriend);
+app.get('/get_friend_list', friend.getFriendList);
+app.get('/get_friend_by_id', friend.getFriendById);
 
 app.get('/get_msg_list', message.onGetMessageById);
 

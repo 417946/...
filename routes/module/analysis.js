@@ -465,6 +465,57 @@ anylysis.getLuck2 = function(uid,time_type,score_type,date,cb){
     });
 };
 
+anylysis.getLuck3 = function(info,time_type,score_type,date,cb){
+    var scores = anylysis.getScore(info,time_type,score_type,date);
+    var luck_socres = scores[0];
+    var luck_socres_previous = scores[1];
+    var luck_index_rows = alteration_index[0][0];
+    var luck_index_row;
+    luck_socres = luck_socres>98?98:luck_socres;
+    for(var i = 0; i < luck_index_rows.length; ++i){
+        if(luck_index_rows.length){
+            var range = luck_index_rows[i].range;
+            var range_array = range.split('-');
+            if(Math.floor(luck_socres) <= parseInt(range_array[0]) && Math.floor(luck_socres) >=  parseInt(range_array[1])){
+                luck_index_row = luck_index_rows[i];
+                break;
+            }
+        }
+    }
+    var last_level_describe_index = 0;
+    if(luck_socres_previous >= 90 && luck_socres_previous < 98){
+        last_level_describe_index = 0;
+    }else if(luck_socres_previous >= 80 && luck_socres_previous < 90){
+        last_level_describe_index = 1;
+    }else if(luck_socres_previous >= 60 && luck_socres_previous < 80){
+        last_level_describe_index = 2;
+    }else if(luck_socres_previous >= 45 && luck_socres_previous < 60){
+        last_level_describe_index = 3;
+    }else if(luck_socres_previous >= 29 && luck_socres_previous < 45){
+        last_level_describe_index = 4;
+    }else if(luck_socres_previous >= 0 && luck_socres_previous < 29){
+        last_level_describe_index = 5;
+    }
+    var answer = {};
+    answer.score = luck_socres + "分。";
+    answer.level = luck_index_row ? luck_index_row.level:0;
+    if(consts.TYPE_TIME.TYPE_TIME_TODAY == time_type){
+        answer.desc = luck_index_row?luck_index_row.today_last_level_describe[last_level_describe_index]:"";
+    }else if(consts.TYPE_TIME.TYPE_TIME_THIS_MONTH == time_type){
+        answer.desc = luck_index_row?luck_index_row.month_last_level_describe[last_level_describe_index]:"";
+    }else if(consts.TYPE_TIME.TYPE_TIME_THIS_YEAR == time_type){
+        answer.desc = luck_index_row?luck_index_row.year_last_level_describe[last_level_describe_index]:"";
+    }
+    else if(consts.TYPE_TIME.TYPE_TIME_HOUR == time_type){
+        answer.desc = luck_index_row?luck_index_row.now_last_level_describe[last_level_describe_index]:"";
+    }
+    var tendency = anylysis.getTendency(info,time_type,score_type,date);
+    console.log("%j",tendency);
+    answer.tendency = tendency[0];
+    answer.tendency_time = tendency[1];
+    cb(answer);
+};
+
 anylysis.getWork = function(uid,time_type,score_type,date,cb){
     anylysis.getInfo(uid,function(info){
         if(!info){
