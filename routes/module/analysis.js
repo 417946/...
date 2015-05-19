@@ -3123,7 +3123,8 @@ anylysis.lastTenYearYC = function(userInfo,uuserInfo,cb){
     var ten0=[2013,2014,2006,2007,2008,2009,2010,2011,2012];
     var highWaiStar=0;//取其余星五行分值(已考虑四季，出生地影响) 最高的一颗外飞星
     var tempHighValue=0;
-    var waiStarList=[userInfo.bigyun,userInfo.smallyun,userInfo.yueyun,userInfo.riyun,userInfo.shiyun]
+//    var waiStarList=[userInfo.bigyun,userInfo.smallyun,userInfo.yueyun,userInfo.riyun,userInfo.shiyun]
+    var waiStarList=[userInfo.shiyun]//除年飞星的其余5颗飞星换成每个人的时飞星，最后1颗飞星。
     for(var i in waiStarList){
         var temp=userInfo.wwxNum[waiStarList[i]-1];
         if(tempHighValue<temp){
