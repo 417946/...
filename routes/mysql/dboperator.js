@@ -1119,8 +1119,8 @@ operater.addToContract = function(uid,contracts_uid,contracts_name,cb){
         for(var i = 0; i < res.length; ++i){
             contracts.push(res[i]["contracts_uid"]);
         }
-        if(contracts.length >= 5){
-            cb("通讯录只能保存最重要的5名好友，如要添加，请先移除之前的好友!");
+        if(contracts.length >= 4){
+            cb("通讯录只能保存最重要的4名好友，如要添加，请先移除之前的好友!");
             return;
         }
         //  add already ?
@@ -1166,12 +1166,12 @@ operater.delFromContract = function(uid,contracts_uid,cb){
  * @param cb
  */
 operater.getContract = function(uid,cb){
-    var sql = "select contracts_uid,contracts_name from contracts_table where uid='" + uid + "'";
+    var sql = "select c.contracts_uid,c.contracts_name,u.sex,u.birthday from contracts_table c left join user_table u on u.user_id=c.contracts_uid where c.uid='" + uid + "'";
     console.log(sql);
     mysqlClient.query(sql, null, function (err,res) {
         var contracts = [];
         for(var i = 0; i < res.length; ++i){
-            contracts.push([res[i]["contracts_uid"],res[i]["contracts_name"]]);
+            contracts.push([res[i]["contracts_uid"],res[i]["contracts_name"],res[i]["sex"],res[i]["birthday"]]);
         }
         cb(err,contracts)
     });

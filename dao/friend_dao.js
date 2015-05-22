@@ -6,12 +6,37 @@ var common = require("../common.js");
 
 
 operater.addFriend = function(name,user_id,sex,birthday,cb){
-    var sql = "insert friends_table (name,user_id,sex,birthday) value('" + name + "','" + user_id + "','"+sex+"','"+birthday+"')";
+    var sql = "select * from friends_table where user_id="+uid;
     console.log(sql);
-    mysqlClient.insert(sql, null, function (err) {
-        if (cb) {
-            cb.call(err);
+    mysqlClient.query(sql, null, function (err,res) {
+        var friendname = [];
+        var friendbd = [];
+        for(var i = 0; i < res.length; ++i){
+            friendname.push(res[i]["name"]);
+            friendbd.push(res[i]["birthday"]);
         }
+        if(friendname.length >= 4){
+            cb("只能关注最重要的4名亲友，如要添加，请先移除之前的亲友!");
+            return;
+        }
+        //  add already ?
+        var find = false;
+        for(i = 0; i < friendname.length; ++i){
+            if(name == friendname[i]&&birthday==friendbd[i]){
+                find = true;
+            }
+        }
+        if(find){
+            cb("请勿重复添加!")
+            return;
+        }
+        sql = "insert friends_table (name,user_id,sex,birthday) value('" + name + "','" + user_id + "','"+sex+"','"+birthday+"')";
+        console.log(sql);
+        mysqlClient.insert(sql, null, function (err) {
+            if (cb) {
+                cb.call(err);
+            }
+        });
     });
 };
 
