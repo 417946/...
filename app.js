@@ -51,6 +51,7 @@ var community = require('./action/community_action.js');
 var user_detail = require('./action/user_action.js');
 var message = require('./action/message_action.js');
 var friend = require('./action/friend_action.js');
+var talk = require('./action/talk_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -151,6 +152,7 @@ app.get('/get_user_detail', user_detail.onGetUserDetailById);
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
 app.get('/authcode', login.authcode);
+app.get('/talk/getFriendList', talk.getFriendList);
 
 userManager.GetInstance();
 
