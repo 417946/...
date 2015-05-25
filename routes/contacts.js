@@ -7,6 +7,17 @@ var analysis = require('./module/analysis');
 var consts = require('./util/consts');
 var async = require('async');
 
+exports.onEditContracts = function (req, res) {
+    var result = { error: "" };
+    db.editContract(req.body["id"],req.body["uid"],req.body["name"], function (err, contracts) {
+        if (err) {
+            result.error = err;
+            console.log(result);
+        }
+        res.json(result)
+    })
+}
+
 exports.onContract = function(req,res){
     var uid = parseInt(req.body["uid"]);
     var contracts_uid = parseInt(req.body["contracts_uid"]);

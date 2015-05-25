@@ -13,6 +13,19 @@ exports.onAddFriend = function(req,res){
         response.end(res,response.buildOK(),callback);
     });
 };
+exports.onEditFriend = function(req,res){
+    var callback=req.query.callback;
+    var fid = req.query.id;
+    var name = req.query.name;
+    var sex = req.query.sex;
+    var birthday = req.query.birthday;
+    db.editFriend(fid,name,sex,birthday,function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(),callback);
+    });
+};
 exports.onDelFriend = function(req,res){
     var callback=req.query.callback;
     var fid = req.query.fid;

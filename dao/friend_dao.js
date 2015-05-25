@@ -40,6 +40,16 @@ operater.addFriend = function(name,user_id,sex,birthday,cb){
     });
 };
 
+operater.editFriend = function(id,name,sex,birthday,cb){
+    var sql = "update friends_table set name='"+name+"',sex="+sex+",birthday='"+birthday+"' where id="+id;
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err,res) {
+        if (cb) {
+            cb.call(err);
+        }
+    });
+};
+
 
 operater.delFriend = function(fid,cb){
     var sql = "delete from friends_table where id="+fid;

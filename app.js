@@ -102,6 +102,7 @@ app.post('/set_colour', set_colour.onSetColour);
 app.post('/get_colour', get_colour.onGetColour);
 app.post('/feedback', feedback.onFeedback);
 app.post('/contacts', contacts.onContract);
+app.post('/edit_contacts', contacts.onEditContracts);
 app.post('/compass', compass.onCompass);
 app.post('/select_date', select_date.onSelectDate);
 app.post('/match', match.onMatch);
@@ -138,6 +139,7 @@ app.get('/get_topic_list', community.onGetTopicList);
 app.get('/get_topic_by_id', community.onGetTopicById);
 
 app.get('/add_friend', friend.onAddFriend);
+app.get('/edit_friend', friend.onEditFriend);
 app.get('/del_friend', friend.onDelFriend);
 app.get('/get_friend_list', friend.getFriendList);
 app.get('/get_friend_by_id', friend.getFriendById);
