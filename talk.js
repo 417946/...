@@ -15,11 +15,9 @@ exports.init=function(){
         connection.on('message', function (message) {
             console.log(message);
             if (message.logicId == "login") {
-//            clients[message.fromUid] = connection; //将用户名与连接对应
-//            connection.fromUid = message.fromUid;
+            clients[message.fromUid] = connection; //将用户名与连接对应
+            connection.fromUid = message.fromUid;
             }else if(message.logicId == "chat") {//用户发起会话
-                clients[message.fromUid] = connection; //将用户名与连接对应
-                connection.fromUid = message.fromUid;
                 //1、查找该用户是否有历史消息
                 var toUser = message.toUid;//会话目标
                 //2、检查目标用户是否在线，若在线，转发用户请求
