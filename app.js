@@ -153,6 +153,7 @@ app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
 app.get('/authcode', login.authcode);
 app.get('/talk/getFriendList', talk.getFriendList);
+app.get('/talk/addFriend', talk.onAddFriend);
 
 userManager.GetInstance();
 
