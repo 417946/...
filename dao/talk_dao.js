@@ -17,6 +17,15 @@ operater.getHistory = function(uid1,uid2,cb){
         cb(err,res);
     });
 };
+operater.addFriend = function(uid1,fid,fname,cb){
+    sql = "insert talk_friend_table (uid,fid,fname) value('" + uid + "," + fid + ",'"+fname+"')";
+    console.log(sql);
+    mysqlClient.insert(sql, null, function (err) {
+        if (cb) {
+            cb.call(err);
+        }
+    });
+};
 /*
 operater.getHistory = function(uid1,uid2,cb){
     var sql = "SELECT * FROM talk_content_table WHERE (fromUid=? OR toUid=?) AND( fromUid=? OR toUid=?)";
