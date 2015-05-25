@@ -2,7 +2,7 @@
  * Created by zoey on 2015/5/24.
  */
 var db = require('./dao/talk_dao');
-function init(){
+exports.init=function(){
     var io = require('socket.io').listen(8080);
 //io监听socket事件
     var clients = [];
