@@ -26,8 +26,9 @@ module.exports = {
         return ret ;
     },
 
-    buildOK : function(){
-        return {status : 200 , message : ''};
+    buildOK : function(data, msg){
+//        return {status : 200 , message : ''};
+        return this.buildResponse(200,data,msg);
     },
 
     buildError : function(message){
@@ -39,7 +40,8 @@ module.exports = {
 			var a = JSON.stringify(result);
 			res.end(callback+"('"+a+"')");
 		}else{
-			res.end( JSON.stringify(result));
+//			res.end( JSON.stringify(result));
+            res.json(result)
 		}
     }
 

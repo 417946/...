@@ -22,3 +22,12 @@ exports.onAddFriend = function(req,res){
         response.end(res,response.buildOK(),callback);
     });
 };
+exports.getHistory = function(req,res){
+    var callback=req.query.callback;
+    db.getHistory(req.query.uid1,req.query.uid2,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(list),callback);
+    });
+};
