@@ -1166,16 +1166,27 @@ operater.delFromContract = function(uid,contracts_uid,cb){
  * @param cb
  */
 operater.getContract = function(uid,cb){
-    var sql = "select c.contracts_uid,c.contracts_name,u.sex,u.birthday from contracts_table c left join user_table u on u.user_id=c.contracts_uid where c.uid='" + uid + "'";
+    var sql = "select c.contracts_uid,c.contracts_name,u.sex,u.birthday,c.id from contracts_table c left join user_table u on u.user_id=c.contracts_uid where c.uid='" + uid + "'";
     console.log(sql);
     mysqlClient.query(sql, null, function (err,res) {
         var contracts = [];
         for(var i = 0; i < res.length; ++i){
-            contracts.push([res[i]["contracts_uid"],res[i]["contracts_name"],res[i]["sex"],res[i]["birthday"]]);
+            contracts.push([res[i]["contracts_uid"],res[i]["contracts_name"],res[i]["sex"],res[i]["birthday"],res[i]["id"]]);
         }
         cb(err,contracts)
     });
 };
+
+operater.editContract = function(id,contracts_uid,contracts_name,cb){
+    var sql = "update contracts_table set contracts_uid="+contracts_uid+",contracts_name='"+contracts_name+"' where id= "+id+";";
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err) {
+        if (err) {
+            console.log(err);
+        }
+        cb(err);
+    });
+}
 
 /**
  * get bless from user table
