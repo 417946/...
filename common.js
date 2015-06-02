@@ -9,6 +9,7 @@ var dataJson = null;
 var scoreJson = null;
 var wxBaseScoreJson = null;
 var suxieJson = null;
+var zeshiJson = null;
 var child_process = require('child_process');
 
 var worker = null;
@@ -36,6 +37,9 @@ function init(isChild_Process) {
 
     inData = fs.readFileSync("./config/suxie.json");
     suxieJson = JSON.parse(inData);
+
+    inData = fs.readFileSync("./config/zeshi.json");
+    zeshiJson = JSON.parse(inData);
 
 
     console.log("jsons loaded!");
@@ -83,6 +87,11 @@ exports.getWxBaseScoreJson = function () {
 //获得速写
 exports.getSuxieJson = function () {
     return suxieJson;
+}
+
+//获得择日
+exports.getZeshiJson = function () {
+    return zeshiJson;
 }
 
 exports.init = init;

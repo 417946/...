@@ -106,6 +106,7 @@ app.post('/contacts', contacts.onContract);
 app.post('/edit_contacts', contacts.onEditContracts);
 app.post('/compass', compass.onCompass);
 app.post('/select_date', select_date.onSelectDate);
+app.post('/select_time', select_date.onSelectTime);
 app.post('/match', match.onMatch);
 app.get('/match', match.onMatch2);
 app.post('/user_query', user_query.onUserQuery);
@@ -154,6 +155,7 @@ app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
 app.get('/authcode', login.authcode);
 app.get('/talk/getFriendList', talk.getFriendList);
 app.get('/talk/addFriend', talk.onAddFriend);
+app.get('/talk/getHistory', talk.getHistory);
 
 userManager.GetInstance();
 

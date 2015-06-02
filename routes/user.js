@@ -238,7 +238,11 @@ function getGZ(year,month,day){
     tools.obb.mingLiBaZi( jd-tools.J2000, 0, ob ); //八字计算
     return ob.bz_jr;
 }
-
+function getTimeGz(gz,clock){
+    clock = (clock + 1) % 24;
+    clock = Math.floor(clock / 2);
+    return gz.substr(0,1)+clockList[clock];
+}
 //获得日运数
 //置闰法
 /**
@@ -1407,4 +1411,148 @@ var getSuxie = function (userInfo) {
         return sxJson[fkey]["0"];
    }
 }
-exports.getSuxie = getSuxie;
+exports.getSuxie = getSuxie;//计算素写
+
+
+var getZeshi = function (aDate) {
+    var dataJson = comm.getZeshiJson();
+    var gz=getGZ(aDate.getFullYear(),aDate.getMonth()+1,aDate.getDate());
+    var xiong=[];
+    var fx=[];
+    var ji=[];
+    var allxiong=dataJson["xiong"]["all"].split("、");
+    for(var item in dataJson["shichen"]){
+        if(item.indexOf(gz.substr(0,1))==1){
+            var shchen=dataJson["shichen"][item].split("、");
+            for(var i=0;i<allxiong.length;i++) {
+                for(var j=0;j<shchen.length;j++){
+                    if(allxiong[i]==shchen[j]){
+                        xiong.push(shchen[j].substr(1,1));
+                        fx.push(shchen[j].substr(1,1));
+                    }
+                }
+            }
+        }
+    }
+    for(var i=0;i<dataJson["xiong"][gz].split("、").length;i++){
+        for(var item in dataJson["shichen"]) {
+            if (item.indexOf(gz.substr(0, 1))==1) {
+                var shchen = dataJson["shichen"][item].split("、");
+                for (var j = 0; j < shchen.length; j++) {
+                    if (shchen[j] == dataJson["xiong"][gz].split("、")[i]) {
+                        var isx = 0;
+                        for (var h = 0; h < xiong.length; h++) {
+                            if (xiong[h] == shchen[j].substr(1, 1)) {
+                                isx = 1;
+                            }
+                        }
+                        if (isx == 0) {
+                            xiong.push(shchen[j].substr(1, 1));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    for(var item in dataJson["shichen"]) {
+        if(item.indexOf(gz.substr(0,1))==1){
+            var shchen=dataJson["shichen"][item].split("、");
+            for(var j=0;j<shchen.length;j++){
+                for(var h=0;h<dataJson["ji"][gz][0].split("、").length;h++){
+                    for(var k=0;k<dataJson["ji"][gz][1].split("、").length;k++){
+                        if(shchen[j]==dataJson["ji"][gz][0].split("、")[h]+dataJson["ji"][gz][1].split("、")[k]){
+                            var isx=0;
+                            for(var m=0;m<fx.length;m++){
+                                if(fx[m]==shchen[j].substr(1,1)){
+                                    isx=1;
+                                }
+                            }
+                            if(isx==0){
+                                ji.push(shchen[j].substr(1,1));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if(xiong.length<3){
+        for(var item in dataJson["shichen"]) {
+            if (item.indexOf(gz.substr(0, 1)) == 1) {
+                var shchen = dataJson["shichen"][item].split("、");
+                for (var i = 0; i < shchen.length; i++) {
+                    for(var j=0;j<dataJson["cixiong"][gz][0].split("、").length;j++){
+                        for(var k=0;k<dataJson["cixiong"][gz][1].split("、").length;k++){
+                            if(shchen[i]==dataJson["cixiong"][gz][0].split("、")[j]+dataJson["cixiong"][gz][1].split("、")[k]){
+                                var isx = 0;
+                                for (var h = 0; h < xiong.length; h++) {
+                                    if (xiong[h] == shchen[j].substr(1, 1)) {
+                                        isx = 1;
+                                    }
+                                }
+                                if (isx == 0) {
+                                    xiong.push(shchen[i].substr(1,1));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if(ji.length<3){
+        for(var item in dataJson["shichen"]) {
+            if (item.indexOf(gz.substr(0, 1)) == 1) {
+                var shchen = dataJson["shichen"][item].split("、");
+                for (var i = 0; i < shchen.length; i++) {
+                    for(var j=0;j<dataJson["ciji"][gz][0].split("、").length;j++){
+                        for(var k=0;k<dataJson["ciji"][gz][1].split("、").length;k++){
+                            if(shchen[i]==dataJson["ciji"][gz][0].split("、")[j]+dataJson["ciji"][gz][1].split("、")[k]){
+                                var isx=0;
+                                for(var m=0;m<fx.length;m++){
+                                    if(fx[m]==shchen[j].substr(1,1)){
+                                        isx=1;
+                                    }
+                                }
+                                if(isx==0){
+                                    ji.push(shchen[j].substr(1,1));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    var returnstr="本日最佳吉时为：";
+    for(var i=0;i<ji.length;i++){
+        if(i<=2){
+            returnstr+=ji[i]+"时";
+        }
+        if(i==ji.length-1||i==2){
+            returnstr+="。br";
+        }else{
+            returnstr+=",";
+        }
+    }
+    if(ji.length==0){
+        returnstr="本日没有吉利时辰。br";
+    }
+    if(xiong.length==0){
+        returnstr+="本日没有不吉时辰。";
+    }else{
+        returnstr+="本日不吉时辰为：";
+        for(var i=0;i<xiong.length;i++){
+            if(i<=2){
+                returnstr+=xiong[i]+"时";
+            }
+            if(i==xiong.length-1||i==2){
+                returnstr+="。";
+            }else{
+                returnstr+=",";
+            }
+        }
+    }
+    return returnstr;
+}
+exports.getZeshi = getZeshi;

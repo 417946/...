@@ -24,7 +24,7 @@ exports.onAddFriend = function(req,res){
 };
 exports.getHistory = function(req,res){
     var callback=req.query.callback;
-    db.getHistory(req.query.uid1,req.query.uid2,function(err,list){
+    db.getHistory(req.query.uid1,req.query.uid2,req.query.page,req.query.index,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }

@@ -11,9 +11,15 @@ operater.getFriendList = function(uid,cb){
         cb(err,res);
     });
 };
-operater.getHistory = function(uid1,uid2,cb){
-    var sql = "SELECT * FROM talk_content_table WHERE (fromUid=? OR toUid=?) AND( fromUid=? OR toUid=?) ORDER BY create_time DESC LIMIT 0,20";
-    mysqlClient.query(sql, [uid1,uid1,uid2,uid2], function (err,res) {
+//operater.getHistory = function(uid1,uid2,cb){
+//    var sql = "SELECT * FROM talk_content_table WHERE (fromUid=? OR toUid=?) AND( fromUid=? OR toUid=?) ORDER BY create_time DESC LIMIT 0,20";
+//    mysqlClient.query(sql, [uid1,uid1,uid2,uid2], function (err,res) {
+//        cb(err,res);
+//    });
+//};
+operater.getHistory = function(uid1,uid2,page,index,cb){
+    var sql = "SELECT * FROM talk_content_table WHERE (fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?) ORDER BY create_time ASC LIMIT ?,?";
+    mysqlClient.query(sql, [uid1,uid2,uid2,uid1,(page-1)*index+1,page*index], function (err,res) {
         cb(err,res);
     });
 };

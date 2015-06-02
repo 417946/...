@@ -4,6 +4,7 @@
 var db = require('./mysql/dboperator');
 var userInfo = require('./userInfo.js').userInfo;
 var analysis = require('./module/analysis');
+var user = require('./user.js');
 
 exports.onSelectDate = function(req,res){
     var uid = parseInt(req.body["uid"]);
@@ -46,5 +47,15 @@ exports.onSelectDate = function(req,res){
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify(result));
     });
+
+};
+
+
+exports.onSelectTime = function(req,res){
+    var uid = parseInt(req.body["uid"]);
+    var result = { error: "",data:"" };
+    result["data"]=user.getZeshi(new Date(req.body["date"]));
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify(result));
 
 };
