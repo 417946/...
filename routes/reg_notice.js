@@ -118,6 +118,7 @@ exports.onFriendJy = function(req,res){
         var push_message = [];
         //  get push for index
         var today_energy = analysis.getScore(userInfo,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,new Date());
+        console.log("***************"+today_energy);
         var today_luck = analysis.getScore(userInfo,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_LUCK,new Date());
         if(today_energy[0] < 60){
             push_message.push("今日能量较低，请速速补种福田，增幅转运。");
@@ -133,6 +134,7 @@ exports.onFriendJy = function(req,res){
                 push_message.push(answer);
             });
         }
+        push_message.push(today_energy[0]);
         res.end(JSON.stringify(push_message));
     }
 };
