@@ -52,6 +52,7 @@ var user_detail = require('./action/user_action.js');
 var message = require('./action/message_action.js');
 var friend = require('./action/friend_action.js');
 var talk = require('./action/talk_action.js');
+var payrecord = require('./action/payrecord_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -149,6 +150,7 @@ app.get('/get_friend_by_id', friend.getFriendById);
 app.get('/get_msg_list', message.onGetMessageById);
 
 app.get('/get_user_detail', user_detail.onGetUserDetailById);
+app.post('/user_flower', user_detail.onUpdateFlower);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
@@ -156,6 +158,10 @@ app.get('/authcode', login.authcode);
 app.get('/talk/getFriendList', talk.getFriendList);
 app.get('/talk/addFriend', talk.onAddFriend);
 app.get('/talk/getHistory', talk.getHistory);
+
+app.get('/get_record_list', payrecord.getRecordList);
+app.get('/add_record', payrecord.onAddRecord);
+app.get('/check_record', payrecord.checkRecord);
 
 userManager.GetInstance();
 
