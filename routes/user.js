@@ -238,6 +238,7 @@ function getGZ(year,month,day){
     tools.obb.mingLiBaZi( jd-tools.J2000, 0, ob ); //八字计算
     return ob.bz_jr;
 }
+exports.getGZ = getGZ;
 function getTimeGz(gz,clock){
     clock = (clock + 1) % 24;
     clock = Math.floor(clock / 2);
@@ -1536,10 +1537,10 @@ var getZeshi = function (aDate) {
         }
     }
     if(ji.length==0){
-        returnstr="本日没有吉利时辰。br";
+        returnstr="本日没有特别吉利的时辰。br";
     }
     if(xiong.length==0){
-        returnstr+="本日没有不吉时辰。";
+        returnstr+="本日没有特别不吉利的时辰。";
     }else{
         returnstr+="本日不吉时辰为：";
         for(var i=0;i<xiong.length;i++){
