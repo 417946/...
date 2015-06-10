@@ -20,7 +20,7 @@ operater.getFriendList = function(uid,cb){
 operater.getHistory = function(uid1,uid2,page,index,cb){
     var countsql="SELECT count(*) pc FROM talk_content_table WHERE (fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?) ";
     mysqlClient.query(countsql, [uid1,uid2,uid2,uid1], function (err,res1) {
-        var sql = "SELECT * FROM talk_content_table WHERE (fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?) ORDER BY create_time ASC LIMIT ?,20";
+        var sql = "SELECT * FROM talk_content_table WHERE (fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?) ORDER BY create_time DESC LIMIT ?,20";
         mysqlClient.query(sql, [uid1,uid2,uid2,uid1,(page-1)*index+1], function (err,res) {
             res[0].pagecount=res1[0].pc;
             cb(err,res);
