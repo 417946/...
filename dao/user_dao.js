@@ -14,6 +14,23 @@ operater.getUserDetailById = function(user_id,cb){
     });
 };
 
+operater.getTipMusic = function(user_id,cb){
+    var values = [user_id];
+    var sql = "select tip_music from user_detail_table where user_id=? ";
+    console.log(sql);
+    mysqlClient.query(sql, values, function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.updateTipMusic = function(uid,tip_music,cb){
+    var sql = "update user_detail_table set tip_music="+tip_music+" where user_id="+uid;
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err,res) {
+        cb(err);
+    });
+};
+
 operater.updateFlower = function(uid,flower_num,cb){
     var sel_sql="select lotus from user_table where user_id="+uid;
     mysqlClient.query(sel_sql, null, function (err,res1) {
