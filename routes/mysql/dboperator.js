@@ -34,9 +34,12 @@ operater.addUser = function(info,cb){
     console.log(sql);
 
     mysqlClient.insert(sql, null, function (err) {
-		if(cb){
-			cb.call(err);
-		}
+        var sql1 = "insert into  user_detail_table(user_id) values ('"+info.uid+"')";
+        mysqlClient.update(sql1, null, function (err1) {
+            if(cb){
+                cb.call(err1);
+            }
+        });
 	});
 }
 
