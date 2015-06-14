@@ -2252,7 +2252,56 @@ anylysis.getMatch = function(uid,target_uid,type,cb){
             return;
         }
         anylysis.getInfo(target_uid,function(target_info){
-
+            var dataJson = comm.getZeshiJson();
+            var gz= user.getGZ(info["birthday"].toString().substr(0, 4), info["birthday"].toString().substr(4, 2), info["birthday"].toString().substr(6, 2));
+            var usergz = user.getGZ(target_info["birthday"].toString().substr(0, 4), target_info["birthday"].toString().substr(4, 2), target_info["birthday"].toString().substr(6, 2));
+            if (dataJson["zuixiong"][gz].indexOf(usergz) != -1) {
+                switch (type) {
+                    case consts.TYPE_MATCH.TYPE_MATCH_MARRIAGE:
+                    {
+                        if (sex == info["sex"]) {
+                            cb("性别不符合要求");
+                            return;
+                        } else {
+                            cb("婚姻匹配度，第六级， 绝望，彻底灭绝。");
+                            return;
+                        }
+                    }
+                    case consts.TYPE_MATCH.TYPE_MATCH_LOVE:
+                    case consts.TYPE_MATCH.TYPE_MATCH_ESTROUS:
+                    case consts.TYPE_MATCH.TYPE_MATCH_PEACH:
+                    {
+                        if (sex == info["sex"]) {
+                            cb("性别不符合要求");
+                            return;
+                        } else {
+                            if (type == consts.TYPE_MATCH.TYPE_MATCH_LOVE) {
+                                cb("爱情匹配度，第六级， 破灭，彻底破灭。");
+                            } else if (type == consts.TYPE_MATCH.TYPE_MATCH_ESTROUS) {
+                                cb("    动情匹配度，第六级，绝杀，心如死灰。 ");
+                            } else if (type == consts.TYPE_MATCH.TYPE_MATCH_PEACH) {
+                                cb("桃花匹配度，第六级，落败，万念俱焚。");
+                            }
+                            return;
+                        }
+                    }
+                    case consts.TYPE_MATCH.TYPE_MATCH_FRIENDSHIP:
+                    {
+                        cb("友情匹配度，第六级， 最低，无情无义。");
+                        return;
+                    }
+                    case consts.TYPE_MATCH.TYPE_MATCH_WEALTH:
+                    {
+                        cb("财运匹配度，第六级， 最低，合作易破财。");
+                        return;
+                    }
+                    case consts.TYPE_MATCH.TYPE_MATCH_LUCK:
+                    {
+                        cb("运程匹配度，第六级， 最低，合作后运程崩溃。");
+                        return;
+                    }
+                }
+            }
             var BigStar = parseInt(info["flystar"].charAt(0));
             var target_BigStar = parseInt(target_info["flystar"].charAt(0));
             var SmallStar = parseInt(info["flystar"].charAt(1));
@@ -2623,6 +2672,56 @@ anylysis.getMatch2 = function(uid,birthday,birthplace,target_sex,type,cb){
         if(!info){
             cb("此用户不存在");
             return;
+        }
+        var dataJson = comm.getZeshiJson();
+        var gz= user.getGZ(info["birthday"].toString().substr(0, 4), info["birthday"].toString().substr(4, 2), info["birthday"].toString().substr(6, 2));
+        var usergz = user.getGZ(birthday.substr(0, 4), birthday.substr(4, 2), birthday.substr(6, 2));
+        if (dataJson["zuixiong"][gz].indexOf(usergz) != -1) {
+            switch(type) {
+                case consts.TYPE_MATCH.TYPE_MATCH_MARRIAGE:
+                {
+                    if (sex == info["sex"]) {
+                        cb("性别不符合要求");
+                        return;
+                    } else {
+                        cb("婚姻匹配度，第六级， 绝望，彻底灭绝。");
+                        return;
+                    }
+                }
+                case consts.TYPE_MATCH.TYPE_MATCH_LOVE:
+                case consts.TYPE_MATCH.TYPE_MATCH_ESTROUS:
+                case consts.TYPE_MATCH.TYPE_MATCH_PEACH:
+                {
+                    if (sex == info["sex"]) {
+                        cb("性别不符合要求");
+                        return;
+                    } else {
+                        if (type == consts.TYPE_MATCH.TYPE_MATCH_LOVE) {
+                            cb("爱情匹配度，第六级， 破灭，彻底破灭。");
+                        } else if (type == consts.TYPE_MATCH.TYPE_MATCH_ESTROUS) {
+                            cb("    动情匹配度，第六级，绝杀，心如死灰。 ");
+                        } else if (type == consts.TYPE_MATCH.TYPE_MATCH_PEACH) {
+                            cb("桃花匹配度，第六级，落败，万念俱焚。");
+                        }
+                        return;
+                    }
+                }
+                case consts.TYPE_MATCH.TYPE_MATCH_FRIENDSHIP:
+                {
+                    cb("友情匹配度，第六级， 最低，无情无义。");
+                    return;
+                }
+                case consts.TYPE_MATCH.TYPE_MATCH_WEALTH:
+                {
+                    cb("财运匹配度，第六级， 最低，合作易破财。");
+                    return;
+                }
+                case consts.TYPE_MATCH.TYPE_MATCH_LUCK:
+                {
+                    cb("运程匹配度，第六级， 最低，合作后运程崩溃。");
+                    return;
+                }
+            }
         }
         var year =  parseInt(birthday.substr(0, 4));
         var month = parseInt(birthday.substr(4, 2));
