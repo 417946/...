@@ -566,7 +566,8 @@ exports.onVoiceQuery = function(req,res){
         if ((word_match[m] == "运程"||word_match[m] == "做事"||word_match[m] == "能量"||word_match[m] == "旅行"||word_match[m] == "健康"||word_match[m] == "身体"||word_match[m] == "财富"||word_match[m] == "钱财"
             ||word_match[m] == "财运"||word_match[m] == "逛街"||word_match[m] == "购物"||word_match[m] == "学业"||word_match[m] == "学习"||word_match[m] == "考试"||word_match[m] == "事业"||word_match[m] == "工作"
             ||word_match[m] == "求财"||word_match[m] == "挣钱"||word_match[m] == "谈事"||word_match[m] == "情感"||word_match[m] == "情绪"||word_match[m] == "会友"||word_match[m] == "朋友"||word_match[m] == "情变"
-            ||word_match[m] == "感情"||word_match[m] == "桃花"||word_match[m] == "动情"||word_match[m] == "爱情"||word_match[m] == "婚姻"||word_match[m] == "姻缘"||word_match[m] == "追求"||word_match[m] == "约会") && time_type == consts.TYPE_TIME.TYPE_TIME_TODAY) {
+            ||word_match[m] == "感情"||word_match[m] == "桃花"||word_match[m] == "动情"||word_match[m] == "爱情"||word_match[m] == "婚姻"||word_match[m] == "姻缘"||word_match[m] == "追求"||word_match[m] == "约会")
+            && (time_type == consts.TYPE_TIME.TYPE_TIME_TODAY||time_type == consts.TYPE_TIME.TYPE_TIME_HOUR)) {
             find=true;
             getGzZs(word_match[m], uid, time_type, gz, function (isEnd) {
                 if (isEnd) {
@@ -601,11 +602,9 @@ function getGzZs(word,uid,time_type,gz,callback){
         } else {
             var usergz = user.getGZ(info["birthday"].toString().substr(0, 4), info["birthday"].toString().substr(4, 2), info["birthday"].toString().substr(6, 2));
             if (dataJson["zuixiong"][usergz].indexOf(gz) != -1) {
-                console.log("word:"+word);
-                console.log("zzzzzzzzzzzz");
-                return callback(true)
+                return callback(true);
             }
-            return callback(false)
+            return callback(false);
         }
     });
 }

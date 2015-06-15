@@ -6,7 +6,7 @@ var common = require("../common.js");
 
 
 operater.addFriend = function(name,user_id,sex,birthday,cb){
-    var sql = "select * from friends_table where user_id="+uid;
+    var sql = "select * from friends_table where user_id="+user_id;
     console.log(sql);
     mysqlClient.query(sql, null, function (err,res) {
         var friendname = [];
