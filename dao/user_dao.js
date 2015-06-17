@@ -23,6 +23,23 @@ operater.getTipMusic = function(user_id,cb){
     });
 };
 
+operater.getHeadImg = function(user_id,cb){
+    var values = [user_id];
+    var sql = "select head_img from user_detail_table where user_id=? ";
+    console.log(sql);
+    mysqlClient.query(sql, values, function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.updateHeadImg = function(uid,head_img,cb){
+    var sql = "update user_detail_table set head_img="+head_img+" where user_id="+uid;
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err,res) {
+        cb(err);
+    });
+};
+
 operater.updateTipMusic = function(uid,tip_music,cb){
     var sql = "update user_detail_table set tip_music="+tip_music+" where user_id="+uid;
     console.log(sql);

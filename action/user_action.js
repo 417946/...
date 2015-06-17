@@ -20,11 +20,31 @@ exports.onGetMusicTip = function(req,res){
         response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };
+exports.onGetHeadImg = function(req,res){
+    var callback=req.query.callback;
+    db.getHeadImg(req.query.user_id,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
 exports.onUpdateTipMusic = function(req,res){
     var callback=req.query.callback;
     var uid = req.query.uid;
     var tip = req.query.tip;
     db.updateTipMusic(uid,tip,function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(),callback);
+    });
+};
+exports.onUpdateHeadImg = function(req,res){
+    var callback=req.query.callback;
+    var uid = req.query.uid;
+    var headimg = req.query.headimg;
+    db.updateHeadImg(uid,headimg,function(err,result){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
