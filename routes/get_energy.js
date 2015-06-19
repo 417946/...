@@ -30,7 +30,7 @@ exports.onGetEnergy = function(req,res){
     var month = date.getMonth()+1;
     var day = date.getDate();
     var aDate = year+"-"+month+"-"+day;
-    db.getEnergyCache(user_id,aDate,function(err,result1){
+    db.getEnergyCache(uid,aDate,function(err,result1){
         if(err){
             result.err=err;
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -47,14 +47,14 @@ exports.onGetEnergy = function(req,res){
                     return;
                 }
                 var scores = analysis.getScore(info,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,new Date());
-                db.getEnergyCache(user_id,function(err,res2){
+                db.getEnergyCache(uid,function(err,res2){
                     if(err){
                         result.err=err;
                         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
                         res.end(JSON.stringify(result));
                     }
                     if(res2.length>0){
-                        db.updateEnergyCache(user_id,scores[0],aDate,function(err){
+                        db.updateEnergyCache(uid,scores[0],aDate,function(err){
                             if(err){
                                 result.err=err;
                                 res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -62,7 +62,7 @@ exports.onGetEnergy = function(req,res){
                             }
                         });
                     }else{
-                        db.insertEnergyCache(user_id,scores[0],aDate,function(err){
+                        db.insertEnergyCache(uid,scores[0],aDate,function(err){
                             if(err){
                                 result.err=err;
                                 res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });

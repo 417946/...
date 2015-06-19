@@ -77,7 +77,7 @@ operater.getTopicList = function(index,type,cb){
 };
 
 operater.getTopicById = function(tid,cb){
-    var sql = "select t.*,u.name from topic_table t left join user_table u on u.user_id=t.user_id where t.id="+tid;
+    var sql = "select t.*,u.name,d.head_img from topic_table t left join user_table u on u.user_id=t.user_id left join user_detail_table d on t.user_id=d.user_id where t.id="+tid;
     console.log(sql);
     mysqlClient.query(sql,null, function (err,res) {
         cb(err,res);
