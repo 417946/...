@@ -153,6 +153,8 @@ app.get('/get_user_detail', user_detail.onGetUserDetailById);
 app.post('/user_flower', user_detail.onUpdateFlower);
 app.get('/get_tip_music', user_detail.onGetMusicTip);
 app.get('/tip_music', user_detail.onUpdateTipMusic);
+app.get('/head_img', user_detail.onUpdateHeadImg);
+app.get('/get_head_img', user_detail.onGetHeadImg);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
