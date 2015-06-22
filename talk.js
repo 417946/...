@@ -7,13 +7,13 @@ exports.init=function(){
 //io监听socket事件
     var clients = [];
     io.on('connection', function (connection) {
-        console.log((new Date()) + ' Connection from origin ' + connection.id + '.');
+//        console.log((new Date()) + ' Connection from origin ' + connection.id + '.');
         var json = { logicId:"conn_success"};
         connection.json.send(json);
-        console.log((new Date()) + ' Connection accepted.');
+//        console.log((new Date()) + ' Connection accepted.');
 
         connection.on('message', function (message) {
-            console.log(message);
+//            console.log(message);
             if (message.logicId == "login") {
             clients[message.fromUid] = connection; //将用户名与连接对应
             connection.fromUid = message.fromUid;
