@@ -120,11 +120,11 @@ app.post('/push_4_index', push_4_index.onPushForIndex);
 app.post('/push_4_friend', push_4_friend.onPushForFriend);
 app.post('/push_4_login', push_4_login.onPushForLogin);
 app.post('/attentions', attention.onAttention);
-app.post('/get_energy', get_energy.onGetEnergy);
+app.post('/get_energy', get_energy.onGetEnergy);//获取这个用户当前可送能量
 app.post('/get_support_question', get_support_question.onGetSupportQuestion);
-app.post('/give_away_bless', give_away_bless.onGiveAwayBless);
-app.post('/find_bless', get_bless.onFindNewReceiveBless);
-app.post('/get_bless', get_bless.onGetBless);
+app.post('/give_away_bless', give_away_bless.onGiveAwayBless);//送福
+app.post('/find_bless', get_bless.onFindNewReceiveBless);//查看该用户的未收取祝福 
+app.post('/get_bless', get_bless.onGetBless);//收取祝福
 app.post('/get_luck', get_luck.onGetLuck);
 app.get('/reg_notice', reg_notice.onRegNotice);
 app.get('/friendjy', reg_notice.onFriendJy);

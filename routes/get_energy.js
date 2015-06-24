@@ -47,7 +47,7 @@ exports.onGetEnergy = function(req,res){
                     return;
                 }
                 var scores = analysis.getScore(info,consts.TYPE_TIME.TYPE_TIME_TODAY,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,new Date());
-                db.getEnergyCache(uid,function(err,res2){
+                db.getEnergyCache2(uid,function(err,res2){
                     if(err){
                         result.err=err;
                         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
