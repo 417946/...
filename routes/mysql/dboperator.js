@@ -1299,9 +1299,10 @@ operater.GiveAwayBless = function(uid,name,target_uid,bless,cb){
     var sql = "insert into bless_table (uid,name,bless,target_uid) values (?,?,?,?)"
     console.log(sql);
     mysqlClient.insert(sql, values, function (err) {
-        if (cb) {
-            cb.call(err);
-        }
+//        if (cb) {
+//            cb.call(err);
+//        }
+        cb(err);
     });
 };
 //查看该用户的未收取祝福
@@ -1431,7 +1432,7 @@ operater.getEnergyCache = function(user_id,date,cb){
         cb(err,res);
     });
 };
-operater.getEnergyCache = function(user_id,cb){
+operater.getEnergyCache2 = function(user_id,cb){
     var values = [user_id];
     var sql = "select * from energycache_table where user_id=?;";
     console.log(sql);
@@ -1461,8 +1462,8 @@ operater.insertEnergyCache = function(user_id,energy,date,cb){
  * @param cb
  */
 operater.updateEnergyCache = function(user_id,energy,date,cb){
-    var values = [energy,date,user_id];
-    var sql = "update energycache_table set energy= ?,date=?  where user_id= ?;";
+    var values = [date,user_id];
+    var sql = "update energycache_table set energy= "+energy+",date=?  where user_id= ?;";
     console.log(sql);
     mysqlClient.update(sql, values, function (err) {
         if (err) {
