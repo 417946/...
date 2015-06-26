@@ -10,12 +10,22 @@ exports.getFriendList = function(req,res){
         response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };
+exports.getFriendByUid = function(req,res){
+    var callback=req.query.callback;
+    db.getFriendByUid(req.query.uid,req.query.fid,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
 exports.onAddFriend = function(req,res){
     var callback=req.query.callback;
     var uid = req.query.uid;
     var fid = req.query.fid;
     var fname = req.query.fname;
-    db.addFriend(uid,fid,fname,function(err,result){
+    var uname = req.query.uname;
+    db.addFriend(uid,uname,fid,fname,function(err,result){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }

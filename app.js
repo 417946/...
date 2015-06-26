@@ -147,7 +147,11 @@ app.get('/del_friend', friend.onDelFriend);
 app.get('/get_friend_list', friend.getFriendList);
 app.get('/get_friend_by_id', friend.getFriendById);
 
-app.get('/get_msg_list', message.onGetMessageById);
+app.post('/get_msg_list', message.onGetMessageByUid);
+app.post('/add_msg', message.onAddMessage);
+app.post('/update_msg', message.onUpdateMessageById);
+app.post('/del_msg', message.onDelMessage);
+app.post('/del_msg_uid', message.onDelMessageByUid);
 
 app.get('/get_user_detail', user_detail.onGetUserDetailById);
 app.post('/user_flower', user_detail.onUpdateFlower);
@@ -160,6 +164,7 @@ app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
 app.get('/authcode', login.authcode);
 app.get('/talk/getFriendList', talk.getFriendList);
+app.get('/talk/getFriendByUid', talk.getFriendByUid);
 app.get('/talk/addFriend', talk.onAddFriend);
 app.get('/talk/getHistory', talk.getHistory);
 
