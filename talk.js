@@ -21,7 +21,9 @@ exports.init=function(){
                 //1、查找该用户是否有历史消息
                 var toUser = message.toUid;//会话目标
                 //2、检查目标用户是否在线，若在线，转发用户请求
-                db.addContent(message)
+                if(message.msg_type=="1"){
+                    db.addContent(message)
+                }
                 message.datetime=new Date().format("yyyy-MM-dd hh:mm:ss");
                 connection.json.send(message);
                 var objConnect = clients[toUser];

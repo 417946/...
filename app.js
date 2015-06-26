@@ -146,6 +146,7 @@ app.get('/edit_friend', friend.onEditFriend);
 app.get('/del_friend', friend.onDelFriend);
 app.get('/get_friend_list', friend.getFriendList);
 app.get('/get_friend_by_id', friend.getFriendById);
+app.get('/get_contract_uid', friend.getContractByUid);
 
 app.post('/get_msg_list', message.onGetMessageByUid);
 app.post('/add_msg', message.onAddMessage);
