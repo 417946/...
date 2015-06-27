@@ -141,8 +141,8 @@ app.get('/get_comm_list', community.onGetCommList);
 app.get('/get_topic_list', community.onGetTopicList);
 app.get('/get_topic_by_id', community.onGetTopicById);
 
-app.get('/add_friend', friend.onAddFriend);
-app.get('/edit_friend', friend.onEditFriend);
+app.post('/add_friend', friend.onAddFriend);
+app.post('/edit_friend', friend.onEditFriend);
 app.get('/del_friend', friend.onDelFriend);
 app.get('/get_friend_list', friend.getFriendList);
 app.get('/get_friend_by_id', friend.getFriendById);

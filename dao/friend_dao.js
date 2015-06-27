@@ -5,7 +5,7 @@ var mysqlClient = require('../routes/mysql/mysqlclient').init();
 var common = require("../common.js");
 
 
-operater.addFriend = function(name,user_id,sex,birthday,cb){
+operater.addFriend = function(name,user_id,sex,birthday,head_img,cb){
     var sql = "select * from friends_table where user_id="+user_id;
     console.log(sql);
     mysqlClient.query(sql, null, function (err,res) {
@@ -30,7 +30,7 @@ operater.addFriend = function(name,user_id,sex,birthday,cb){
             cb("请勿重复添加!")
             return;
         }
-        sql = "insert friends_table (name,user_id,sex,birthday) value('" + name + "','" + user_id + "','"+sex+"','"+birthday+"')";
+        sql = "insert friends_table (name,user_id,sex,birthday,head_img) value('" + name + "','" + user_id + "','"+sex+"','"+birthday+"','"+head_img+"')";
         console.log(sql);
         mysqlClient.insert(sql, null, function (err) {
             if (cb) {
@@ -40,8 +40,11 @@ operater.addFriend = function(name,user_id,sex,birthday,cb){
     });
 };
 
-operater.editFriend = function(id,name,sex,birthday,cb){
-    var sql = "update friends_table set name='"+name+"',sex="+sex+",birthday='"+birthday+"' where id="+id;
+operater.editFriend = function(id,name,sex,birthday,head_img,cb){
+    var sql = "update friends_table set name='"+name+"',sex="+sex+",birthday='"+birthday+"',head_img='"+head_img+"' where id="+id;
+    if(head_img==""){
+        sql = "update friends_table set name='"+name+"',sex="+sex+",birthday='"+birthday+"' where id="+id;
+    }
     console.log(sql);
     mysqlClient.update(sql, null, function (err,res) {
         if (cb) {
