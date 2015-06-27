@@ -36,7 +36,7 @@ exports.onAddMessage = function(req,res){
                     }
                 });
         }else if(type=="2"){
-            content=fromuname+"请求加您为好友。";
+            content=fromuname+"("+fromuid+")"+"请求加您为好友。";
             var rid=req.body["rid"];
             var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
             var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
@@ -51,8 +51,23 @@ exports.onAddMessage = function(req,res){
                     } else {
                     }
                 });
-        }else if(type=="3"||type=="4"){
-            content=fromuname+"请求关注您。";
+        }else if(type=="3"){
+            content=fromuname+"("+fromuid+")"+"请求关注您。";
+            var rid=req.body["rid"];
+            var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
+            var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
+            client.push().setPlatform('ios', 'android')
+                .setAudience(JPush.registration_id(rid))
+                .setNotification(content)
+                .setMessage(content)
+                .setOptions(null, 60)
+                .send(function(err, res) {
+                    if (err) {
+                        console.log(err.message);
+                    } else {
+                    }
+                });
+        }else if(type=="4"){
             var rid=req.body["rid"];
             var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
             var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
