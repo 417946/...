@@ -51,6 +51,7 @@ var community = require('./action/community_action.js');
 var user_detail = require('./action/user_action.js');
 var message = require('./action/message_action.js');
 var friend = require('./action/friend_action.js');
+var shield = require('./action/shield_action.js');
 var talk = require('./action/talk_action.js');
 var payrecord = require('./action/payrecord_action.js');
 
@@ -172,6 +173,11 @@ app.get('/talk/getHistory', talk.getHistory);
 app.get('/get_record_list', payrecord.getRecordList);
 app.get('/add_record', payrecord.onAddRecord);
 app.get('/check_record', payrecord.checkRecord);
+
+app.post('/add_shield', shield.onAddShield);
+app.post('/del_shield', shield.onDelShield);
+app.post('/get_shield_list', shield.onGetShieldList);
+app.post('/get_shield', shield.onGetShieldById);
 
 userManager.GetInstance();
 
