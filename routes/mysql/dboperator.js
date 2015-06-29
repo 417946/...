@@ -1469,5 +1469,6 @@ operater.updateEnergyCache = function(user_id,energy,date,cb){
         if (err) {
             console.log(err);
         }
+        cb(err);
     });
 };
