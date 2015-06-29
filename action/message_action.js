@@ -20,7 +20,7 @@ exports.onAddMessage = function(req,res){
     var content = req.body["content"];
     var type = req.body["type"];
     if(req.body["systemType"]=="android"){
-        if(type=="1"){
+        if(type=="1"||type=="5"){
             var rid=req.body["rid"];
             var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
             var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
