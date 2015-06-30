@@ -53,6 +53,7 @@ var message = require('./action/message_action.js');
 var friend = require('./action/friend_action.js');
 var shield = require('./action/shield_action.js');
 var talk = require('./action/talk_action.js');
+var upload = require('./action/upload_action.js');
 var payrecord = require('./action/payrecord_action.js');
 
 var segment = require("nodejieba");
@@ -177,7 +178,10 @@ app.get('/check_record', payrecord.checkRecord);
 app.post('/add_shield', shield.onAddShield);
 app.post('/del_shield', shield.onDelShield);
 app.post('/get_shield_list', shield.onGetShieldList);
+app.post('/get_shieldcon_list', shield.onGetShieldConList);
 app.post('/get_shield', shield.onGetShieldById);
+
+app.post('/upload', upload.upload);
 
 userManager.GetInstance();
 

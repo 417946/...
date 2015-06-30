@@ -40,6 +40,15 @@ exports.onGetShieldList = function(req,res){
         response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };
+exports.onGetShieldConList = function(req,res){
+    var callback=null;
+    db.getShieldConList(req.body.uid,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
 exports.onGetShieldById = function(req,res){
     var callback=null;
     db.getShieldById(req.body.uid,req.body.sid,function(err,list){

@@ -35,6 +35,14 @@ operater.getShieldList = function(uid,cb){
     });
 };
 
+operater.getShieldConList = function(uid,cb){
+    var sql = "select u.* from user_table u left join contracts_table c on c.uid=u.user_id left join talk_friend_table f on f.uid=u.user_id where c.contracts_uid= "+uid+" or f.fid="+uid+" group by u.user_id";
+    console.log(sql);
+    mysqlClient.query(sql,null, function (err,res) {
+        cb(err,res);
+    });
+};
+
 operater.getShieldById = function(uid,sid,cb){
     var sql = "select * from shield_table where uid="+uid+" and sid = "+sid;
     console.log(sql);
