@@ -65,6 +65,16 @@ operater.delFriend = function(fid,cb){
     });
 };
 
+operater.delFriends = function(uid,fid,cb){
+    var sql = "delete from talk_friend_table where (uid="+uid+" and fid= "+fid+") or (uid="+fid+" and fid="+uid+")";
+    console.log(sql);
+
+    mysqlClient.insert(sql, null, function (err) {
+        if (cb) {
+            cb.call(err);
+        }
+    });
+};
 
 operater.getFriendList = function(uid,index,cb){
     var sql = "select * from friends_table where user_id="+uid+" order by id asc limit 0,"+index;

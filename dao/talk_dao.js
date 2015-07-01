@@ -6,7 +6,7 @@ var mysqlClient = require('../routes/mysql/mysqlclient').init();
 
 
 operater.getFriendList = function(uid,cb){
-    var sql = "select tf.*,d.head_img from talk_friend_table tf left join user_detail_table d on tf.fid=d.user_id where tf.uid=?";
+    var sql = "select tf.*,u.name,d.head_img from talk_friend_table tf left join user_table u on u.user_id=tf.fid left join user_detail_table d on tf.fid=d.user_id where tf.uid=? order by tf.sort desc";
     mysqlClient.query(sql, [uid], function (err,res) {
         cb(err,res);
     });
@@ -30,16 +30,18 @@ operater.getHistory = function(uid1,uid2,page,index,cb){
     mysqlClient.query(countsql, [uid1,uid2,uid2,uid1], function (err,res1) {
         var sql = "SELECT * FROM talk_content_table WHERE ((fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?)) AND content !='' ORDER BY create_time DESC LIMIT ?,"+index;
         mysqlClient.query(sql, [uid1,uid2,uid2,uid1,(page-1)*index], function (err,res) {
-            res[0].pagecount=res1[0].pc;
+            if(res[0]){
+                res[0].pagecount=res1[0].pc;
+            }
             cb(err,res);
         });
     });
 };
-operater.addFriend = function(uid,uname,fid,fname,cb){
-    var sql = "insert talk_friend_table (uid,fid,fname) value(" + uid + "," + fid + ",'"+fname+"')";
+operater.addFriend = function(uid,uname,fid,fname,sort1,sort2,cb){
+    var sql = "insert talk_friend_table (uid,fid,fname,sort) value(" + uid + "," + fid + ",'"+fname+"','"+sort1+"')";
     console.log(sql);
     mysqlClient.insert(sql, null, function (err) {
-        var sql1 = "insert talk_friend_table (uid,fid,fname) value(" + fid + "," + uid + ",'"+uname+"')";
+        var sql1 = "insert talk_friend_table (uid,fid,fname,sort) value(" + fid + "," + uid + ",'"+uname+"','"+sort2+"')";
         mysqlClient.insert(sql1, null, function (err1) {
             if (cb) {
                 cb.call(err1);
