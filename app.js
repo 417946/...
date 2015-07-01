@@ -127,6 +127,7 @@ app.post('/get_support_question', get_support_question.onGetSupportQuestion);
 app.post('/give_away_bless', give_away_bless.onGiveAwayBless);//送福
 app.post('/find_bless', get_bless.onFindNewReceiveBless);//查看该用户的未收取祝福 
 app.post('/get_bless', get_bless.onGetBless);//收取祝福
+app.post('/no_bless', get_bless.noBless);//收取祝福
 app.post('/get_luck', get_luck.onGetLuck);
 app.get('/reg_notice', reg_notice.onRegNotice);
 app.get('/friendjy', reg_notice.onFriendJy);

@@ -1327,24 +1327,54 @@ operater.GetBless = function(id,uid,cb){
     mysqlClient.query(sql, [id], function (err,res) {
         if(err){
             cb(err);
+        }else{
+            var sql1 = "select * from bless_table where id=?;";
+            console.log(sql1);
+            mysqlClient.query(sql1, [id], function (err1,res1) {
+                if(err1){
+                    cb(err1);
+                }else{
+                    console.log(res1)
+                    var sql2 = "update user_table set bless=bless+"+res1[0].bless+"  where user_id= ?;";
+                    console.log(sql2);
+                    mysqlClient.update(sql2, [uid], function (err2) {
+                        if (cb) {
+                            cb.call(err2);
+                        }
+                    });
+                }
+            });
         }
     });
-
-
-    var sql1 = "select * from bless_table where id=?;";
-    console.log(sql1);
-    mysqlClient.query(sql1, [id], function (err,res) {
-        if(err){
-            cb(err);
+};
+/**拒收福报*/
+operater.noBless = function(id,uid,cb){
+    var sql = "update bless_table set status=1 where id=?;";
+    console.log(sql);
+    mysqlClient.query(sql, [id], function (err,res) {
+        if (cb) {
+            cb.call(err);
         }
-        console.log(res)
-        var sql2 = "update user_table set bless=bless+"+res[0].bless+"  where user_id= ?;";
-        console.log(sql2);
-        mysqlClient.update(sql2, [uid], function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
+//        if(err){
+//            cb(err);
+//        }else{
+//            var sql1 = "select * from bless_table where id=?;";
+//            console.log(sql1);
+//            mysqlClient.query(sql1, [id], function (err1,res1) {
+//                if(err1){
+//                    cb(err1);
+//                }else{
+//                    console.log(res1)
+//                    var sql2 = "update user_table set bless=bless+"+res1[0].bless+"  where user_id= ?;";
+//                    console.log(sql2);
+//                    mysqlClient.update(sql2, [uid], function (err2) {
+//                        if (cb) {
+//                            cb.call(err2);
+//                        }
+//                    });
+//                }
+//            });
+//        }
     });
 };
 //20150129 旧的

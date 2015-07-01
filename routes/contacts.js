@@ -2,6 +2,7 @@
  * Created by King Lee on 14-9-22.
  */
 var db = require('./mysql/dboperator');
+var talkdb = require('./../dao/talk_dao');
 var userInfo = require('./userInfo.js').userInfo;
 var analysis = require('./module/analysis');
 var consts = require('./util/consts');
@@ -9,12 +10,23 @@ var async = require('async');
 
 exports.onEditContracts = function (req, res) {
     var result = { error: "" };
-    db.editContract(req.body["id"],req.body["uid"],req.body["name"], function (err, contracts) {
+    var uid=req.body["uid"];
+    var name=req.body["name"];
+    var fid=req.body["fid"];
+    db.editContract(req.body["id"],uid,name, function (err, contracts) {
         if (err) {
             result.error = err;
             console.log(result);
+        }else{
+            talkdb.addFriend(fid,"",uid,"",20,10,function(err1,result1){
+                if(err1){
+                    console.log(err1);
+                    result.err = err1;
+                }else{
+                    res.json(result)
+                }
+            });
         }
-        res.json(result)
     })
 }
 
@@ -29,9 +41,17 @@ exports.onContract = function(req,res){
             if(err){
                 console.log(err);
                 result.err = err;
+            }else{
+                talkdb.addFriend(uid,req.body["uname"],contracts_uid,contracts_name,20,10,function(err1,result1){
+                    if(err1){
+                        console.log(err1);
+                        result.err = err1;
+                    }else{
+                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                        res.end(JSON.stringify(result));
+                    }
+                });
             }
-            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-            res.end(JSON.stringify(result));
         });
     }else if("del" == type){
         db.delFromContract(uid,contracts_uid,function(err){

@@ -15,6 +15,18 @@ exports.onGetBless = function(req,res){
         res.end(JSON.stringify(result));
     });
 };
+exports.noBless = function(req,res){
+    var result = { error: "" };
+    var id = req.body['id'];
+    var uid = req.body['uid'];
+    db.noBless(id,uid,function(err,give_away_bless){
+        if(err){
+            result.err = err;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify(result));
+    });
+};
 //查看该用户的未收取祝福
 exports.onFindNewReceiveBless = function(req,res){
     var result = { error: "" };
