@@ -25,11 +25,21 @@ exports.onAddFriend = function(req,res){
     var fid = req.query.fid;
     var fname = req.query.fname;
     var uname = req.query.uname;
-    db.addFriend(uid,uname,fid,fname,10,10,function(err,result){
-        if(err){
-            return response.end(res,response.buildError(err.code),callback);
+    db.getFriendByUid(uid,fid,function(err,list){
+        if(err1){
+            return response.end(res,response.buildError(err1.code),callback);
+        }else{
+            if(list.length>0){
+                response.end(res,response.buildOK(),callback);
+            }else{
+                db.addFriend(uid,uname,fid,fname,10,10,function(err,result){
+                    if(err){
+                        return response.end(res,response.buildError(err.code),callback);
+                    }
+                    response.end(res,response.buildOK(),callback);
+                });
+            }
         }
-        response.end(res,response.buildOK(),callback);
     });
 };
 exports.getHistory = function(req,res){
