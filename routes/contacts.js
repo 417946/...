@@ -42,13 +42,25 @@ exports.onContract = function(req,res){
                 console.log(err);
                 result.err = err;
             }else{
-                talkdb.addFriend(uid,req.body["uname"],contracts_uid,contracts_name,20,10,function(err1,result1){
-                    if(err1){
-                        console.log(err1);
-                        result.err = err1;
+                talkdb.getFriendByUid(uid,contracts_uid,function(err,list){
+                    if(err2){
+                        console.log(err2);
+                        result.err = err2;
                     }else{
-                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-                        res.end(JSON.stringify(result));
+                        if(list.length>0){
+                            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                            res.end(JSON.stringify(result));
+                        }else{
+                            talkdb.addFriend(uid,req.body["uname"],contracts_uid,contracts_name,20,10,function(err1,result1){
+                                if(err1){
+                                    console.log(err1);
+                                    result.err = err1;
+                                }else{
+                                    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                                    res.end(JSON.stringify(result));
+                                }
+                            });
+                        }
                     }
                 });
             }
