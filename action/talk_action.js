@@ -25,7 +25,7 @@ exports.onAddFriend = function(req,res){
     var fid = req.query.fid;
     var fname = req.query.fname;
     var uname = req.query.uname;
-    db.getFriendByUid(uid,fid,function(err,list){
+    db.getFriendByUid(uid,fid,function(err1,list){
         if(err1){
             return response.end(res,response.buildError(err1.code),callback);
         }else{
