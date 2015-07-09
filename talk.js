@@ -2,6 +2,7 @@
  * Created by zoey on 2015/5/24.
  */
 var db = require('./dao/talk_dao');
+var msgdb = require('./dao/message_dao');
 exports.init=function(){
     var io = require('socket.io').listen(8080);
 //io监听socket事件
@@ -35,7 +36,6 @@ exports.init=function(){
                     var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
                     var content = message.content;
                     if (message.msg_type == "1" || message.msg_type == "5") {
-                        console.log("message.toUid:" + message.toUid);
                         var tmpcontent=message.fromUname+':' + content;
                         if(message.msg_type == "5"){
                             tmpcontent=message.fromUname+':[图片]';
@@ -51,7 +51,7 @@ exports.init=function(){
                                 }
                             });
                     } else if (message.msg_type == "2") {
-                        content = message.fromuname + "(" + message.fromUid + ")" + "请求加您为好友。";
+                        content = message.fromUname + "(" + message.fromUid + ")" + "请求加您为好友。";
                         client.push().setPlatform('ios', 'android')
                             .setAudience(JPush.alias(message.toUid))
                             .setNotification(content, JPush.ios(content, 'happy', '+1'))
@@ -63,7 +63,7 @@ exports.init=function(){
                                 }
                             });
                     } else if (message.msg_type == "3") {
-                        content = message.fromuname + "(" + message.fromUid + ")" + "请求关注您。";
+                        content = message.fromUname + "(" + message.fromUid + ")" + "请求关注您。";
                         client.push().setPlatform('ios', 'android')
                             .setAudience(JPush.alias(message.toUid))
                             .setNotification(content, JPush.ios(content, 'happy', '+1'))
@@ -86,7 +86,7 @@ exports.init=function(){
                                 }
                             });
                     } else if (message.msg_type == "6") {
-                        content = "收到" + message.fromuname + "(" + message.fromuid + ")" + "送来的福报。";
+                        content = "收到" + message.fromUname + "(" + message.fromUid + ")" + "送来的福报。";
                         client.push().setPlatform('ios', 'android')
                             .setAudience(JPush.alias(message.toUid))
                             .setNotification(content, JPush.ios(content, 'happy', '+1'))
@@ -98,6 +98,7 @@ exports.init=function(){
                                 }
                             });
                     }
+                    msgdb.addMessage(message.toUid,message.toUname,message.fromUid,message.fromUname,content,message.msg_type);
                 }
             }
         });
