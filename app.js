@@ -55,6 +55,7 @@ var shield = require('./action/shield_action.js');
 var talk = require('./action/talk_action.js');
 var upload = require('./action/upload_action.js');
 var payrecord = require('./action/payrecord_action.js');
+var zizhu = require('./action/zizhu_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -181,6 +182,9 @@ app.post('/del_shield', shield.onDelShield);
 app.post('/get_shield_list', shield.onGetShieldList);
 app.post('/get_shieldcon_list', shield.onGetShieldConList);
 app.post('/get_shield', shield.onGetShieldById);
+
+app.post('/add_zizhu',zizhu.onAddZizhu);
+app.post('/get_zizhu',zizhu.onGetZizhuList);
 
 app.post('/upload', upload.upload);
 
