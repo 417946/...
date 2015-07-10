@@ -182,6 +182,7 @@ app.post('/del_shield', shield.onDelShield);
 app.post('/get_shield_list', shield.onGetShieldList);
 app.post('/get_shieldcon_list', shield.onGetShieldConList);
 app.post('/get_shield', shield.onGetShieldById);
+app.post('/check_shield', shield.onCheckShield);
 
 app.post('/add_zizhu',zizhu.onAddZizhu);
 app.post('/get_zizhu',zizhu.onGetZizhuList);

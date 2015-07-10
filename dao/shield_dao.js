@@ -52,3 +52,10 @@ operater.getShieldById = function(uid,sid,cb){
     });
 };
 
+operater.checkShield = function(uid,sid,cb){
+    var sql = "select * from shield_table where (uid="+uid+" and sid = "+sid+") or (uid="+sid+" and sid = "+uid+")";
+    console.log(sql);
+    mysqlClient.query(sql,null, function (err,res) {
+        cb(err,res);
+    });
+};

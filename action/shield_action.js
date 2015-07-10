@@ -67,5 +67,14 @@ exports.onGetShieldById = function(req,res){
         return response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };
+exports.onCheckShield = function(req,res){
+    var callback=null;
+    db.checkShield(req.body.uid,req.body.sid,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        return response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
 
 
