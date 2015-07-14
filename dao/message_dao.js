@@ -7,7 +7,7 @@ var common = require("../common.js");
 
 operater.getMessageByUid = function(user_id,cb){
     var values = [user_id];
-    var sql = "select * from message_table where receive_userid=? and status=1 order by create_time desc ";
+    var sql = "select * from message_table where receive_userid=? and status=1 and type!=7 order by create_time desc ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);
