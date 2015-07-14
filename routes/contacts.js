@@ -41,11 +41,15 @@ exports.onContract = function(req,res){
             if(err){
                 console.log(err);
                 result.err = err;
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                res.end(JSON.stringify(result));
             }else{
-                talkdb.getFriendByUid(uid,contracts_uid,function(err,list){
+                talkdb.getFriendByUid(uid,contracts_uid,function(err2,list){
                     if(err2){
                         console.log(err2);
                         result.err = err2;
+                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                        res.end(JSON.stringify(result));
                     }else{
                         if(list.length>0){
                             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -55,6 +59,8 @@ exports.onContract = function(req,res){
                                 if(err1){
                                     console.log(err1);
                                     result.err = err1;
+                                    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                                    res.end(JSON.stringify(result));
                                 }else{
                                     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
                                     res.end(JSON.stringify(result));
