@@ -179,6 +179,7 @@ app.get('/get_record_list', payrecord.getRecordList);
 app.get('/add_record', payrecord.onAddRecord);
 app.get('/check_record', payrecord.checkRecord);
 
+app.post('/del_talk_friend', shield.onDelTalk);
 app.post('/add_shield', shield.onAddShield);
 app.post('/del_shield', shield.onDelShield);
 app.post('/get_shield_list', shield.onGetShieldList);

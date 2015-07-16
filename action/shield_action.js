@@ -28,6 +28,24 @@ exports.onAddShield = function(req,res){
         }
     });
 };
+exports.onDelTalk = function(req,res){
+    var callback=null;
+    var uid = req.body.uid;
+    var sid = req.body.sid;
+    contactsdb.delFromContract(sid,uid,function(err1){
+        if(err1){
+            return response.end(res,response.buildError(err1.code),callback);
+        }else{
+            frienddb.delFriends(sid,uid,function(err2){
+                if(err2){
+                    return response.end(res,response.buildError(err2.code),callback);
+                }else{
+                    return response.end(res,response.buildOK(),callback);
+                }
+            });
+        }
+    });
+};
 exports.onDelShield = function(req,res){
     var callback=null;
     var uid = req.body.uid;
