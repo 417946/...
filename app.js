@@ -56,6 +56,8 @@ var talk = require('./action/talk_action.js');
 var upload = require('./action/upload_action.js');
 var payrecord = require('./action/payrecord_action.js');
 var zizhu = require('./action/zizhu_action.js');
+var user_score = require('./action/score_action.js');
+var flower = require('./action/flower_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -186,6 +188,11 @@ app.post('/check_shield', shield.onCheckShield);
 
 app.post('/add_zizhu',zizhu.onAddZizhu);
 app.post('/get_zizhu',zizhu.onGetZizhuList);
+
+app.post('/add_score',user_score.onAddScore);
+app.post('/get_score',user_score.onGetScore);
+
+app.post('/send_flower',flower.onSendFlower);
 
 app.post('/upload', upload.upload);
 
