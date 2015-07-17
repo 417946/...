@@ -52,7 +52,7 @@ operater.delMessageById = function(mid,cb){
 };
 
 operater.delMessageByUid = function(uid,cb){
-    var sql = "delete from message_table where receive_userid='" + uid + "' and type=1";
+    var sql = "delete from message_table where receive_userid='" + uid + "'";
     console.log(sql);
     mysqlClient.delete(sql, null, function (err) {
         if (cb) {
