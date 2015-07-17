@@ -19,7 +19,7 @@ exports.onEditContracts = function (req, res) {
             result.error = err;
             console.log(result);
         }else{
-            talkdb.getFriendByUid(uid,contracts_uid,function(err2,list){
+            talkdb.getFriendByUid(uid,fid,function(err2,list){
                 if(err2){
                     console.log(err2);
                     result.err = err2;
@@ -27,7 +27,7 @@ exports.onEditContracts = function (req, res) {
                     if(list.length>0){
                         res.json(result)
                     }else{
-                        talkdb.addFriend(uid,req.body["uname"],contracts_uid,contracts_name,20,10,function(err1,result1){
+                        talkdb.addFriend(uid,uid,fid,fname,20,10,function(err1,result1){
                             if(err1){
                                 console.log(err1);
                                 result.err = err1;
