@@ -1115,28 +1115,28 @@ operater.addFeedback = function(uid,content,cb){
  */
 operater.addToContract = function(uid,contracts_uid,contracts_name,cb){
     //  get the number of friend first, the friend 's number must less than 5
-    var sql = "select contracts_uid from contracts_table where uid='" + uid + "'";
-    console.log(sql);
-    mysqlClient.query(sql, null, function (err,res) {
-        var contracts = [];
-        for(var i = 0; i < res.length; ++i){
-            contracts.push(res[i]["contracts_uid"]);
-        }
-        if(contracts.length >= 4){
-            cb("通讯录只能保存最重要的4名好友，如要添加，请先移除之前的好友!");
-            return;
-        }
-        //  add already ?
-        var find = false;
-        for(i = 0; i < contracts.length; ++i){
-            if(contracts_uid == contracts[i]){
-                find = true;
-            }
-        }
-        if(find){
-            cb("请勿重复添加!")
-            return;
-        }
+//    var sql = "select contracts_uid from contracts_table where uid='" + uid + "'";
+//    console.log(sql);
+//    mysqlClient.query(sql, null, function (err,res) {
+//        var contracts = [];
+//        for(var i = 0; i < res.length; ++i){
+//            contracts.push(res[i]["contracts_uid"]);
+//        }
+//        if(contracts.length >= 4){
+//            cb("通讯录只能保存最重要的4名好友，如要添加，请先移除之前的好友!");
+//            return;
+//        }
+//        //  add already ?
+//        var find = false;
+//        for(i = 0; i < contracts.length; ++i){
+//            if(contracts_uid == contracts[i]){
+//                find = true;
+//            }
+//        }
+//        if(find){
+//            cb("请勿重复添加!")
+//            return;
+//        }
         sql = "insert contracts_table(uid,contracts_uid,contracts_name) value('" + uid + "','" + contracts_uid + "','" + contracts_name + "');";
         console.log(sql);
         mysqlClient.insert(sql, null, function (err) {
@@ -1144,7 +1144,7 @@ operater.addToContract = function(uid,contracts_uid,contracts_name,cb){
                 cb.call(err);
             }
         });
-    });
+//    });
 };
 
 /**
@@ -1168,8 +1168,13 @@ operater.delFromContract = function(uid,contracts_uid,cb){
  * @param uid
  * @param cb
  */
-operater.getContract = function(uid,cb){
+operater.getContract = function(uid,status,cb){
     var sql = "select c.contracts_uid,c.contracts_name,u.sex,u.birthday,c.id,d.head_img from contracts_table c left join user_table u on u.user_id=c.contracts_uid left join user_detail_table d on c.contracts_uid=d.user_id where c.uid='" + uid + "'";
+    if(status=="1"){
+        sql+=" and c.status=1 order by c.id asc";
+    }else {
+        sql += " order by c.status desc";
+    }
     console.log(sql);
     mysqlClient.query(sql, null, function (err,res) {
         var contracts = [];
@@ -1180,8 +1185,46 @@ operater.getContract = function(uid,cb){
     });
 };
 
-operater.editContract = function(id,contracts_uid,contracts_name,cb){
-    var sql = "update contracts_table set contracts_uid="+contracts_uid+",contracts_name='"+contracts_name+"' where id= "+id+";";
+operater.editContract = function(id,uid,contracts_uid,contracts_name,edit_type,cb){
+    if(edit_type=="1"){
+        var sql = "update contracts_table set status=0 where id= "+id+";";
+        mysqlClient.update(sql, null, function (err) {
+            if (err) {
+                console.log(err);
+            }else{
+                var sql1= "update contracts_table set status=1 where uid='" + uid + "' and contracts_uid='" + contracts_uid + "'";
+                mysqlClient.update(sql1, null, function (err1) {
+                    if (err1) {
+                        console.log(err1);
+                    }else{
+                        cb(err1);
+                    }
+                });
+            }
+        });
+    }else if(edit_type=="0"){
+        var sql = "update contracts_table set status=0 where id= "+id+";";
+        mysqlClient.update(sql, null, function (err) {
+            if (err) {
+                console.log(err);
+            }else{
+                var sql1 = "insert contracts_table(uid,contracts_uid,contracts_name) value('" + uid + "','" + contracts_uid + "','" + contracts_name + "');";
+                mysqlClient.update(sql1, null, function (err1) {
+                    if (err1) {
+                        console.log(err1);
+                    }else{
+                        cb(err1);
+                    }
+                });
+            }
+        });
+    }
+    console.log(sql);
+
+}
+
+operater.editStatusContract = function(uid,contracts_uid,status,cb){
+    var sql = "update contracts_table set status="+status+" where uid='" + uid + "' and contracts_uid='" + contracts_uid + "'";
     console.log(sql);
     mysqlClient.update(sql, null, function (err) {
         if (err) {
