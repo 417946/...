@@ -1137,7 +1137,7 @@ operater.addToContract = function(uid,contracts_uid,contracts_name,cb){
 //            cb("请勿重复添加!")
 //            return;
 //        }
-        sql = "insert contracts_table(uid,contracts_uid,contracts_name) value('" + uid + "','" + contracts_uid + "','" + contracts_name + "');";
+        sql = "insert contracts_table(uid,contracts_uid,contracts_name,status) value('" + uid + "','" + contracts_uid + "','" + contracts_name + "',1);";
         console.log(sql);
         mysqlClient.insert(sql, null, function (err) {
             if (cb) {
@@ -1208,7 +1208,7 @@ operater.editContract = function(id,uid,contracts_uid,contracts_name,edit_type,c
             if (err) {
                 console.log(err);
             }else{
-                var sql1 = "insert contracts_table(uid,contracts_uid,contracts_name) value('" + uid + "','" + contracts_uid + "','" + contracts_name + "');";
+                var sql1 = "insert contracts_table(uid,contracts_uid,contracts_name,status) value('" + uid + "','" + contracts_uid + "','" + contracts_name + "',1);";
                 mysqlClient.update(sql1, null, function (err1) {
                     if (err1) {
                         console.log(err1);
