@@ -118,7 +118,7 @@ exports.getFriendById = function(req,res){
 };
 exports.getContractByUid = function(req,res){
     var callback=req.query.callback;
-    db.getContractByUid(req.query.uid,req.query.fid,function(err,list){
+    db.getContractByUid(req.query.uid,req.query.fid,req.query.status,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }

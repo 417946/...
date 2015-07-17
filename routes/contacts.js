@@ -11,23 +11,35 @@ var async = require('async');
 exports.onEditContracts = function (req, res) {
     var result = { error: "" };
     var uid=req.body["uid"];
-    var name=req.body["name"];
     var fid=req.body["fid"];
-    db.editContract(req.body["id"],uid,name, function (err, contracts) {
-        if (err) {
+    var fname=req.body["fname"];
+    var edit_type=req.body["edit_type"];
+    db.editContract(req.body["id"],uid,fid,fname,edit_type, function (err, contracts) {
+        if(err){
             result.error = err;
             console.log(result);
         }else{
-            talkdb.addFriend(fid,"",uid,"",20,10,function(err1,result1){
-                if(err1){
-                    console.log(err1);
-                    result.err = err1;
+            talkdb.getFriendByUid(uid,contracts_uid,function(err2,list){
+                if(err2){
+                    console.log(err2);
+                    result.err = err2;
                 }else{
-                    res.json(result)
+                    if(list.length>0){
+                        res.json(result)
+                    }else{
+                        talkdb.addFriend(uid,req.body["uname"],contracts_uid,contracts_name,20,10,function(err1,result1){
+                            if(err1){
+                                console.log(err1);
+                                result.err = err1;
+                            }else{
+                                res.json(result)
+                            }
+                        });
+                    }
                 }
             });
         }
-    })
+    });
 }
 
 exports.onContract = function(req,res){
@@ -71,8 +83,45 @@ exports.onContract = function(req,res){
                 });
             }
         });
+    }else if("up" == type){
+        var status = req.body["status"];
+        db.editStatusContract(uid,contracts_uid,status,function(err){
+            if(err){
+                console.log(err);
+                result.err = err;
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                res.end(JSON.stringify(result));
+            }else{
+                talkdb.getFriendByUid(uid,contracts_uid,function(err2,list){
+                    if(err2){
+                        console.log(err2);
+                        result.err = err2;
+                        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                        res.end(JSON.stringify(result));
+                    }else{
+                        if(list.length>0){
+                            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                            res.end(JSON.stringify(result));
+                        }else{
+                            talkdb.addFriend(uid,req.body["uname"],contracts_uid,contracts_name,20,10,function(err1,result1){
+                                if(err1){
+                                    console.log(err1);
+                                    result.err = err1;
+                                    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                                    res.end(JSON.stringify(result));
+                                }else{
+                                    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                                    res.end(JSON.stringify(result));
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
     }else if("del" == type){
-        db.delFromContract(uid,contracts_uid,function(err){
+        var status = req.body["status"];
+        db.editStatusContract(uid,contracts_uid,status,function(err){
             if(err){
                 console.log(err);
                 result.err = err;
@@ -81,7 +130,8 @@ exports.onContract = function(req,res){
             res.end(JSON.stringify(result));
         });
     }else if("get" == type){
-        db.getContract(uid,function(err,contracts){
+        var status = req.body["status"];
+        db.getContract(uid,status,function(err,contracts){
             if(err){
                 console.log(err);
                 result.err = err;

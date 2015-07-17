@@ -92,8 +92,8 @@ operater.getFriendById = function(fid,cb){
     });
 };
 
-operater.getContractByUid = function(uid,fid,cb){
-    var sql = "select * from contracts_table where uid="+uid+" and contracts_uid = "+fid;
+operater.getContractByUid = function(uid,fid,status,cb){
+    var sql = "select * from contracts_table where uid="+uid+" and contracts_uid = "+fid+" and status="+status;
     console.log(sql);
     mysqlClient.query(sql,null, function (err,res) {
         cb(err,res);
