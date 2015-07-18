@@ -1169,7 +1169,7 @@ operater.delFromContract = function(uid,contracts_uid,cb){
  * @param cb
  */
 operater.getContract = function(uid,status,cb){
-    var sql = "select c.contracts_uid,c.contracts_name,u.sex,u.birthday,c.id,d.head_img from contracts_table c left join user_table u on u.user_id=c.contracts_uid left join user_detail_table d on c.contracts_uid=d.user_id where c.uid='" + uid + "'";
+    var sql = "select c.contracts_uid,c.contracts_name,u.name,u.sex,u.birthday,c.id,d.head_img from contracts_table c left join user_table u on u.user_id=c.contracts_uid left join user_detail_table d on c.contracts_uid=d.user_id where c.uid='" + uid + "'";
     if(status=="1"){
         sql+=" and c.status=1 order by c.id asc";
     }else {
@@ -1179,7 +1179,7 @@ operater.getContract = function(uid,status,cb){
     mysqlClient.query(sql, null, function (err,res) {
         var contracts = [];
         for(var i = 0; i < res.length; ++i){
-            contracts.push([res[i]["contracts_uid"],res[i]["contracts_name"],res[i]["sex"],res[i]["birthday"],res[i]["id"],res[i]["head_img"]]);
+            contracts.push([res[i]["contracts_uid"],res[i]["name"],res[i]["sex"],res[i]["birthday"],res[i]["id"],res[i]["head_img"]]);
         }
         cb(err,contracts)
     });
