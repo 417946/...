@@ -1154,7 +1154,7 @@ operater.addToContract = function(uid,contracts_uid,contracts_name,cb){
  * @param cb
  */
 operater.delFromContract = function(uid,contracts_uid,cb){
-    var sql = "delete from contracts_table where uid='" + uid + "' and contracts_uid='" + contracts_uid + "'";
+    var sql = "delete from contracts_table where (uid=" + uid + " and contracts_uid=" + contracts_uid + ") or (uid=" + contracts_uid + " and contracts_uid=" + uid + ")";
     console.log(sql);
     mysqlClient.delete(sql, null, function (err) {
         if (cb) {

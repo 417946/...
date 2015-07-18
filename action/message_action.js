@@ -22,7 +22,7 @@ exports.onAddMessage = function(req,res){
 //    var rid=req.body["rid"];
     var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
     var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
-    if((req.body["systemType"]=="android"||req.body["systemType"]=="ios")&&rid&&rid!=''){
+    if(req.body["systemType"]=="android"||req.body["systemType"]=="ios"){
         if(type=="1"||type=="5"){
             client.push().setPlatform('ios', 'android')
                 .setAudience(JPush.alias(uid))

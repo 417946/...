@@ -6,7 +6,7 @@ var mysqlClient = require('../routes/mysql/mysqlclient').init();
 
 
 operater.getFriendList = function(uid,cb){
-    var sql = "select tf.*,u.name,d.head_img from talk_friend_table tf left join user_table u on u.user_id=tf.fid left join user_detail_table d on tf.fid=d.user_id where tf.uid=? group by fid order by tf.sort desc";
+    var sql = "select tf.*,u.name,d.head_img,u.sex,u.birthday,u.user_id uid from talk_friend_table tf left join user_table u on u.user_id=tf.fid left join user_detail_table d on tf.fid=d.user_id where tf.uid=? group by fid order by tf.sort desc";
     mysqlClient.query(sql, [uid], function (err,res) {
         cb(err,res);
     });
