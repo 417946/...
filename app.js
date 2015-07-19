@@ -156,6 +156,7 @@ app.get('/get_contract_uid', friend.getContractByUid);
 
 app.post('/get_msg_list', message.onGetMessageByUid);
 app.post('/add_msg', message.onAddMessage);
+app.post('/send_msg', message.onSendMessage);
 app.post('/update_msg', message.onUpdateMessageById);
 app.post('/del_msg', message.onDelMessage);
 app.post('/del_msg_uid', message.onDelMessageByUid);
