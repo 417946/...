@@ -50,54 +50,55 @@ exports.init=function(){
                                 } else {
                                 }
                             });
-                    } else if (message.msg_type == "2") {
-                        content = message.fromUname + "(" + message.fromUid + ")" + "请求加您为好友。";
-                        client.push().setPlatform('ios', 'android')
-                            .setAudience(JPush.alias(message.toUid))
-                            .setNotification(content, JPush.ios(content, 'happy', '+1'))
-                            .setOptions(null, 86400, null, true)
-                            .send(function (err, res) {
-                                if (err) {
-                                    console.log(err.message);
-                                } else {
-                                }
-                            });
-                    } else if (message.msg_type == "3") {
-                        content = message.fromUname + "(" + message.fromUid + ")" + "请求关注您。";
-                        client.push().setPlatform('ios', 'android')
-                            .setAudience(JPush.alias(message.toUid))
-                            .setNotification(content, JPush.ios(content, 'happy', '+1'))
-                            .setOptions(null, 86400, null, true)
-                            .send(function (err, res) {
-                                if (err) {
-                                    console.log(err.message);
-                                } else {
-                                }
-                            });
-                    } else if (message.msg_type == "4") {
-                        client.push().setPlatform('ios', 'android')
-                            .setAudience(JPush.alias(message.toUid))
-                            .setNotification(content, JPush.ios(content, 'happy', '+1'))
-                            .setOptions(null, 86400, null, true)
-                            .send(function (err, res) {
-                                if (err) {
-                                    console.log(err.message);
-                                } else {
-                                }
-                            });
-                    } else if (message.msg_type == "6") {
-                        content = "收到" + message.fromUname + "(" + message.fromUid + ")" + "送来的福报。";
-                        client.push().setPlatform('ios', 'android')
-                            .setAudience(JPush.alias(message.toUid))
-                            .setNotification(content, JPush.ios(content, 'happy', '+1'))
-                            .setOptions(null, 86400, null, true)
-                            .send(function (err, res) {
-                                if (err) {
-                                    console.log(err.message);
-                                } else {
-                                }
-                            });
                     }
+//                    else if (message.msg_type == "2") {
+//                        content = message.fromUname + "(" + message.fromUid + ")" + "请求加您为好友。";
+//                        client.push().setPlatform('ios', 'android')
+//                            .setAudience(JPush.alias(message.toUid))
+//                            .setNotification(content, JPush.ios(content, 'happy', '+1'))
+//                            .setOptions(null, 86400, null, true)
+//                            .send(function (err, res) {
+//                                if (err) {
+//                                    console.log(err.message);
+//                                } else {
+//                                }
+//                            });
+//                    } else if (message.msg_type == "3") {
+//                        content = message.fromUname + "(" + message.fromUid + ")" + "请求关注您。";
+//                        client.push().setPlatform('ios', 'android')
+//                            .setAudience(JPush.alias(message.toUid))
+//                            .setNotification(content, JPush.ios(content, 'happy', '+1'))
+//                            .setOptions(null, 86400, null, true)
+//                            .send(function (err, res) {
+//                                if (err) {
+//                                    console.log(err.message);
+//                                } else {
+//                                }
+//                            });
+//                    } else if (message.msg_type == "4") {
+//                        client.push().setPlatform('ios', 'android')
+//                            .setAudience(JPush.alias(message.toUid))
+//                            .setNotification(content, JPush.ios(content, 'happy', '+1'))
+//                            .setOptions(null, 86400, null, true)
+//                            .send(function (err, res) {
+//                                if (err) {
+//                                    console.log(err.message);
+//                                } else {
+//                                }
+//                            });
+//                    } else if (message.msg_type == "6") {
+//                        content = "收到" + message.fromUname + "(" + message.fromUid + ")" + "送来的福报。";
+//                        client.push().setPlatform('ios', 'android')
+//                            .setAudience(JPush.alias(message.toUid))
+//                            .setNotification(content, JPush.ios(content, 'happy', '+1'))
+//                            .setOptions(null, 86400, null, true)
+//                            .send(function (err, res) {
+//                                if (err) {
+//                                    console.log(err.message);
+//                                } else {
+//                                }
+//                            });
+//                    }
                     msgdb.addMessage(message.toUid,message.toUname,message.fromUid,message.fromUname,content,message.msg_type);
                 }
             }
