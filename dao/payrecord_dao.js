@@ -9,6 +9,13 @@ operater.getRecordList = function(uid,type,cb){
     });
 };
 
+operater.getRecord = function(uid,type,cb){
+    var sql = "select * from pay_record_table where uid=?";
+    mysqlClient.query(sql, [uid,type], function (err,res) {
+        cb(err,res);
+    });
+};
+
 operater.checkRecord = function(uid,type,value,cb){
     var sql = "select * from pay_record_table where uid=? and type=? and value=?";
     mysqlClient.query(sql, [uid,type,value], function (err,res) {

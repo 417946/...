@@ -9,12 +9,32 @@ operater.getFlowerByUid = function(uid,flower_uid,cb){
     });
 };
 
-operater.sendFlower = function(uid,flower_uid,flower,cb){
-    var sql = "insert flower_table (uid,flower_uid,flower) value(?,?,?)";
-    console.log(sql);
-    mysqlClient.insert(sql, [uid,flower_uid,flower], function (err) {
-        if (cb) {
-            cb.call(err);
-        }
+operater.sendFlower = function(uid,uname,flower_uid,flower_name,flower,cb){
+    var sql = "insert pay_record_table (uid,type,value,flower) value(?,?,?,?)";
+    mysqlClient.insert(sql, [uid,'pay',flower_name+'('+flower_uid+')',flower], function (err) {
+        var sql1 = "insert pay_record_table (uid,type,value,flower) value(?,?,?,?)";
+        mysqlClient.insert(sql1, [flower_uid,'gift',uname+'('+uid+')',flower], function (err1) {
+            var sql2 = "update user_table set lotus=lotus+"+flower+" where user_id="+flower_uid;
+            mysqlClient.update(sql2, null, function (err2) {
+                var sql3 = "update user_table set lotus=lotus-"+flower+" where user_id="+uid;
+                mysqlClient.update(sql3, null, function (err3) {
+                    if (cb) {
+                        cb.call(err3);
+                    }
+                });
+            });
+        });
+    });
+};
+
+operater.addFlower = function(uid,uname,flower,rmb,cb){
+    var sql = "insert pay_record_table (uid,type,value,flower) value(?,?,?,?)";
+    mysqlClient.insert(sql, [uid,'recharge',rmb,flower], function (err) {
+        var sql2 = "update user_table set lotus=lotus+"+flower+" where user_id="+uid;
+        mysqlClient.update(sql2, null, function (err2) {
+            if (cb) {
+                cb.call(err2);
+            }
+        });
     });
 };

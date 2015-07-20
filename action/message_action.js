@@ -1,4 +1,5 @@
 var db = require('./../dao/message_dao');
+var flowerdb = require('./../dao/flower_dao');
 var response = require('../routes/common/response');
 
 exports.onGetMessageByUid = function(req,res){
@@ -21,6 +22,7 @@ exports.onSendMessage = function(req,res){
     var type = req.body["type"];
     var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
     var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
+    var flower;
 //    if(req.body["systemType"]=="android"||req.body["systemType"]=="ios"){
         if(type=="1"||type=="5"){
             client.push().setPlatform('ios', 'android')
@@ -80,14 +82,43 @@ exports.onSendMessage = function(req,res){
                     } else {
                     }
                 });
+        }else if(type=="9"){
+            flower=content;
+            content="收到"+fromuname+"("+fromuid+")"+"送来的"+flower+"朵莲花。";
+            client.push().setPlatform('ios', 'android')
+                .setAudience(JPush.alias(uid))
+                .setNotification(content, JPush.ios(content, 'happy', '+1'))
+                .setOptions(null, 86400, null, true)
+                .send(function(err, res) {
+                    if (err) {
+                        console.log(err.message);
+                    } else {
+                    }
+                });
         }
 //    }
-    db.addMessage(uid,uname,fromuid,fromuname,content,type,function(err,result){
-        if(err){
-            return response.end(res,response.buildError(err.code),callback);
-        }
-        response.end(res,response.buildOK(),callback);
-    });
+    if(type=="9"){
+        flowerdb.sendFlower(fromuid,fromuname,uid,uname,flower,function(err,result){
+            if(err){
+                return response.end(res,response.buildError(err.code),callback);
+            }else{
+                db.addMessage(uid,uname,fromuid,fromuname,content,type,function(err1,result1){
+                    if(err1){
+                        return response.end(res,response.buildError(err1.code),callback);
+                    }
+                    response.end(res,response.buildOK(),callback);
+                });
+            }
+        })
+    }else{
+        db.addMessage(uid,uname,fromuid,fromuname,content,type,function(err,result){
+            if(err){
+                return response.end(res,response.buildError(err.code),callback);
+            }
+            response.end(res,response.buildOK(),callback);
+        });
+    }
+
 };
 
 exports.onAddMessage = function(req,res){
