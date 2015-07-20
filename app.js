@@ -195,6 +195,7 @@ app.post('/add_score',user_score.onAddScore);
 app.post('/get_score',user_score.onGetScore);
 
 app.post('/send_flower',flower.onSendFlower);
+app.post('/add_flower',flower.onAddFlower);
 
 app.post('/upload', upload.upload);
 
