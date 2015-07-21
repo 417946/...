@@ -177,6 +177,7 @@ app.get('/talk/addFriend', talk.onAddFriend);
 app.get('/talk/getHistory', talk.getHistory);
 
 app.get('/get_record_list', payrecord.getRecordList);
+app.get('/get_record', payrecord.getRecord);
 app.get('/add_record', payrecord.onAddRecord);
 app.get('/check_record', payrecord.checkRecord);
 

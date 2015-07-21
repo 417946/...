@@ -9,9 +9,9 @@ operater.getRecordList = function(uid,type,cb){
     });
 };
 
-operater.getRecord = function(uid,type,cb){
+operater.getRecord = function(uid,cb){
     var sql = "select * from pay_record_table where uid=?";
-    mysqlClient.query(sql, [uid,type], function (err,res) {
+    mysqlClient.query(sql, [uid], function (err,res) {
         cb(err,res);
     });
 };

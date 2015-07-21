@@ -22,7 +22,7 @@ exports.onSendMessage = function(req,res){
     var type = req.body["type"];
     var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
     var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
-    var flower;
+    var flower=0;
 //    if(req.body["systemType"]=="android"||req.body["systemType"]=="ios"){
         if(type=="1"||type=="5"){
             client.push().setPlatform('ios', 'android')
@@ -111,7 +111,7 @@ exports.onSendMessage = function(req,res){
             }
         })
     }else{
-        db.addMessage(uid,uname,fromuid,fromuname,content,type,function(err,result){
+        db.addMessage(req.body["cid"],uid,uname,fromuid,fromuname,content,type,function(err,result){
             if(err){
                 return response.end(res,response.buildError(err.code),callback);
             }

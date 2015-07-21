@@ -11,7 +11,7 @@ operater.getFlowerByUid = function(uid,flower_uid,cb){
 
 operater.sendFlower = function(uid,uname,flower_uid,flower_name,flower,cb){
     var sql = "insert pay_record_table (uid,type,value,flower) value(?,?,?,?)";
-    mysqlClient.insert(sql, [uid,'pay',flower_name+'('+flower_uid+')',flower], function (err) {
+    mysqlClient.insert(sql, [uid,'send',flower_name+'('+flower_uid+')',flower], function (err) {
         var sql1 = "insert pay_record_table (uid,type,value,flower) value(?,?,?,?)";
         mysqlClient.insert(sql1, [flower_uid,'gift',uname+'('+uid+')',flower], function (err1) {
             var sql2 = "update user_table set lotus=lotus+"+flower+" where user_id="+flower_uid;

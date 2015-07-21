@@ -10,6 +10,15 @@ exports.getRecordList = function(req,res){
         response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };
+exports.getRecord = function(req,res){
+    var callback=req.query.callback;
+    db.getRecord(req.query.uid,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
 exports.onAddRecord = function(req,res){
     var callback=req.query.callback;
     var uid = req.query.uid;

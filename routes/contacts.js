@@ -13,8 +13,9 @@ exports.onEditContracts = function (req, res) {
     var uid=req.body["uid"];
     var fid=req.body["fid"];
     var fname=req.body["fname"];
+    var cid=req.body["id"];
     var edit_type=req.body["edit_type"];
-    db.editContract(req.body["id"],uid,fid,fname,edit_type, function (err, contracts) {
+    db.editContract(cid,uid,fid,fname,edit_type, function (err, contracts) {
         if(err){
             result.error = err;
             console.log(result);

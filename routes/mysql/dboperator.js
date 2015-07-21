@@ -1204,6 +1204,7 @@ operater.editContract = function(id,uid,contracts_uid,contracts_name,edit_type,c
         });
     }else if(edit_type=="0"){
         var sql = "update contracts_table set status=0 where id= "+id+";";
+        console.log(sql);
         mysqlClient.update(sql, null, function (err) {
             if (err) {
                 console.log(err);
@@ -1219,8 +1220,6 @@ operater.editContract = function(id,uid,contracts_uid,contracts_name,edit_type,c
             }
         });
     }
-    console.log(sql);
-
 }
 
 operater.editStatusContract = function(uid,contracts_uid,status,cb){
