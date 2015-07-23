@@ -134,20 +134,17 @@ exports.onAddMessage = function(req,res){
     var uname = req.body["uname"];
     var content = req.body["content"];
     var type = req.body["type"];
-//    var rid=req.body["rid"];
-    if(req.body["systemType"]=="android"||req.body["systemType"]=="ios"){
-        if(type=="1"||type=="5"){
-            client.push().setPlatform('ios', 'android')
-                .setAudience(JPush.alias(uid))
-                .setNotification(content, JPush.ios(content, 'happy', '+1'))
-                .setOptions(null, 86400, null, true)
-                .send(function(err, res) {
-                    if (err) {
-                        console.log(err.message);
-                    } else {
-                    }
-                });
-        }
+    if(type=="1"||type=="5"){
+        client.push().setPlatform('ios', 'android')
+            .setAudience(JPush.alias(uid))
+            .setNotification(content, JPush.ios(content, 'happy', '+1'))
+            .setOptions(null, 86400, null, true)
+            .send(function(err, res) {
+                if (err) {
+                    console.log(err.message);
+                } else {
+                }
+            });
     }
     db.addMessage(0,uid,uname,fromuid,fromuname,content,type,function(err,result){
         if(err){

@@ -168,6 +168,7 @@ app.get('/get_tip_music', user_detail.onGetMusicTip);
 app.get('/tip_music', user_detail.onUpdateTipMusic);
 app.get('/head_img', user_detail.onUpdateHeadImg);
 app.get('/get_head_img', user_detail.onGetHeadImg);
+app.post('/find_pwd', user_detail.onFindPwd);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);

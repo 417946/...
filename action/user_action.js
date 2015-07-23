@@ -66,3 +66,23 @@ exports.onUpdateFlower = function(req,res){
         });
     });
 };
+exports.onFindPwd = function(req,res){
+    var callback=null;
+    db.getUserByMail(req.body['uid'],req.body['email'],function(err1,list){
+        if(err1){
+            return response.end(res,response.buildError(err1.code),callback);
+        }else{
+            if(list.size()>0) {
+                db.updatePwd(req.body['uid'],req.body['pwd'],function(err,result){
+                    if(err){
+                        return response.end(res,response.buildError(err.code),callback);
+                    }else{
+                        response.end(res,response.buildResponse(response.OK,list),callback);
+                    }
+                });
+            }else{
+                return response.end(res,response.buildError("帐号或邮箱错误。"),callback);
+            }
+        }
+    });
+};

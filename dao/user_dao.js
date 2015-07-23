@@ -62,3 +62,19 @@ operater.updateFlower = function(uid,flower_num,cb){
         }
     });
 };
+
+operater.updatePwd = function(uid,pwd,cb){
+    var sql = "update user_table set passwd="+pwd+" where user_id="+uid;
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err,res) {
+        cb(err);
+    });
+};
+
+operater.getUserByMail = function(uid,email,cb){
+    var sql = "select * from user_table where user_id="+uid+" and email='"+email+"' ";
+    console.log(sql);
+    mysqlClient.query(sql,null, function (err,res) {
+        cb(err,res);
+    });
+};
