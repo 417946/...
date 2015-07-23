@@ -168,9 +168,6 @@ exports.addWeiduMessage = function(req,res){
                     var fromuid = item.fromUid;
                     var fromuname = item.name;
                     var uid = item.toUid+"";
-                    console.log("***********");
-                    console.log(uid);
-                    console.log(req.body["uid"]);
                     var content="来自"+fromuname+"("+fromuid+")的未读消息。";
                     client.push().setPlatform('ios', 'android')
                         .setAudience(JPush.alias(req.body["uid"]))
@@ -182,13 +179,17 @@ exports.addWeiduMessage = function(req,res){
                             } else {
                             }
                         });
-                    console.log(content);
-                    console.log("***********");
-                    db.addMessage(0,uid,"",fromuid,fromuname,content,1,function(err,result){
+                    talkdb.updateStatusByUid(uid,function(err2,result2){
                         if(err){
-                            return response.end(res,response.buildError(err.code),callback);
+                            return response.end(res,response.buildError(err2.code),callback);
+                        }else{
+                            db.addMessage(0,uid,"",fromuid,fromuname,content,1,function(err,result){
+                                if(err){
+                                    return response.end(res,response.buildError(err.code),callback);
+                                }
+                                response.end(res,response.buildOK(),callback);
+                            });
                         }
-                        response.end(res,response.buildOK(),callback);
                     });
                 });
             }else{
