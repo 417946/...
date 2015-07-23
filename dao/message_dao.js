@@ -17,7 +17,7 @@ operater.getMessageByUid = function(user_id,cb){
 operater.addMessage = function(cid,uid,uname,fromuid,fromuname,content,type,cb){
     var sql1 = "select * from message_table where receive_userid = "+uid+" and send_userid = "+fromuid+" and type="+type;
     mysqlClient.query(sql1, null, function (err1,res) {
-        if(res.length==0){
+        if(typeof(res)=="undefined"||res.length==0){
             var sql = "insert message_table (receive_userid,receive_username,send_userid,send_username,content,type,param,status) value(" + uid + ",'"+uname+"',"+fromuid+",'"+fromuname+"','" + content + "','"+type+"','"+cid+"',1)";
             console.log(sql);
             mysqlClient.insert(sql, null, function (err) {

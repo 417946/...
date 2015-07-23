@@ -160,6 +160,7 @@ app.post('/send_msg', message.onSendMessage);
 app.post('/update_msg', message.onUpdateMessageById);
 app.post('/del_msg', message.onDelMessage);
 app.post('/del_msg_uid', message.onDelMessageByUid);
+app.post('/push_weidu', message.addWeiduMessage);
 
 app.get('/get_user_detail', user_detail.onGetUserDetailById);
 app.post('/user_flower', user_detail.onUpdateFlower);
@@ -175,6 +176,7 @@ app.get('/talk/getFriendList', talk.getFriendList);
 app.get('/talk/getFriendByUid', talk.getFriendByUid);
 app.get('/talk/addFriend', talk.onAddFriend);
 app.get('/talk/getHistory', talk.getHistory);
+app.get('/talk/yidu', talk.yidu);
 
 app.get('/get_record_list', payrecord.getRecordList);
 app.get('/get_record', payrecord.getRecord);

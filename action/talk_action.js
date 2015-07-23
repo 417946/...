@@ -51,3 +51,14 @@ exports.getHistory = function(req,res){
         response.end(res,response.buildOK(list),callback);
     });
 };
+
+exports.yidu = function(req,res){
+    var callback=req.query.callback;
+    var uid = req.query.uid;
+    db.updateStatusByUid(uid,function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(),callback);
+    });
+};

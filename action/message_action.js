@@ -1,6 +1,9 @@
 var db = require('./../dao/message_dao');
 var flowerdb = require('./../dao/flower_dao');
+var talkdb = require('./../dao/talk_dao');
 var response = require('../routes/common/response');
+var JPush = require("jpush-sdk");
+var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
 
 exports.onGetMessageByUid = function(req,res){
     var callback=null;
@@ -20,8 +23,6 @@ exports.onSendMessage = function(req,res){
     var uname = req.body["uname"];
     var content = req.body["content"];
     var type = req.body["type"];
-    var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
-    var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
     var flower=0;
 //    if(req.body["systemType"]=="android"||req.body["systemType"]=="ios"){
         if(type=="1"||type=="5"){
@@ -102,7 +103,7 @@ exports.onSendMessage = function(req,res){
             if(err){
                 return response.end(res,response.buildError(err.code),callback);
             }else{
-                db.addMessage(uid,uname,fromuid,fromuname,content,type,function(err1,result1){
+                db.addMessage(0,uid,uname,fromuid,fromuname,content,type,function(err1,result1){
                     if(err1){
                         return response.end(res,response.buildError(err1.code),callback);
                     }
@@ -111,7 +112,11 @@ exports.onSendMessage = function(req,res){
             }
         })
     }else{
-        db.addMessage(req.body["cid"],uid,uname,fromuid,fromuname,content,type,function(err,result){
+        var cid=0;
+        if(req.body["cid"]){
+            cid=req.body["cid"];
+        }
+        db.addMessage(cid,uid,uname,fromuid,fromuname,content,type,function(err,result){
             if(err){
                 return response.end(res,response.buildError(err.code),callback);
             }
@@ -130,8 +135,6 @@ exports.onAddMessage = function(req,res){
     var content = req.body["content"];
     var type = req.body["type"];
 //    var rid=req.body["rid"];
-    var JPush = require("../node_modules/jpush-sdk/lib/JPush/JPush.js");
-    var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
     if(req.body["systemType"]=="android"||req.body["systemType"]=="ios"){
         if(type=="1"||type=="5"){
             client.push().setPlatform('ios', 'android')
@@ -146,11 +149,52 @@ exports.onAddMessage = function(req,res){
                 });
         }
     }
-    db.addMessage(uid,uname,fromuid,fromuname,content,type,function(err,result){
+    db.addMessage(0,uid,uname,fromuid,fromuname,content,type,function(err,result){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
         response.end(res,response.buildOK(),callback);
+    });
+};
+
+exports.addWeiduMessage = function(req,res){
+    var callback=null;
+    talkdb.getWeiduList(req.body["uid"],function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }else{
+            if(typeof(list)!="undefined"&&list.length>0){
+                list.forEach(function(item){
+                    var fromuid = item.fromUid;
+                    var fromuname = item.name;
+                    var uid = item.toUid+"";
+                    console.log("***********");
+                    console.log(uid);
+                    console.log(req.body["uid"]);
+                    var content="来自"+fromuname+"("+fromuid+")的未读消息。";
+                    client.push().setPlatform('ios', 'android')
+                        .setAudience(JPush.alias(req.body["uid"]))
+                        .setNotification(content, JPush.ios(content, 'happy', '+1'))
+                        .setOptions(null, 86400, null, true)
+                        .send(function(err, res) {
+                            if (err) {
+                                console.log(err.message);
+                            } else {
+                            }
+                        });
+                    console.log(content);
+                    console.log("***********");
+                    db.addMessage(0,uid,"",fromuid,fromuname,content,1,function(err,result){
+                        if(err){
+                            return response.end(res,response.buildError(err.code),callback);
+                        }
+                        response.end(res,response.buildOK(),callback);
+                    });
+                });
+            }else{
+                response.end(res,response.buildOK(),callback);
+            }
+        }
     });
 };
 

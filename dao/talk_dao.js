@@ -57,3 +57,16 @@ operater.addContent = function(obj,cb){
         }
     });
 };
+operater.updateStatusByUid = function(uid,cb){
+    var sql = "update talk_content_table set status=0 where toUid="+uid;
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err,res) {
+        cb(err);
+    });
+};
+operater.getWeiduList = function(uid,cb){
+    var sql = "select t.*,u.name from talk_content_table t left join user_table u on t.fromUid=u.user_id where t.toUid=? and t.status=1 group by fromUid";
+    mysqlClient.query(sql, [uid], function (err,res) {
+        cb(err,res);
+    });
+};
