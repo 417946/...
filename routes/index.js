@@ -111,6 +111,58 @@ exports.dateDetail = function(req, res){
     }
     response.end(res,response.buildResponse(response.OK,result),null);
 }
+
+exports.yindateDetail = function(req, res){
+    var sex = req.query.sex;
+    var year = req.query.year;
+    var month = req.query.month;
+    var day = req.query.day;
+    var hour = req.query.hour;
+    var min = req.query.min;
+    var second =req.query.seconds;
+    if (hour >= 23) {
+        hour = 0;
+    }
+    var ob = new Object();
+    var t = tools.timeStr2hour(hour + ":"+min+":"+second);
+    var jd=tools.JD.JD(tools.year2Ayear(parseInt(year)), parseInt(month), parseInt(day)+t/24);
+    tools.obb.mingLiBaZi( jd-tools.J2000, 0, ob ); //八字计算
+    //阴历
+    var solar = LunarCalendar.lunarToSolar(year,month,day);
+    year=solar.year;
+    month=solar.month;
+    day=solar.day;
+    var lunar = LunarCalendar.solarToLunar(year,month,day);
+    var time=new Date(year + "/" + month + "/" + day + " " + hour + ":"+min+":00");
+    var starfly1=getStarfly(time,1)
+    var starfly2=getStarfly(time,0)
+
+    var result='';
+    result+='阳历：'+year+'年'+month+'月'+day+'日'+hour+'点'+min+'分\n';
+    result+='阴历：'+lunar.lunarYear+'年'+lunar.lunarMonthName+' '+lunar.lunarDayName+' '+hour+'点'+min+'分\n';
+    result+='干支：'+ob.bz_jn+'（年）'+ob.bz_jy+'（月）'+ob.bz_jr+'（日）'+ob.bz_js+'（时）\n';
+    result+='飞星：阳'+starfly1+' 阴'+starfly2+'\n';
+//    result+='飞星：阳'+starfly1+' 阴'+starfly2+'（大运、小运、年、月、日、时）\n';
+    if(lunar.term){
+        result+='节气：'+lunar.term+'\n';
+    }else{
+        var termList=term.getYearTerm(year);
+        for(var key in termList){
+            if(term.formateDayD4(month,day)>key){
+                result+='节气：'+termList[key]+'中\n';
+                break;
+            }
+        }
+    }
+    result+='四季五行：'+sjStr[user.getWx(time)]+'\n';
+    if(ob.solarFestival){
+        result+=ob.solarFestival+'\n';
+    }
+    if(ob.lunarFestival){
+        result+=ob.lunarFestival+'\n';
+    }
+    response.end(res,response.buildResponse(response.OK,result),null);
+}
 function getStarfly(date,sex){
     var riyunclock=date.getHours();
     if(riyunclock==0){
