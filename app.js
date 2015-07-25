@@ -90,6 +90,7 @@ comm.init();
 
 app.get('/', routes.index);
 app.get('/dateDetail', routes.dateDetail);
+app.get('/yindateDetail', routes.yindateDetail);
 app.post('/login', login.onLogin);
 app.get('/webreg', webreg.reg);
 app.post('/webreg', webreg.onPostReg);
