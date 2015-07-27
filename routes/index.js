@@ -1,9 +1,9 @@
-
+var comm = require('../common');
 /*
         * 获得时间差,时间格式为 年-月-日 小时:分钟:秒 或者 年/月/日 小时：分钟：秒
         * 其中，年月日为全格式，例如 ： 2010-10-12 01:00:        * 返回精度为：秒，分，小时，天
         */
- 
+var clockList = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 function GetDateDiff(startTime, endTime, diffType) {
     //将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式
     startTime = startTime.replace(/\-/g, "/");
@@ -85,22 +85,30 @@ exports.dateDetail = function(req, res){
     var starfly1=getStarfly(time,1)
     var starfly2=getStarfly(time,0)
 
+    var clock = (parseInt(req.query.hour) + 1) % 24;
+    clock = Math.floor(clock / 2);
+
     var result='';
-    result+='阳历：'+year+'年'+month+'月'+day+'日'+hour+'点'+min+'分\n';
-    result+='阴历：'+lunar.lunarYear+'年'+lunar.lunarMonthName+' '+lunar.lunarDayName+' '+hour+'点'+min+'分\n';
-    result+='干支：'+ob.bz_jn+'（年）'+ob.bz_jy+'（月）'+ob.bz_jr+'（日）'+ob.bz_js+'（时）\n';
+    result+='阳历：'+year+'年'+month+'月'+day+'日'+req.query.hour+'点'+min+'分\n';
+    result+='阴历：'+lunar.lunarYear+'年'+lunar.lunarMonthName+' '+lunar.lunarDayName+' '+req.query.hour+'点'+min+'分\n';
+    result+='黄帝历：'+getHuangdili(year,month,day)+' '+clockList[clock]+'时\n';
+    result+='干支：'+ob.bz_jn+' '+ob.bz_jy+' '+ob.bz_jr+' '+ob.bz_js+'\n';
     result+='飞星：阳'+starfly1+' 阴'+starfly2+'\n';
 //    result+='飞星：阳'+starfly1+' 阴'+starfly2+'（大运、小运、年、月、日、时）\n';
     if(lunar.term){
         result+='节气：'+lunar.term+'\n';
     }else{
         var termList=term.getYearTerm(year);
+        var prevKey;
         for(var key in termList){
-            if(term.formateDayD4(month,day)>key){
-                result+='节气：'+termList[key]+'中\n';
+            if(term.formateDayD4(month-1,day)<key){
+                result+='节气：'+termList[prevKey]+'中\n';
                 break;
+            }else{
+                prevKey = key;
             }
         }
+
     }
     result+='四季五行：'+sjStr[user.getWx(time)]+'\n';
     if(ob.solarFestival){
@@ -137,20 +145,27 @@ exports.yindateDetail = function(req, res){
     var starfly1=getStarfly(time,1)
     var starfly2=getStarfly(time,0)
 
+    var clock = (parseInt(req.query.hour) + 1) % 24;
+    clock = Math.floor(clock / 2);
+
     var result='';
-    result+='阳历：'+year+'年'+month+'月'+day+'日'+hour+'点'+min+'分\n';
-    result+='阴历：'+lunar.lunarYear+'年'+lunar.lunarMonthName+' '+lunar.lunarDayName+' '+hour+'点'+min+'分\n';
-    result+='干支：'+ob.bz_jn+'（年）'+ob.bz_jy+'（月）'+ob.bz_jr+'（日）'+ob.bz_js+'（时）\n';
+    result+='阳历：'+year+'年'+month+'月'+day+'日'+req.query.hour+'点'+min+'分\n';
+    result+='阴历：'+lunar.lunarYear+'年'+lunar.lunarMonthName+' '+lunar.lunarDayName+' '+req.query.hour+'点'+min+'分\n';
+    result+='黄帝历：'+getHuangdili(year,month,day)+' '+clockList[clock]+'时\n';
+    result+='干支：'+ob.bz_jn+' '+ob.bz_jy+' '+ob.bz_jr+' '+ob.bz_js+'\n';
     result+='飞星：阳'+starfly1+' 阴'+starfly2+'\n';
 //    result+='飞星：阳'+starfly1+' 阴'+starfly2+'（大运、小运、年、月、日、时）\n';
     if(lunar.term){
         result+='节气：'+lunar.term+'\n';
     }else{
         var termList=term.getYearTerm(year);
+        var prevKey;
         for(var key in termList){
-            if(term.formateDayD4(month,day)>key){
-                result+='节气：'+termList[key]+'中\n';
+            if(term.formateDayD4(month-1,day)<key){
+                result+='节气：'+termList[prevKey]+'中\n';
                 break;
+            }else{
+                prevKey = key;
             }
         }
     }
@@ -187,4 +202,26 @@ function getStarfly(date,sex){
         shiyun = user.getNvYun(shiyun);
     }
     return bigyun+''+smallyun+''+nianyun+''+yueyun+''+riyun+''+shiyun;
+}
+function getHuangdili(year,month,date){
+    var jqData = comm.getJqData();
+    var info = jqData[year.toString()];
+    var returnyear=parseInt(year);
+    var curdate=new Date(year+"/"+month+"/"+date);
+    if(curdate < (new Date(info[0].date))){
+        info= jqData[(year-1).toString()];
+        returnyear--;
+    }
+    var returnmonth=0;
+    var index_i=0;
+    for(var i=22;i>=0;i-=2){
+        if(new Date(info[i].date)<=curdate){
+            returnmonth=i/2+1;
+            index_i=i;
+            break;
+        }
+    }
+    returnyear=returnyear+2697;
+    var returndate=parseInt(Math.abs(curdate.getTime()  -  new Date(info[index_i].date).getTime())  /  1000  /  60  /  60  /24)+1;
+    return returnyear+"年"+returnmonth+"月"+returndate+"日";
 }
