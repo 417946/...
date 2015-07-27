@@ -546,6 +546,7 @@ exports.onVoiceQuery = function(req,res){
 
         }
     }
+    console.log("find:"+find);
     if(!find){
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         var answer = {};
