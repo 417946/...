@@ -97,7 +97,6 @@ exports.onVoiceQuery = function(req,res){
         }
     }
 
-
     var find = false;
     var gz = user.getGZ(year, month, date);
     var a=function(){
@@ -550,6 +549,7 @@ exports.onVoiceQuery = function(req,res){
             }
 
         }
+        console.log(find);
         if(!find){
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             var answer = {};
@@ -560,6 +560,16 @@ exports.onVoiceQuery = function(req,res){
             mongodb.voice_query_log(uid,voice_content,answer);
             res.end(JSON.stringify(result));
         }
+    }
+    if(word_match.length==0){
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        var answer = {};
+        answer.score = "";
+        answer.level = "";
+        answer.desc = "对不住，这事真不知道。";
+        var result = { answer:answer};
+        mongodb.voice_query_log(uid,voice_content,answer);
+        res.end(JSON.stringify(result));
     }
     for(var m = 0; m < word_match.length; ++m) {
         //检查是否是凶日 如果是则 直接返回今日诸事不宜
