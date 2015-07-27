@@ -7,7 +7,7 @@ var common = require("../common.js");
 
 operater.getUserDetailById = function(user_id,cb){
     var values = [user_id];
-    var sql = "select u.user_id uid,u.name,u.bless,u.sex,u.birthday,u.lotus,d.* from user_table u left join user_detail_table d on u.user_id=d.user_id where u.user_id=? ";
+    var sql = "select u.user_id uid,u.name,u.bless,u.sex,u.birthday,u.lotus,u.colour,d.* from user_table u left join user_detail_table d on u.user_id=d.user_id where u.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);
@@ -42,6 +42,14 @@ operater.updateHeadImg = function(uid,head_img,cb){
 
 operater.updateTipMusic = function(uid,tip_music,cb){
     var sql = "update user_detail_table set tip_music="+tip_music+" where user_id="+uid;
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err,res) {
+        cb(err);
+    });
+};
+
+operater.updateColour = function(uid,colour,cb){
+    var sql = "update user_table set colour="+colour+" where user_id="+uid;
     console.log(sql);
     mysqlClient.update(sql, null, function (err,res) {
         cb(err);

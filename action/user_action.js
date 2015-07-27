@@ -40,6 +40,17 @@ exports.onUpdateTipMusic = function(req,res){
         response.end(res,response.buildOK(),callback);
     });
 };
+exports.onUpdateColour = function(req,res){
+    var callback=req.query.callback;
+    var uid = req.query.uid;
+    var colour = req.query.color;
+    db.updateColour(uid,colour,function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(),callback);
+    });
+};
 exports.onUpdateHeadImg = function(req,res){
     var callback=req.query.callback;
     var uid = req.query.uid;

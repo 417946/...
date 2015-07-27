@@ -164,6 +164,7 @@ app.post('/del_msg_uid', message.onDelMessageByUid);
 app.post('/push_weidu', message.addWeiduMessage);
 
 app.get('/get_user_detail', user_detail.onGetUserDetailById);
+app.get('/set_color', user_detail.onUpdateColour);
 app.post('/user_flower', user_detail.onUpdateFlower);
 app.get('/get_tip_music', user_detail.onGetMusicTip);
 app.get('/tip_music', user_detail.onUpdateTipMusic);
