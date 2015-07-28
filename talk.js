@@ -24,7 +24,7 @@ exports.init=function(){
                 //1、查找该用户是否有历史消息
                 var toUser = message.toUid;//会话目标
                 //2、检查目标用户是否在线，若在线，转发用户请求
-                if (message.msg_type == "1" || message.msg_type == "5") {
+                if (message.msg_type == "1" || message.msg_type == "5" || message.msg_type == "10") {
                     db.addContent(message)
                 }
                 message.datetime = new Date().format("yyyy-MM-dd hh:mm:ss");
@@ -37,10 +37,12 @@ exports.init=function(){
                 } else {
                     console.log("message.msg_type:" + message.msg_type);
                     var content = message.content;
-                    if (message.msg_type == "1" || message.msg_type == "5") {
+                    if (message.msg_type == "1" || message.msg_type == "5" || message.msg_type == "10") {
                         var tmpcontent=message.fromUname+':' + content;
                         if(message.msg_type == "5"){
                             tmpcontent=message.fromUname+':[图片]';
+                        }else if(message.msg_type == "10"){
+                            tmpcontent=message.fromUname+':[语音]';
                         }
                         try{
                             client.push().setPlatform('ios')

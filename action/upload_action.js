@@ -8,7 +8,7 @@ var config = require('../config').config;
 /**
  * 上传模块
  **/
-exports.upload = function(req, res) {
+exports.upload_img = function(req, res) {
     var callback=null;
     // Parse file.
     if(req.files) {
@@ -27,6 +27,30 @@ exports.upload = function(req, res) {
 //                        res.json(response.buildOK('/uploads/'+p));
                     var up_img='http://115.29.42.238:5000/upload/talk/img/'+name;
                     return res.json(response.buildOK(up_img));
+                }
+            });
+        });
+    }
+};
+exports.upload_voice = function(req, res) {
+    var callback=null;
+    // Parse file.
+    if(req.files) {
+        var file=req.files.voice;
+        // Read file.
+        fs.readFile(file.path, function (err, data) {
+            var name=new Date().getTime()+'.'+file.name.split('\.')[1];
+            console.log(config.upload_talk_voice_dir);
+            var p = path.join(config.upload_talk_voice_dir, name);
+            // Save file.
+            fs.writeFile(p, data, 'utf8', function (err) {
+                if (err) {
+                    console.log(err)
+                    return res.json(response.buildError('Something went wrong!'));
+                } else {
+//                        res.json(response.buildOK('/uploads/'+p));
+                    var up_voice='http://115.29.42.238:5000/upload/talk/voice/'+name;
+                    return res.json(response.buildOK(up_voice));
                 }
             });
         });

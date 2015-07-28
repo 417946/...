@@ -25,7 +25,7 @@ exports.onSendMessage = function(req,res){
     var type = req.body["type"];
     var flower=0;
 //    if(req.body["systemType"]=="android"||req.body["systemType"]=="ios"){
-        if(type=="1"||type=="5"){
+        if(type=="1"||type=="5"||type=="10"){
             client.push().setPlatform('ios', 'android')
                 .setAudience(JPush.alias(uid))
                 .setNotification(content, JPush.ios(content, 'happy', '+1'))
@@ -134,7 +134,7 @@ exports.onAddMessage = function(req,res){
     var uname = req.body["uname"];
     var content = req.body["content"];
     var type = req.body["type"];
-    if(type=="1"||type=="5"){
+    if(type=="1"||type=="5"||type=="10"){
         client.push().setPlatform('ios', 'android')
             .setAudience(JPush.alias(uid))
             .setNotification(content, JPush.ios(content, 'happy', '+1'))
