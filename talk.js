@@ -59,7 +59,7 @@ exports.init=function(){
                             console.log(error);
                         }
                     }
-                    msgdb.addMessage(0,message.toUid,message.toUname,message.fromUid,message.fromUname,content,message.msg_type);
+                    msgdb.addMessage(0,message.toUid,message.toUname,message.fromUid,message.fromUname,tmpcontent,message.msg_type);
                 }
             }
         });
