@@ -58,7 +58,21 @@ operater.addContent = function(obj,cb){
     });
 };
 operater.updateStatusByUid = function(uid,cb){
-    var sql = "update talk_content_table set status=0 where toUid="+uid;
+    var sql = "update talk_content_table set status=0 where type!=2 and toUid="+uid;
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err,res) {
+        cb(err);
+    });
+};
+operater.updateStatusById = function(id,cb){
+    var sql = "update talk_content_table set status=0 where id="+id;
+    console.log(sql);
+    mysqlClient.update(sql, null, function (err,res) {
+        cb(err);
+    });
+};
+operater.updateStatusByVoice = function(content,cb){
+    var sql = "update talk_content_table set status=0 where type=2 and content="+content;
     console.log(sql);
     mysqlClient.update(sql, null, function (err,res) {
         cb(err);

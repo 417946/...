@@ -62,3 +62,14 @@ exports.yidu = function(req,res){
         response.end(res,response.buildOK(),callback);
     });
 };
+
+exports.voice_yidu = function(req,res){
+    var callback=req.query.callback;
+    var content = req.query.content;
+    db.updateStatusByVoice(content,function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(),callback);
+    });
+};
