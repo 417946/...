@@ -84,3 +84,26 @@ operater.getWeiduList = function(uid,cb){
         cb(err,res);
     });
 };
+operater.addTalkDel = function(obj,cb){
+    var sql = "insert talk_del_table (uid,talk_uid) value(?,?)";
+    mysqlClient.insert(sql, [obj.uid,obj.talk_uid], function (err) {
+        if (cb) {
+            cb(err);
+        }
+    });
+};
+
+operater.delTalkDel = function(obj,cb){
+    var sql = "delete from talk_del_table where uid=? and talk_uid=?";
+    mysqlClient.delete(sql, [obj.uid,obj.talk_uid], function (err) {
+        if (cb) {
+            cb(err);
+        }
+    });
+};
+operater.getTalkDel = function(obj,cb){
+    var sql = "select * from talk_del_table where (uid=? and talk_uid=?) or (talk_uid=? and uid=?)";
+    mysqlClient.query(sql, [uid,talk_uid,uid,talk_uid], function (err,res) {
+        cb(err,res);
+    });
+};

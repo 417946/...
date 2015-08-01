@@ -209,7 +209,7 @@ exports.onUpdateMessageById = function(req,res){
 };
 
 exports.onDelMessage = function(req,res){
-    var callback=req.query.callback;
+    var callback=null;
     var mid = req.body["mid"];
     db.delMessageById(mid,function(err,result){
         if(err){
@@ -219,7 +219,7 @@ exports.onDelMessage = function(req,res){
     });
 };
 exports.onDelMessageByUid = function(req,res){
-    var callback=req.query.callback;
+    var callback=null;
     var uid = req.body["uid"];
     db.delMessageByUid(uid,function(err,result){
         if(err){

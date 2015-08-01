@@ -181,6 +181,9 @@ app.get('/talk/addFriend', talk.onAddFriend);
 app.get('/talk/getHistory', talk.getHistory);
 app.get('/talk/yidu', talk.yidu);
 app.get('/talk/voice_yidu', talk.voice_yidu);
+app.get('/talk/adddel', talk.onAddTalkDel);
+app.get('/talk/deldel', talk.onDelTalkDel);
+app.get('/talk/getdel', talk.getTalkDel);
 
 app.get('/get_record_list', payrecord.getRecordList);
 app.get('/get_record', payrecord.getRecord);

@@ -73,3 +73,33 @@ exports.voice_yidu = function(req,res){
         response.end(res,response.buildOK(),callback);
     });
 };
+
+exports.getTalkDel = function(req,res){
+    var callback=req.query.callback;
+    db.getTalkDel(req.query,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(list),callback);
+    });
+};
+
+exports.onAddTalkDel = function(req,res){
+    var callback=req.query.callback;
+    db.addTalkDel(req.query,function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(),callback);
+    });
+};
+
+exports.onDelTalkDel = function(req,res){
+    var callback=req.query.callback;
+    db.delTalkDel(req.query,function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        return response.end(res,response.buildOK(),callback);
+    });
+};
