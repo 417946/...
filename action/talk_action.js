@@ -78,6 +78,16 @@ exports.voice_yidu = function(req,res){
     });
 };
 
+exports.delTalkRecord = function(req,res){
+    var callback=null;
+    db.delTalkRecord(req.body["uid"],req.body["talk_uid"],function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildOK(),callback);
+    });
+};
+
 exports.getTalkDel = function(req,res){
     var callback=req.query.callback;
     db.getTalkDel(req.query,function(err,list){
