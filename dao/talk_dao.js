@@ -103,7 +103,7 @@ operater.delTalkDel = function(obj,cb){
 };
 operater.getTalkDel = function(obj,cb){
     var sql = "select * from talk_del_table where (uid=? and talk_uid=?) or (talk_uid=? and uid=?)";
-    mysqlClient.query(sql, [uid,talk_uid,uid,talk_uid], function (err,res) {
+    mysqlClient.query(sql, [obj.uid,obj.talk_uid,obj.uid,obj.talk_uid], function (err,res) {
         cb(err,res);
     });
 };
