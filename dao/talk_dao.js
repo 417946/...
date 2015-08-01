@@ -72,7 +72,7 @@ operater.updateStatusById = function(id,cb){
     });
 };
 operater.updateStatusByVoice = function(content,cb){
-    var sql = "update talk_content_table set status=0 where type=2 and content="+content;
+    var sql = "update talk_content_table set status=0 where type=2 and content='"+content+"'";
     console.log(sql);
     mysqlClient.update(sql, null, function (err,res) {
         cb(err);
