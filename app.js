@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-
+require('./routes/common/util.js');
 var express = require('express');
 var routes = require('./routes');
 var webreg = require('./routes/webreg');

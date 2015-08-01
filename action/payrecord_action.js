@@ -6,8 +6,12 @@ exports.getRecordList = function(req,res){
     db.getRecordList(req.query.uid,req.query.type,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
+        }else{
+            list.forEach(function(item){
+                item.create_time=item.create_time.format("yyyy-MM-dd hh:mm:ss").toString();
+            });
+            response.end(res,response.buildResponse(response.OK,list),callback);
         }
-        response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };
 exports.getRecord = function(req,res){

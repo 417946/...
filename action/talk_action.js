@@ -47,8 +47,12 @@ exports.getHistory = function(req,res){
     db.getHistory(req.query.uid1,req.query.uid2,req.query.page,req.query.index,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
+        }else{
+            list.forEach(function(item){
+                item.create_time=item.create_time.format("yyyy-MM-dd hh:mm:ss").toString();
+            });
+            response.end(res,response.buildOK(list),callback);
         }
-        response.end(res,response.buildOK(list),callback);
     });
 };
 
