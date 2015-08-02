@@ -108,7 +108,7 @@ operater.getTalkDel = function(obj,cb){
     });
 };
 operater.delTalkRecord = function(uid,talk_uid,cb){
-    var sql = "delete from talk_content_table where (fromUid=? and toUid=?) or (toUid=? and fromUid=?)";
+    var sql = "delete from talk_content_table where (fromUid=? and toUid=? and status=0) or (toUid=? and fromUid=? and status=0)";
     mysqlClient.delete(sql, [uid,talk_uid,uid,talk_uid], function (err) {
         if (cb) {
             cb(err);
