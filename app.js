@@ -184,7 +184,7 @@ app.get('/talk/voice_yidu', talk.voice_yidu);
 app.get('/talk/adddel', talk.onAddTalkDel);
 app.get('/talk/deldel', talk.onDelTalkDel);
 app.get('/talk/getdel', talk.getTalkDel);
-post.get('/talk/delrecord', talk.delTalkRecord);
+app.post('/talk/delrecord', talk.delTalkRecord);
 
 app.get('/get_record_list', payrecord.getRecordList);
 app.get('/get_record', payrecord.getRecord);

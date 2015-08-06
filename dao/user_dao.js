@@ -25,15 +25,15 @@ operater.getTipMusic = function(user_id,cb){
 
 operater.getHeadImg = function(user_id,cb){
     var values = [user_id];
-    var sql = "select d.head_img,u.colour from user_detail_table d left join user_table u on d.user_id=u.user_id where d.user_id=? ";
+    var sql = "select d.head_img,d.head_url,u.colour from user_detail_table d left join user_table u on d.user_id=u.user_id where d.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);
     });
 };
 
-operater.updateHeadImg = function(uid,head_img,cb){
-    var sql = "update user_detail_table set head_img="+head_img+" where user_id="+uid;
+operater.updateHeadImg = function(uid,head_img,head_url,cb){
+    var sql = "update user_detail_table set head_img="+head_img+",head_url='"+head_url+"' where user_id="+uid;
     console.log(sql);
     mysqlClient.update(sql, null, function (err,res) {
         cb(err);

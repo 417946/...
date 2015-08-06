@@ -55,7 +55,8 @@ exports.onUpdateHeadImg = function(req,res){
     var callback=req.query.callback;
     var uid = req.query.uid;
     var headimg = req.query.headimg;
-    db.updateHeadImg(uid,headimg,function(err,result){
+    var headurl = req.query.headurl;
+    db.updateHeadImg(uid,headimg,headurl,function(err,result){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }

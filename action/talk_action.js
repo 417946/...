@@ -49,7 +49,7 @@ exports.getHistory = function(req,res){
             return response.end(res,response.buildError(err.code),callback);
         }else{
             list.forEach(function(item){
-                item.create_time=item.create_time.format("yyyy-MM-dd hh:mm:ss").toString();
+                item.create_time=item.create_time.format("MM-dd hh:mm:ss").toString();
             });
             response.end(res,response.buildOK(list),callback);
         }
