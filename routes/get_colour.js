@@ -27,10 +27,10 @@ exports.onGetColour = function(req,res){
             result.day_star = user.getNvYun(result.day_star);
         }
         var colours = [];
-        colours.push({"自我本色":colour_json[sex][0][year_star-1]});
-        colours.push({"旺运色":colour_json[sex][1][year_star-1]});
-        colours.push({"旺财色":colour_json[sex][2][year_star-1]});
-        colours.push({"旺桃花色":colour_json[sex][3][year_star-1]});
+        colours.push({"zwbs":colour_json[sex][0][year_star-1]});
+        colours.push({"wys":colour_json[sex][1][year_star-1]});
+        colours.push({"wcs":colour_json[sex][2][year_star-1]});
+        colours.push({"wths":colour_json[sex][3][year_star-1]});
         result.colours = colours;
         console.log(result);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });

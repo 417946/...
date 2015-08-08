@@ -69,7 +69,7 @@ operater.delFromTopicUser = function(topic_id,user_id,cb){
 
 operater.getTopicList = function(index,type,cb){
 //    var sql = "select * from topic_table order by id desc limit 0,"+index;
-    var sql = "select t.*,u.name from topic_table t left join user_table u on u.user_id=t.user_id where t.type="+type+" order by id desc limit 0,"+index;
+    var sql = "select t.*,u.name,d.identification from topic_table t left join user_table u on u.user_id=t.user_id left join user_detail_table d on t.user_id=d.user_id where t.type="+type+" order by id desc limit 0,"+index;
     console.log(sql);
     mysqlClient.query(sql,null, function (err,res) {
         cb(err,res);

@@ -98,6 +98,7 @@ app.post('/webreg_flystar', webreg.onFlystar);
 app.post('/reg', reg.onReg);
 app.post('/deviceid', deviceid.onPostId);
 app.post('/modifyInfo', modifyInfo.onModify);
+app.post('/modifyPwd', user_detail.onUpdatePwd);
 app.post('/xianmiao', xianmiao.onXianMiao);
 app.post('/todayinfo', todayInfo.onGetInfo);
 app.get('/todayinfo', todayInfo.onGetInfo);
@@ -171,6 +172,7 @@ app.get('/tip_music', user_detail.onUpdateTipMusic);
 app.get('/head_img', user_detail.onUpdateHeadImg);
 app.get('/get_head_img', user_detail.onGetHeadImg);
 app.post('/find_pwd', user_detail.onFindPwd);
+app.post('/get_daren', user_detail.onGetDaren);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);

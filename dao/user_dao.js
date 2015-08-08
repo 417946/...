@@ -3,11 +3,12 @@ var operater = module.exports;
 var log = require('../common').log;
 var mysqlClient = require('../routes/mysql/mysqlclient').init();
 var common = require("../common.js");
+var crypto = require('crypto');
 
 
 operater.getUserDetailById = function(user_id,cb){
     var values = [user_id];
-    var sql = "select u.user_id uid,u.name,u.bless,u.sex,u.birthday,u.lotus,u.colour,d.* from user_table u left join user_detail_table d on u.user_id=d.user_id where u.user_id=? ";
+    var sql = "select u.user_id uid,u.name,u.bless,u.sex,u.birthday,u.lotus,u.colour,u.colour_index,d.* from user_table u left join user_detail_table d on u.user_id=d.user_id where u.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);
@@ -25,7 +26,7 @@ operater.getTipMusic = function(user_id,cb){
 
 operater.getHeadImg = function(user_id,cb){
     var values = [user_id];
-    var sql = "select d.head_img,d.head_url,u.colour from user_detail_table d left join user_table u on d.user_id=u.user_id where d.user_id=? ";
+    var sql = "select d.head_img,d.head_url,u.colour,u.colour_index from user_detail_table d left join user_table u on d.user_id=u.user_id where d.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);
@@ -48,8 +49,8 @@ operater.updateTipMusic = function(uid,tip_music,cb){
     });
 };
 
-operater.updateColour = function(uid,colour,cb){
-    var sql = "update user_table set colour="+colour+" where user_id="+uid;
+operater.updateColour = function(uid,colour,colour_index,cb){
+    var sql = "update user_table set colour="+colour+",colour_index="+colour_index+" where user_id="+uid;
     console.log(sql);
     mysqlClient.update(sql, null, function (err,res) {
         cb(err);
@@ -72,7 +73,9 @@ operater.updateFlower = function(uid,flower_num,cb){
 };
 
 operater.updatePwd = function(uid,pwd,cb){
-    var sql = "update user_table set passwd="+pwd+" where user_id="+uid;
+    var  md5 = crypto.createHash('md5');
+    var newPasswd = md5.update(pwd).digest('base64');
+    var sql = "update user_table set passwd="+newPasswd+" where user_id="+uid;
     console.log(sql);
     mysqlClient.update(sql, null, function (err,res) {
         cb(err);
@@ -83,6 +86,24 @@ operater.getUserByMail = function(uid,email,cb){
     var sql = "select * from user_table where user_id="+uid+" and email='"+email+"' ";
     console.log(sql);
     mysqlClient.query(sql,null, function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.getUserByPwd = function(uid,pwd,cb){
+    var  md5 = crypto.createHash('md5');
+    var newPasswd = md5.update(pwd).digest('base64');
+    var sql = "select * from user_table where user_id="+uid+" and passwd='"+newPasswd+"' ";
+    console.log(sql);
+    mysqlClient.query(sql,null, function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.getDaren = function(cb){
+    var sql = "select u.user_id,u.name,d.head_img,d.head_url from user_table u left join user_detail_table d on u.user_id=d.user_id where d.identification=1 order by u.lotus desc ";
+    console.log(sql);
+    mysqlClient.query(sql, null, function (err,res) {
         cb(err,res);
     });
 };

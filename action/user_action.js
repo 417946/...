@@ -44,7 +44,8 @@ exports.onUpdateColour = function(req,res){
     var callback=req.query.callback;
     var uid = req.query.uid;
     var colour = req.query.color;
-    db.updateColour(uid,colour,function(err,result){
+    var colour_index = req.query.color_index;
+    db.updateColour(uid,colour,colour_index,function(err,result){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
@@ -96,5 +97,36 @@ exports.onFindPwd = function(req,res){
                 return response.end(res,response.buildError("帐号或邮箱错误。"),callback);
             }
         }
+    });
+};
+
+exports.onUpdatePwd = function(req,res){
+    var callback=null;
+    db.getUserByPwd(req.body['uid'],req.body['pwd'],function(err1,list){
+        if(err1){
+            return response.end(res,response.buildError(err1.code),callback);
+        }else{
+            if(list.length>0) {
+                db.updatePwd(req.body['uid'],req.body['pwd1'],function(err,result){
+                    if(err){
+                        return response.end(res,response.buildError(err.code),callback);
+                    }else{
+                        response.end(res,response.buildResponse(response.OK,list),callback);
+                    }
+                });
+            }else{
+                return response.end(res,response.buildError("原密码错误。"),callback);
+            }
+        }
+    });
+};
+
+exports.onGetDaren = function(req,res){
+    var callback=null;
+    db.getDaren(function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };

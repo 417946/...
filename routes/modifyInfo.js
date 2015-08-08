@@ -59,12 +59,9 @@ exports.onModify = function (req, res) {
     db.ModifyUser(info, function (err) {
         result = { error: "" };
         if (err) {
-            console.log("a error ocurr when modify user info:");
-            console.log(err);
             result.error = err;
         }
         else {
-            log("user:" + info.name + " modify info with password:" + info.password);
             result.uid = info.uid;
         }
         res.end(JSON.stringify(result));
