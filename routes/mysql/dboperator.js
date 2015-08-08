@@ -5,7 +5,7 @@ var log = require('../../common').log;
 var mysqlClient = require('./mysqlclient').init();
 var user = require("../user.js");
 var common = require("../../common.js");
-
+var crypto = require('crypto');
 
 var teststr = "{ \"a\":\"test value\",\"b\":32}";
 var testval = JSON.parse(teststr);
@@ -26,9 +26,11 @@ function fixStar(star) {
 }
 
 operater.addUser = function(info,cb){
+    var  md5 = crypto.createHash('md5');
+    var newPasswd = md5.update(info.password).digest('base64');
     var sql = "insert into user_table(user_id, openid,name, sex, birthday,staryear, birthAddress, regAddress,regTime,passwd,viplevel,flystar,sjWs,birthWs,yueNum,yangSum,clockWs,gz,ts,sp,queNum,sjIndex,phone,email) values('"
         + info.uid + "','" + (info.openid ? info.openid : "openid") + "','" + info.name + "'," + info.sex + ",'" + info.birthday + "','" + user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2) + "'," + info.birthAddress + ","
-        + info.registAddress + ",'" + info.regTime + "','" + info.password + "'," + info.vipLevel + ",'" + info.flystar + "'," + (info.sjWS ? "1" : "0") + "," + info.birthWS + ","
+        + info.registAddress + ",'" + info.regTime + "','" + newPasswd + "'," + info.vipLevel + ",'" + info.flystar + "'," + (info.sjWS ? "1" : "0") + "," + info.birthWS + ","
         + info.starNum + "," + info.yangSum + "," + (info.clockWS ? "1" : "0") + ",'" + info.gz + "','" + info.ts + "','" + info.sp + "','" + info.queNum + "'," + info.sjIndex + ",'" + info.phone + "','" + info.email + "');";
 
     console.log(sql);
@@ -44,9 +46,19 @@ operater.addUser = function(info,cb){
 }
 
 operater.ModifyUser = function (info, cb) {
-    var values = [info.name, info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
-        info.birthAddress, info.password, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
-    var sql = "update user_table set name= ? ,sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,passwd= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+    var values = [];
+    var sql = "";
+    if(info.password==""){
+        values = [info.name, info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
+            info.birthAddress, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
+        sql = "update user_table set name= ? ,sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+    }else{
+        var  md5 = crypto.createHash('md5');
+        var newPasswd = md5.update(info.password).digest('base64');
+        values = [info.name, info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
+            info.birthAddress, newPasswd, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
+        sql = "update user_table set name= ? ,sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,passwd= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+    }
 
         //"(user_id, name, sex, birthday,staryear, birthAddress, regAddress,regTime,passwd,viplevel,flystar,sjWs,birthWs,yueNum,yangSum,clockWs,gz,ts,sp,queNum,sjIndex) values('"+ info.sjIndex + ");"
         //+ info.uid + "','" + info.name + "'," + info.sex + ",'" + info.birthday + "','" + user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2) + "'," + info.birthAddress + ","
@@ -83,7 +95,9 @@ operater.getMaxId = function (cb) {
 }
 
 operater.userLogin = function (info, cb) {
-    var sql = "select * from user_table where user_id='" + info.uid + "' and passwd='" + info.password + "';";
+    var  md5 = crypto.createHash('md5');
+    var newPasswd = md5.update(info.password).digest('base64');
+    var sql = "select * from user_table where user_id='" + info.uid + "' and passwd='" + newPasswd + "';";
     //log(sql);
     mysqlClient.query(sql, null, function (err, res) {
         if (err) {
@@ -1169,7 +1183,7 @@ operater.delFromContract = function(uid,contracts_uid,cb){
  * @param cb
  */
 operater.getContract = function(uid,status,cb){
-    var sql = "select c.contracts_uid,c.contracts_name,u.name,u.sex,u.birthday,c.id,d.head_img from contracts_table c left join user_table u on u.user_id=c.contracts_uid left join user_detail_table d on c.contracts_uid=d.user_id where c.uid='" + uid + "'";
+    var sql = "select c.contracts_uid,c.contracts_name,u.name,u.sex,u.birthday,c.id,d.head_img,d.head_url from contracts_table c left join user_table u on u.user_id=c.contracts_uid left join user_detail_table d on c.contracts_uid=d.user_id where c.uid='" + uid + "'";
     if(status=="1"){
         sql+=" and c.status=1 order by c.id asc";
     }else {
@@ -1179,7 +1193,7 @@ operater.getContract = function(uid,status,cb){
     mysqlClient.query(sql, null, function (err,res) {
         var contracts = [];
         for(var i = 0; i < res.length; ++i){
-            contracts.push([res[i]["contracts_uid"],res[i]["name"],res[i]["sex"],res[i]["birthday"],res[i]["id"],res[i]["head_img"]]);
+            contracts.push([res[i]["contracts_uid"],res[i]["name"],res[i]["sex"],res[i]["birthday"],res[i]["id"],res[i]["head_img"],res[i]["head_url"]]);
         }
         cb(err,contracts)
     });
