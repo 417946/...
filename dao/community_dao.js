@@ -69,7 +69,7 @@ operater.delFromTopicUser = function(topic_id,user_id,cb){
 
 operater.getTopicList = function(index,type,cb){
 //    var sql = "select * from topic_table order by id desc limit 0,"+index;
-    var sql = "select t.*,u.name,d.identification from topic_table t left join user_table u on u.user_id=t.user_id left join user_detail_table d on t.user_id=d.user_id where t.type="+type+" order by id desc limit 0,"+index;
+    var sql = "select t.*,u.name,d.identification,d.head_img,d.head_url from topic_table t left join user_table u on u.user_id=t.user_id left join user_detail_table d on t.user_id=d.user_id where t.type="+type+" order by id desc limit 0,"+index;
     console.log(sql);
     mysqlClient.query(sql,null, function (err,res) {
         cb(err,res);
@@ -77,7 +77,7 @@ operater.getTopicList = function(index,type,cb){
 };
 
 operater.getTopicById = function(tid,cb){
-    var sql = "select t.*,u.name,d.head_img from topic_table t left join user_table u on u.user_id=t.user_id left join user_detail_table d on t.user_id=d.user_id where t.id="+tid;
+    var sql = "select t.*,u.name,d.head_img,d.head_url from topic_table t left join user_table u on u.user_id=t.user_id left join user_detail_table d on t.user_id=d.user_id where t.id="+tid;
     console.log(sql);
     mysqlClient.query(sql,null, function (err,res) {
         cb(err,res);
@@ -112,7 +112,12 @@ operater.getTopicByType = function(type,user_id,cb){
 
 
 operater.getCommList = function(tid,cb){
-    var sql = "select t.*,c.content comm_content,c.user_id c_user_id,u.name,cu.name c_username from comment_table t left join comment_table c on c.comm_id=t.id left join user_table u on u.user_id=t.user_id left join user_table cu on cu.user_id=c.user_id where t.topic_id="+tid;
+    var sql = "select t.*,c.content comm_content,c.user_id c_user_id,u.name,cu.name c_username,d.head_img,d.head_url " +
+        "from comment_table t " +
+        "left join comment_table c on c.comm_id=t.id " +
+        "left join user_detail_table d on t.user_id=d.user_id " +
+        "left join user_table u on u.user_id=t.user_id " +
+        "left join user_table cu on cu.user_id=c.user_id where t.topic_id="+tid;
     console.log(sql);
     mysqlClient.query(sql,null, function (err,res) {
         cb(err,res);

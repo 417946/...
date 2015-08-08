@@ -99,3 +99,26 @@ operater.getContractByUid = function(uid,fid,status,cb){
         cb(err,res);
     });
 };
+
+operater.getCountByUid = function(uid,cb){
+    var sql = "select count(*) count from contracts_table where contracts_uid="+uid;
+    console.log(sql);
+    mysqlClient.query(sql,null, function (err,res) {
+        cb(err,res);
+    });
+};
+
+operater.getFriendByUid = function(uid,fid,cb){
+    var sql = "select count(*) count from talk_friend_table where uid="+uid+" and fid="+fid;
+    console.log(sql);
+    mysqlClient.query(sql,null, function (err,res) {
+        cb(err,res);
+    });
+};
+operater.getGuanzhuByUid = function(uid,fid,cb){
+    var sql = "select count(*) count from contracts_table where uid="+uid+" and contracts_uid="+fid;
+    console.log(sql);
+    mysqlClient.query(sql,null, function (err,res) {
+        cb(err,res);
+    });
+};

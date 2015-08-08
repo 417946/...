@@ -125,5 +125,42 @@ exports.getContractByUid = function(req,res){
         response.end(res,response.buildResponse(response.OK,list),callback);
     });
 };
+exports.getGuanzhu = function(req,res){
+    var callback=req.query.callback;
+    db.getCountByUid(req.query.uid,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }
+        response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
+exports.addFriendByFlower = function(req,res){
+    var callback=null;
+    db.getFriendByUid(req.body["uid"],req.body["fid"],function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }else{
+            if(list[0].count==1){
+                response.end(res,response.buildResponse(response.OK,"have"),callback);
+            }else{
+                response.end(res,response.buildResponse(response.OK,"send"),callback);
+            }
+        }
+    });
+};
+exports.addGuanzhuByFlower = function(req,res){
+    var callback=null;
+    db.getGuanzhuByUid(req.body["uid"],req.body["fid"],function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }else{
+            if(list[0].count==1){
+                response.end(res,response.buildResponse(response.OK,"have"),callback);
+            }else{
+                response.end(res,response.buildResponse(response.OK,"send"),callback);
+            }
+        }
+    });
+};
 
 
