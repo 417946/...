@@ -1,6 +1,7 @@
 var db = require('./../dao/user_dao');
 var prdao = require('./../dao/payrecord_dao');
 var userManager = require('../routes/userManager.js');
+var webreg = require('../routes/webreg.js');
 var response = require('../routes/common/response');
 
 exports.onGetUserDetailById = function(req,res){
