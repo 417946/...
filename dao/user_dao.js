@@ -75,7 +75,7 @@ operater.updateFlower = function(uid,flower_num,cb){
 operater.updatePwd = function(uid,pwd,cb){
     var  md5 = crypto.createHash('md5');
     var newPasswd = md5.update(pwd).digest('base64');
-    var sql = "update user_table set passwd="+newPasswd+" where user_id="+uid;
+    var sql = "update user_table set passwd='"+newPasswd+"' where user_id="+uid;
     console.log(sql);
     mysqlClient.update(sql, null, function (err,res) {
         cb(err);
@@ -105,5 +105,20 @@ operater.getDaren = function(cb){
     console.log(sql);
     mysqlClient.query(sql, null, function (err,res) {
         cb(err,res);
+    });
+};
+
+operater.reg = function(uid,uname,pwd,cb){
+    var  md5 = crypto.createHash('md5');
+    var newPasswd = md5.update(pwd).digest('base64');
+    sql = "insert user_table (user_id,name,passwd) value(?,?,?)";
+    console.log(sql);
+    mysqlClient.insert(sql, [uid,uname,newPasswd], function (err) {
+        var sql1 = "insert into  user_detail_table(user_id) values ('"+uid+"')";
+        mysqlClient.update(sql1, null, function (err1) {
+            if(cb){
+                cb.call(err1);
+            }
+        });
     });
 };

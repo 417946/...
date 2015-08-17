@@ -1,5 +1,6 @@
 var db = require('./../dao/user_dao');
 var prdao = require('./../dao/payrecord_dao');
+var userManager = require('../routes/userManager.js');
 var response = require('../routes/common/response');
 
 exports.onGetUserDetailById = function(req,res){
@@ -128,5 +129,27 @@ exports.onGetDaren = function(req,res){
             return response.end(res,response.buildError(err.code),callback);
         }
         response.end(res,response.buildResponse(response.OK,list),callback);
+    });
+};
+
+exports.onReg = function(req,res){
+    var callback=null;
+    var uid = userManager.GetInstance().getCurUserId();
+    var uname = req.body["uname"];
+    var pwd = req.body["pwd"];
+    db.reg(uid,uname,pwd,function(err1,result1){
+        response.end(res,response.buildOK(),callback);
+    });
+};
+
+exports.onHighScore = function(req,res){
+    var userInfo={
+        username:req.body["uname"],
+        sex:req.body["sex"],
+        birthday:req.body["birthday"]
+    }
+    var callback=null;
+    webreg.onPostHightScore(userInfo,function(highScore){
+        response.end(res,response.buildResponse(response.OK,highScore),callback);
     });
 };

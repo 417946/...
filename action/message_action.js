@@ -3,7 +3,7 @@ var flowerdb = require('./../dao/flower_dao');
 var talkdb = require('./../dao/talk_dao');
 var response = require('../routes/common/response');
 var JPush = require("jpush-sdk");
-var client = JPush.buildClient('9191662bec0b4c1e53a4bacb', 'dcd935740eabc1e1863488f9');
+var client = JPush.buildClient('1b887473b8cc2eac1a6d60fa', 'aeb3c3b64505ce49fa11b8cc');
 
 exports.onGetMessageByUid = function(req,res){
     var callback=null;

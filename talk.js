@@ -27,7 +27,7 @@ exports.init=function(){
                 if (message.msg_type == "1" || message.msg_type == "5" || message.msg_type == "10") {
                     db.addContent(message)
                 }
-                message.datetime = new Date().format("yyyy-MM-dd hh:mm:ss");
+                message.datetime = new Date().format("MM-dd hh:mm:ss");
                 message.timestamp = new Date().getTime();
                 connection.json.send(message);
                 var objConnect = clients[toUser];

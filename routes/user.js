@@ -3,6 +3,7 @@ var db = require('./mysql/dboperator');
 var tools = require('./tools/tools')
 var log = require('../common').log;
 var comm = require('../common');
+var webreg = require('./webreg.js');
  
 //测试函数，用于生成轴向数据
 var aList = ['中央','正东','东北','正北','西北','正西','西南','正南','东南'];
@@ -1325,7 +1326,6 @@ var getWxNum = function (userInfo,index) {
                     ["349", "1258", "67"],
                     ["134", "967", "258"],
                     ["9258", "3467", "1"]];
-
         var scwxNum = userInfo.scwxNum;
 
         for (var i = 0 ; i < 4 ; i++) {
@@ -1401,19 +1401,20 @@ exports.getFlyStarWx = getFlyStarWx;
 var fs = require('fs');
 
 //计算素写
-var getSuxie = function (userInfo) {
+var getSuxie = function (userInfo,cb) {
     var dataJson = comm.getSuxieJson();
     var sxJson = dataJson[userInfo.sex];
     var flystar=userInfo.flystar;
     var fkey=(flystar.substr(2,1)+flystar.substr(4,1)+flystar.substr(5,1));
-    if(sxJson[fkey][flystar.substr(3,1)]){
-        return sxJson[fkey][flystar.substr(3,1)];
-    }else{
-        return sxJson[fkey]["0"];
-   }
+    webreg.onPostHightScore(userInfo,function(highScore){
+        if(sxJson[fkey][flystar.substr(3,1)]){
+            cb("您的海拔高度"+highScore+"。"+sxJson[fkey][flystar.substr(3,1)]);
+        }else{
+            cb("您的海拔高度"+highScore+"。"+sxJson[fkey]["0"]);
+        }
+    });
 }
 exports.getSuxie = getSuxie;//计算素写
-
 
 var getZeshi = function (aDate) {
     var dataJson = comm.getZeshiJson();
@@ -1527,13 +1528,15 @@ var getZeshi = function (aDate) {
     }
     var returnstr="本日最佳吉时为：";
     for(var i=0;i<ji.length;i++){
-        if(i<=2){
-            returnstr+=ji[i]+"时";
-        }
-        if(i==ji.length-1||i==2){
-            returnstr+="。br";
-        }else{
-            returnstr+=",";
+        if(ji[i]!=null&&ji[i]!=""){
+            if(i<=2){
+                returnstr+=ji[i]+"时";
+            }
+            if(i==ji.length-1||i==2){
+                returnstr+="。br";
+            }else{
+                returnstr+=",";
+            }
         }
     }
     if(ji.length==0){
@@ -1544,13 +1547,15 @@ var getZeshi = function (aDate) {
     }else{
         returnstr+="本日不吉时辰为：";
         for(var i=0;i<xiong.length;i++){
-            if(i<=2){
-                returnstr+=xiong[i]+"时";
-            }
-            if(i==xiong.length-1||i==2){
-                returnstr+="。";
-            }else{
-                returnstr+=",";
+            if(xiong[i]!=null&&xiong[i]!=""){
+                if(i<=2){
+                    returnstr+=xiong[i]+"时";
+                }
+                if(i==xiong.length-1||i==2){
+                    returnstr+="。";
+                }else{
+                    returnstr+=",";
+                }
             }
         }
     }

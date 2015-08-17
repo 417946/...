@@ -34,31 +34,32 @@ exports.onRegNotice = function(req,res){
     var userInfo = user.getUserInfo(reqData);
     var flag=true;
     var r={}
-    r.s=user.getSuxie(userInfo);
-    while(flag){
-        if(userInfo.flystar){
-            flag=false;
-            userInfo.yangSum=userInfo.yangSum1;
-            userInfo.year_star=userInfo.nianyun;
-            db.getBaseXg(userInfo,function(){
+    user.getSuxie(userInfo,function(ss){
+        r.s=ss;
+        while(flag){
+            if(userInfo.flystar){
+                flag=false;
+                userInfo.yangSum=userInfo.yangSum1;
+                userInfo.year_star=userInfo.nianyun;
+                db.getBaseXg(userInfo,function(){
 //                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-                r.a="您是一位"+userInfo.baseXg;
-                console.log(JSON.stringify(userInfo))
-                var info={
-                    sex:reqData.sex,
-                    birthAddress:reqData.birthAddress,
-                    birthday:result[1]+result[2]+result[3]+result[4]
-                }
-                //去年
-                var uuserInfo = analysis.buildUserInfo(info);
-                analysis.lastYearYC(userInfo,uuserInfo,function(desc) {
-                    r.b = desc;
-                    analysis.lastTenYearYC(userInfo, uuserInfo, function (desc) {
-                        r.c = desc;
-                        response.end(res,response.buildResponse(response.OK,r),callback);
+                    r.a="您是一位"+userInfo.baseXg;
+                    console.log(JSON.stringify(userInfo))
+                    var info={
+                        sex:reqData.sex,
+                        birthAddress:reqData.birthAddress,
+                        birthday:result[1]+result[2]+result[3]+result[4]
+                    }
+                    //去年
+                    var uuserInfo = analysis.buildUserInfo(info);
+                    analysis.lastYearYC(userInfo,uuserInfo,function(desc) {
+                        r.b = desc;
+                        analysis.lastTenYearYC(userInfo, uuserInfo, function (desc) {
+                            r.c = desc;
+                            response.end(res,response.buildResponse(response.OK,r),callback);
 //                        res.json(r);
+                        })
                     })
-                })
 //                analysis.getYun4Yc(userInfo,reqData.sex==0?2:4,null,false,"yc",function(desc){
 //                    var d=new Date();
 //                    d.setYear(2014)
@@ -93,9 +94,10 @@ exports.onRegNotice = function(req,res){
 //                        })
 //                    })
 //                });
-            })
+                })
+            }
         }
-    }
+    });
 };
 exports.onFriendJy = function(req,res){
     //解析生日

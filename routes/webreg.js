@@ -40,7 +40,7 @@ exports.onPostReg1 = function(req,res){
 exports.onPostReg = function (req, res) {
     console.log("Recieve webReg Post Message!");
 
-    
+    console.log(req.body);
 
 	//解析生日
 	var strDate = req.body['birthday'];
@@ -72,6 +72,7 @@ exports.onPostReg = function (req, res) {
               2、4颗财星，不足85分，统一调整85分。
               3、5颗财星，不足92分，统一调整92分。
         */
+
         var wealth_stars = userInfo.wealth_stars;
         var wealth_stars_three_scores = 80;
         var wealth_stars_four_scores = 85;
@@ -269,6 +270,58 @@ exports.onPostReg = function (req, res) {
 //                })
 //            });
         })
+	});
+};
+
+exports.onPostHightScore = function (uinfo,cb) {
+	//解析生日
+	var strDate = uinfo.birthday;
+	//测试功能
+	var reqData = {
+		name:			uinfo.username,
+		sex:			parseInt(uinfo.sex),
+		registAddress:	0,
+		birthAddress:	0,
+		year:			parseInt(strDate.substr(0,4)),
+		month:			parseInt(strDate.substr(4,2)),
+		day:			parseInt(strDate.substr(6,2)),
+		clock:			parseInt(strDate.substr(8,2))
+	}
+
+	var userInfo = user.getUserInfo(reqData);
+	reqData.clock = (reqData.clock + 1) % 24;
+	reqData.clock = Math.floor(reqData.clock / 2);
+
+
+    //查询数据库，获得吉凶值
+	db.getUserLastJxScore(userInfo, function (jxScore) {
+        //  fix userInfo.wxBaseScore
+        /*
+        特殊规定如下：1、3颗财星，不足80分，统一调整80分。
+              2、4颗财星，不足85分，统一调整85分。
+              3、5颗财星，不足92分，统一调整92分。
+        */
+
+        var wealth_stars = userInfo.wealth_stars;
+        var wealth_stars_three_scores = 80;
+        var wealth_stars_four_scores = 85;
+        var wealth_stars_five_scores = 92;
+        if(wealth_stars == 3){
+            if(userInfo.wxBaseScore < wealth_stars_three_scores){
+                userInfo.wxBaseScore = wealth_stars_three_scores;
+            }
+        }else if(wealth_stars == 4){
+            if(userInfo.wxBaseScore < wealth_stars_four_scores){
+                userInfo.wxBaseScore = wealth_stars_four_scores;
+            }
+        }else if(wealth_stars == 5){
+            if(userInfo.wxBaseScore < wealth_stars_five_scores){
+                userInfo.wxBaseScore = wealth_stars_five_scores;
+            }
+        }
+        //userInfo.hightScore = (70 * (jxScore + userInfo.wxBaseScore)).toFixed(0);
+        var hightScore = (((userInfo.xjStarScore/3)+userInfo.wxBaseScore)*70).toFixed(0);
+        cb(hightScore);
 	});
 };
 
