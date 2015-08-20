@@ -28,16 +28,14 @@ function fixStar(star) {
 operater.addUser = function(info,cb){
     var  md5 = crypto.createHash('md5');
     var newPasswd = md5.update(info.password).digest('base64');
-    var sql = "insert into user_table(user_id, openid,name, sex, birthday,staryear, birthAddress, regAddress,regTime,passwd,viplevel,flystar,sjWs,birthWs,yueNum,yangSum,clockWs,gz,ts,sp,queNum,sjIndex,phone,email) values('"
-        + info.uid + "','" + (info.openid ? info.openid : "openid") + "','" + info.name + "'," + info.sex + ",'" + info.birthday + "','" + user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2) + "'," + info.birthAddress + ","
-        + info.registAddress + ",'" + info.regTime + "','" + newPasswd + "'," + info.vipLevel + ",'" + info.flystar + "'," + (info.sjWS ? "1" : "0") + "," + info.birthWS + ","
-        + info.starNum + "," + info.yangSum + "," + (info.clockWS ? "1" : "0") + ",'" + info.gz + "','" + info.ts + "','" + info.sp + "','" + info.queNum + "'," + info.sjIndex + ",'" + info.phone + "','" + info.email + "');";
+    var values=[info.uid,info.openid ? info.openid : "openid",info.name,info.sex,info.birthday,user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),info.birthAddress,info.registAddress,info.regTime,newPasswd,info.vipLevel,info.flystar,info.sjWS ? "1" : "0",info.birthWS,info.starNum,info.yangSum,info.clockWS ? "1" : "0",info.gz,info.ts,info.sp,info.queNum,info.sjIndex,info.phone,info.email];
+    var sql = "insert into user_table(user_id, openid,name, sex, birthday,staryear, birthAddress, regAddress,regTime,passwd,viplevel,flystar,sjWs,birthWs,yueNum,yangSum,clockWs,gz,ts,sp,queNum,sjIndex,phone,email) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
     console.log(sql);
 
-    mysqlClient.insert(sql, null, function (err) {
-        var sql1 = "insert into  user_detail_table(user_id) values ('"+info.uid+"')";
-        mysqlClient.update(sql1, null, function (err1) {
+    mysqlClient.insert(sql, values, function (err) {
+        var sql1 = "insert into  user_detail_table(user_id) values (?)";
+        mysqlClient.update(sql1, [info.uid], function (err1) {
             if(cb){
                 cb.call(err1);
             }
@@ -97,9 +95,9 @@ operater.getMaxId = function (cb) {
 operater.userLogin = function (info, cb) {
     var  md5 = crypto.createHash('md5');
     var newPasswd = md5.update(info.password).digest('base64');
-    var sql = "select * from user_table where user_id='" + info.uid + "' and passwd='" + newPasswd + "';";
+    var sql = "select * from user_table where user_id=? and passwd=?";
     //log(sql);
-    mysqlClient.query(sql, null, function (err, res) {
+    mysqlClient.query(sql, [info.uid,newPasswd], function (err, res) {
         if (err) {
             console.log("Error ocuor when select userinfo from user_table;");
             console.log(err);
@@ -125,9 +123,9 @@ operater.userLogin = function (info, cb) {
 
 
 operater.getUserInfo = function(info, cb){
-    var sql = "select * from user_table where user_id='" + info.uid + "';";
+    var sql = "select * from user_table where user_id=?";
     //log(sql);
-    mysqlClient.query(sql, null, function (err, res) {
+    mysqlClient.query(sql, [info.uid], function (err, res) {
         if (err) {
             console.log("Error:1 ocuor when select userinfo from user_table;");
             console.log(err);
@@ -170,8 +168,8 @@ operater.getUserInfo = function(info, cb){
 }
 
 operater.getUserBaseInfo = function(info, cb){
-    var sql = "select * from user_table where user_id='" + info.uid + "';";
-    mysqlClient.query(sql, null, function (err, res) {
+    var sql = "select * from user_table where user_id=?";
+    mysqlClient.query(sql, [info.uid], function (err, res) {
         if (err) {
             console.log("Error:1 ocuor when select userinfo from user_table;");
             console.log(err);
@@ -210,8 +208,8 @@ operater.getUserBaseInfo = function(info, cb){
 }
 
 operater.getFlyStarsByUID = function(uid,cb){
-    var sql = "select flystar from user_table where user_id='" + uid + "';";
-    mysqlClient.query(sql, null, function (err, res) {
+    var sql = "select flystar from user_table where user_id=?";
+    mysqlClient.query(sql, [uid], function (err, res) {
         if (err) {
             console.log("Error:1 ocuor when select flystar from user_table;");
             console.log(err);
@@ -259,9 +257,9 @@ operater.getBaseNum = function(info,cb){
     }
     
     
-    var sql = "select " + key + ",jxNum from ming_table where flystar ='" + flystar + "' and sex=" + info.sex + ";";
+    var sql = "select " + key + ",jxNum from ming_table where flystar =? and sex=?";
     //console.log(sql);
-    mysqlClient.query(sql, null, function (err, res) {
+    mysqlClient.query(sql, [flystar,info.sex], function (err, res) {
         if (err) {
             console.log("Error ocuor when select basenum from ming_table;");
             console.log(err);
@@ -287,9 +285,9 @@ operater.getBaseNum = function(info,cb){
 
 //获得人生谏言
 operater.getRsjy = function (info, cb) {
-    var sql = "select jianyan from jianyan_table where nianstar =" + info.flystar.substr(2,1) + " and sex=" + info.sex + ";";
+    var sql = "select jianyan from jianyan_table where nianstar =? and sex=?";
     //console.log(sql);
-    mysqlClient.query(sql, null, function (err, res) {
+    mysqlClient.query(sql, [info.flystar.substr(2,1),info.sex], function (err, res) {
         if (err) {
             console.log("Error ocuor when select jianyan from jianyan_table;");
             console.log(err);
@@ -313,9 +311,9 @@ operater.getRsjy = function (info, cb) {
 
 //获得基本性格
 operater.getBaseXg = function (info, cb) {
-    var sql = "select basexg,otherxg from basexg_table where (yangsum1 =" + info.yangSum + " or yangsum1 = " + info.yangSum.toString().split("").reverse().join("").toString() + ") and yearstar=" + info.flystar.substr(2, 1) + " and monthstar = " + info.flystar.substr(3, 1) + ";";
+    var sql = "select basexg,otherxg from basexg_table where (yangsum1 =? or yangsum1 = ?) and yearstar=? and monthstar = ?";
     //log(sql);
-    mysqlClient.query(sql, null, function (err, res) {
+    mysqlClient.query(sql, [info.yangSum,info.yangSum.toString().split("").reverse().join("").toString(),info.flystar.substr(2, 1),info.flystar.substr(3, 1)], function (err, res) {
         if (err) {
             console.log("Error ocuor when select basexg from basexg_table;");
             console.log(err);
@@ -345,9 +343,9 @@ operater.getOtherXg = function (info, cb) {
     if (!queNum) {
         queNum = "0";
     }
-    var sql = "select mainbz,otherxg,otherbz from otherxg_table where quenum =" + queNum + ";";
+    var sql = "select mainbz,otherxg,otherbz from otherxg_table where quenum =?";
 //    log(sql);
-    mysqlClient.query(sql, null, function (err, res) {
+    mysqlClient.query(sql, [queNum], function (err, res) {
         if (err) {
             console.log("Error ocuor when select * from otherxg_table;");
             console.log(err);
@@ -378,9 +376,9 @@ operater.getYearYun = function (info, star, cb) {
     
     if (info.version > 0) {
 
-        var sql = "select sex,flystar from user_table where user_id='" + info.uid + "';";
+        var sql = "select sex,flystar from user_table where user_id=?";
         log(sql);
-        mysqlClient.query(sql, null, function (err, res) {
+        mysqlClient.query(sql, [info.uid], function (err, res) {
             if (err) {
                 console.log("Error:1 ocuor when select userinfo from user_table;");
                 console.log(err);
@@ -434,9 +432,9 @@ operater.getYearYun = function (info, star, cb) {
         });
     }
     else {
-        var sql = "select * from nianyun_table a,user_table b where a.curyear=" + star + " and a.sex=" + info.sex + " and  a.birthyear = CONVERT( b.staryear , SIGNED ) and b.user_id='" + info.uid + "';";
+        var sql = "select * from nianyun_table a,user_table b where a.curyear=? and a.sex=? and  a.birthyear = CONVERT( b.staryear , SIGNED ) and b.user_id=?";
         log(sql);
-        mysqlClient.query(sql, null, function (err, res) {
+        mysqlClient.query(sql, [star,info.sex,info.uid], function (err, res) {
             if (err) {
                 console.log("Error ocuor when select * from nianyun_table;");
                 log(sql);
@@ -476,9 +474,9 @@ operater.getYearYun = function (info, star, cb) {
 operater.getMonthYun = function (info, star, cb) {
 
     if (info.version > 0) {
-        var sql = "select sex,flystar from user_table where user_id='" + info.uid + "';";
+        var sql = "select sex,flystar from user_table where user_id=?";
         //log(sql);
-        mysqlClient.query(sql, null, function (err, res) {
+        mysqlClient.query(sql, [info.uid], function (err, res) {
             if (err) {
                 console.log("Error:1 ocuor when select userinfo from user_table;");
                 console.log(err);
@@ -538,9 +536,9 @@ operater.getMonthYun = function (info, star, cb) {
     else {
 
         //var sql = "select nl" + gzd + ",sy" + gzd + ",qg" + gzd + " from riyun_table where sex=" + info.sex + " and birthyear=" + info.birthday.substr(2, 2) + " and curmonth=" + 1 + " and curday=" + 1 + ";";
-        var sql = "select * from riyun_table a,user_table b where a.sex=" + info.sex + " and a.birthyear = CONVERT( b.staryear , SIGNED )  and a.curmonth=" + star + " and b.user_id = " + info.uid + ";";
+        var sql = "select * from riyun_table a,user_table b where a.sex=? and a.birthyear = CONVERT( b.staryear , SIGNED )  and a.curmonth=? and b.user_id = ?";
         log(sql);
-        mysqlClient.query(sql, null, function (err, res) {
+        mysqlClient.query(sql, [info.sex,star, info.uid ], function (err, res) {
             if (err) {
                 console.log("Error ocuor when select * from riyun_table;");
                 console.log(err);
@@ -578,9 +576,9 @@ operater.getMonthYun = function (info, star, cb) {
 }
 
 var getXianMiaoFromDB = function (colKey, aType,aNum, cb) {
-    var sql = "select " + colKey + " from gua_table where guanum='" + aNum + "';";
+    var sql = "select " + colKey + " from gua_table where guanum=?";
 
-    mysqlClient.query(sql, null, function (err, res) {
+    mysqlClient.query(sql, [aNum], function (err, res) {
         if (err) {
             console.log("Error ocuor when select " + colKey + " from gua_table;");
             console.log(err);
@@ -678,10 +676,9 @@ operater.getXianMiao = function (uid,aType,aNum,cb) {
 }
 
 operater.onKhfk = function (uid,msg, cb) {
-    var sql = "insert into khfk_table(user_id, msg) values('"
-        + uid + "','" + msg + "');";
+    var sql = "insert into khfk_table(user_id, msg) values(?,?);";
     console.log(sql);
-    mysqlClient.insert(sql, null, function (err) {
+    mysqlClient.insert(sql, [uid,msg], function (err) {
         if (err) {
             console.log("Error ocuor when insert into khfk_table;");
             console.log(err);
@@ -719,10 +716,10 @@ operater.getAllUser = function (cb) {
 }
 
 operater.setUserDeviceId = function (info, cb) {
-    var sql = "update user_table set deviceid = '" + info.token + "',user_os = " + info.os + " where user_id = '" + info.uid + "'";
+    var sql = "update user_table set deviceid =?,user_os = ? where user_id = ?";
     console.log(sql);
 
-    mysqlClient.insert(sql, null, function (err) {
+    mysqlClient.insert(sql, [ info.token,info.os,info.uid], function (err) {
         if (cb) {
             cb.call(err);
         }
@@ -735,10 +732,10 @@ operater.setUserDeviceId = function (info, cb) {
  * @param cb
  */
 operater.getUserLastJxScore = function (info, cb) {
-    var sql = "select wealth_stars,lastJxScore,baseZyScore from newming_table where  flystar = '" + info.flystar + "'";//20150203 sex = " + info.sex + " and
+    var sql = "select wealth_stars,lastJxScore,baseZyScore from newming_table where  flystar = ?";//20150203 sex = " + info.sex + " and
 
 
-    mysqlClient.query(sql, null, function (err, res) {
+    mysqlClient.query(sql, [info.flystar], function (err, res) {
         if (err) {
             console.log("Error ocuor when getUserLastJxScore;");
             console.log(sql);
@@ -1111,9 +1108,9 @@ operater.setColour = function(uid,colour,cb){
  * @param cb
  */
 operater.addFeedback = function(uid,content,cb){
-    var sql = "insert feedback_table(uid,content) value('" + uid + "','" + content + "')";
+    var sql = "insert feedback_table(uid,content) value(?,?)";
     console.log(sql);
-    mysqlClient.insert(sql, null, function (err) {
+    mysqlClient.insert(sql, [uid,content], function (err) {
         if (cb) {
             cb.call(err);
         }
@@ -1151,9 +1148,9 @@ operater.addToContract = function(uid,contracts_uid,contracts_name,cb){
 //            cb("请勿重复添加!")
 //            return;
 //        }
-        sql = "insert contracts_table(uid,contracts_uid,contracts_name,status) value('" + uid + "','" + contracts_uid + "','" + contracts_name + "',1);";
+        sql = "insert contracts_table(uid,contracts_uid,contracts_name,status) value(?,?,?,?);";
         console.log(sql);
-        mysqlClient.insert(sql, null, function (err) {
+        mysqlClient.insert(sql, [uid,contracts_uid,contracts_name,1], function (err) {
             if (cb) {
                 cb.call(err);
             }
@@ -1168,9 +1165,9 @@ operater.addToContract = function(uid,contracts_uid,contracts_name,cb){
  * @param cb
  */
 operater.delFromContract = function(uid,contracts_uid,cb){
-    var sql = "delete from contracts_table where (uid=" + uid + " and contracts_uid=" + contracts_uid + ") or (uid=" + contracts_uid + " and contracts_uid=" + uid + ")";
+    var sql = "delete from contracts_table where (uid=? and contracts_uid=?) or (uid=? and contracts_uid=?)";
     console.log(sql);
-    mysqlClient.delete(sql, null, function (err) {
+    mysqlClient.delete(sql, [uid,contracts_uid,contracts_uid,uid], function (err) {
         if (cb) {
             cb.call(err);
         }
@@ -1183,14 +1180,14 @@ operater.delFromContract = function(uid,contracts_uid,cb){
  * @param cb
  */
 operater.getContract = function(uid,status,cb){
-    var sql = "select c.contracts_uid,c.contracts_name,u.name,u.sex,u.birthday,c.id,d.head_img,d.head_url from contracts_table c left join user_table u on u.user_id=c.contracts_uid left join user_detail_table d on c.contracts_uid=d.user_id where c.uid='" + uid + "'";
+    var sql = "select c.contracts_uid,c.contracts_name,u.name,u.sex,u.birthday,c.id,d.head_img,d.head_url from contracts_table c left join user_table u on u.user_id=c.contracts_uid left join user_detail_table d on c.contracts_uid=d.user_id where c.uid=?";
     if(status=="1"){
         sql+=" and c.status=1 order by c.id asc";
     }else {
         sql += " order by c.status desc";
     }
     console.log(sql);
-    mysqlClient.query(sql, null, function (err,res) {
+    mysqlClient.query(sql, [uid], function (err,res) {
         var contracts = [];
         for(var i = 0; i < res.length; ++i){
             contracts.push([res[i]["contracts_uid"],res[i]["name"],res[i]["sex"],res[i]["birthday"],res[i]["id"],res[i]["head_img"],res[i]["head_url"]]);
@@ -1201,13 +1198,13 @@ operater.getContract = function(uid,status,cb){
 
 operater.editContract = function(id,uid,contracts_uid,contracts_name,edit_type,cb){
     if(edit_type=="1"){
-        var sql = "update contracts_table set status=0 where id= "+id+";";
-        mysqlClient.update(sql, null, function (err) {
+        var sql = "update contracts_table set status=0 where id= ?";
+        mysqlClient.update(sql, [id], function (err) {
             if (err) {
                 console.log(err);
             }else{
-                var sql1= "update contracts_table set status=1 where uid='" + uid + "' and contracts_uid='" + contracts_uid + "'";
-                mysqlClient.update(sql1, null, function (err1) {
+                var sql1= "update contracts_table set status=1 where uid=? and contracts_uid=?";
+                mysqlClient.update(sql1, [uid,contracts_uid], function (err1) {
                     if (err1) {
                         console.log(err1);
                     }else{
@@ -1217,14 +1214,14 @@ operater.editContract = function(id,uid,contracts_uid,contracts_name,edit_type,c
             }
         });
     }else if(edit_type=="0"){
-        var sql = "update contracts_table set status=0 where id= "+id+";";
+        var sql = "update contracts_table set status=0 where id= ?";
         console.log(sql);
-        mysqlClient.update(sql, null, function (err) {
+        mysqlClient.update(sql, [id], function (err) {
             if (err) {
                 console.log(err);
             }else{
-                var sql1 = "insert contracts_table(uid,contracts_uid,contracts_name,status) value('" + uid + "','" + contracts_uid + "','" + contracts_name + "',1);";
-                mysqlClient.update(sql1, null, function (err1) {
+                var sql1 = "insert contracts_table(uid,contracts_uid,contracts_name,status) value(?,?,?,?);";
+                mysqlClient.update(sql1, [uid,contracts_uid,contracts_name,1], function (err1) {
                     if (err1) {
                         console.log(err1);
                     }else{
@@ -1237,9 +1234,9 @@ operater.editContract = function(id,uid,contracts_uid,contracts_name,edit_type,c
 }
 
 operater.editStatusContract = function(uid,contracts_uid,status,cb){
-    var sql = "update contracts_table set status="+status+" where uid='" + uid + "' and contracts_uid='" + contracts_uid + "'";
+    var sql = "update contracts_table set status=? where uid=? and contracts_uid=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err) {
+    mysqlClient.update(sql, [status,uid,contracts_uid], function (err) {
         if (err) {
             console.log(err);
         }
@@ -1253,9 +1250,9 @@ operater.editStatusContract = function(uid,contracts_uid,status,cb){
  * @param cb
  */
 operater.getBless = function(uid,cb){
-    var sql = "select bless from user_table where user_id='" + uid + "'";
+    var sql = "select bless from user_table where user_id=?";
     console.log(sql);
-    mysqlClient.query(sql, null, function (err,res) {
+    mysqlClient.query(sql, [uid], function (err,res) {
         cb(err,res[0]?res[0]["bless"]:0)
     });
 };
@@ -1272,9 +1269,9 @@ operater.setBless = function(uid,bless,lotus,cb){
 };
 
 operater.getUserIdByOpenId = function(openid,cb){
-    var sql = "select user_id from user_table where openid='" + openid + "'";
+    var sql = "select user_id from user_table where openid=?";
     console.log(sql);
-    mysqlClient.query(sql, null, function (err,res) {
+    mysqlClient.query(sql, [openid], function (err,res) {
         cb(err,res[0] ?res[0]["user_id"]:0);
     });
 };
@@ -1291,9 +1288,9 @@ operater.setLoginCount = function(uid,login_count){
 };
 
 operater.addToAttention = function(uid,attention_uid,cb){
-    var sql = "select attention_uid,attention_flag from contracts_table where uid='" + uid + "'";
+    var sql = "select attention_uid,attention_flag from contracts_table where uid=?";
     console.log(sql);
-    mysqlClient.query(sql, null, function (err,res) {
+    mysqlClient.query(sql, [uid], function (err,res) {
         var contracts = [];
         for(var i = 0; i < res.length; ++i){
             if(res[i]["attention_flag"]){
@@ -1334,9 +1331,9 @@ operater.delAttention = function(uid,contracts_uid,cb){
 };
 
 operater.getAttentions = function(uid,cb){
-    var sql = "select contracts_uid,attention_flag from contracts_table where uid='" + uid + "'";
+    var sql = "select contracts_uid,attention_flag from contracts_table where uid=?";
     console.log(sql);
-    mysqlClient.query(sql, null, function (err,res) {
+    mysqlClient.query(sql, [uid], function (err,res) {
         var contracts = [];
         for(var i = 0; i < res.length; ++i){
             if(res[i]["attention_flag"]){
@@ -1391,9 +1388,9 @@ operater.GetBless = function(id,uid,cb){
                     cb(err1);
                 }else{
                     console.log(res1)
-                    var sql2 = "update user_table set bless=bless+"+res1[0].bless+"  where user_id= ?;";
+                    var sql2 = "update user_table set bless=bless+?  where user_id= ?;";
                     console.log(sql2);
-                    mysqlClient.update(sql2, [uid], function (err2) {
+                    mysqlClient.update(sql2, [res1[0].bless,uid], function (err2) {
                         if (cb) {
                             cb.call(err2);
                         }
@@ -1435,9 +1432,9 @@ operater.noBless = function(id,uid,cb){
 };
 //20150129 旧的
 operater.GiveAwayBless2 = function(uid,name,target_uid,bless,cb){
-    var sql = "select give_away_bless from user_table where user_id='" + target_uid + "';";
+    var sql = "select give_away_bless from user_table where user_id=?";
     console.log(sql);
-    mysqlClient.query(sql, null, function (err,res) {
+    mysqlClient.query(sql, [target_uid], function (err,res) {
         if(res){
             var give_away_bless = res[0]?res[0]["give_away_bless"]:"[]";
             if(give_away_bless){
@@ -1470,9 +1467,9 @@ operater.GiveAwayBless2 = function(uid,name,target_uid,bless,cb){
 };
 //20150129 旧的
 operater.GetBless2 = function(uid,cb){
-    var sql = "select give_away_bless from user_table where user_id='" + uid + "';";
+    var sql = "select give_away_bless from user_table where user_id=?";
     console.log(sql);
-    mysqlClient.query(sql, null, function (err,res) {
+    mysqlClient.query(sql, [uid], function (err,res) {
         if(err){
             cb(err);
         }
@@ -1548,8 +1545,8 @@ operater.insertEnergyCache = function(user_id,energy,date,cb){
  * @param cb
  */
 operater.updateEnergyCache = function(user_id,energy,date,cb){
-    var values = [date,user_id];
-    var sql = "update energycache_table set energy= "+energy+",date=?  where user_id= ?;";
+    var values = [energy,date,user_id];
+    var sql = "update energycache_table set energy= ?,date=?  where user_id= ?;";
     console.log(sql);
     mysqlClient.update(sql, values, function (err) {
         if (err) {
