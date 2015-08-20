@@ -139,7 +139,7 @@ exports.onReg = function(req,res){
     var uname = req.body["uname"];
     var pwd = req.body["pwd"];
     db.reg(uid,uname,pwd,function(err1,result1){
-        response.end(res,response.buildOK(),callback);
+        response.end(res,response.buildResponse(response.OK,uid),callback);
     });
 };
 
