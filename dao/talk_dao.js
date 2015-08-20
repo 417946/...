@@ -28,8 +28,8 @@ operater.getFriendByUid = function(uid,fid,cb){
 operater.getHistory = function(uid1,uid2,page,index,cb){
     var countsql="SELECT count(*) pc FROM talk_content_table WHERE ((fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?)) AND content!='' ";
     mysqlClient.query(countsql, [uid1,uid2,uid2,uid1], function (err,res1) {
-        var sql = "SELECT * FROM talk_content_table WHERE ((fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?)) AND content !='' ORDER BY create_time DESC LIMIT ?,"+index;
-        mysqlClient.query(sql, [uid1,uid2,uid2,uid1,(page-1)*index], function (err,res) {
+        var sql = "SELECT * FROM talk_content_table WHERE ((fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?)) AND content !='' ORDER BY create_time DESC LIMIT ?,?";
+        mysqlClient.query(sql, [uid1,uid2,uid2,uid1,(page-1)*index,index], function (err,res) {
             if(res[0]){
                 res[0].pagecount=res1[0].pc;
             }
@@ -38,11 +38,11 @@ operater.getHistory = function(uid1,uid2,page,index,cb){
     });
 };
 operater.addFriend = function(uid,uname,fid,fname,sort1,sort2,cb){
-    var sql = "insert talk_friend_table (uid,fid,fname,sort) value(" + uid + "," + fid + ",'"+fname+"','"+sort1+"')";
+    var sql = "insert talk_friend_table (uid,fid,fname,sort) value(?,?,?,?)";
     console.log(sql);
-    mysqlClient.insert(sql, null, function (err) {
-        var sql1 = "insert talk_friend_table (uid,fid,fname,sort) value(" + fid + "," + uid + ",'"+uname+"','"+sort2+"')";
-        mysqlClient.insert(sql1, null, function (err1) {
+    mysqlClient.insert(sql, [uid,fid,fname,sort1], function (err) {
+        var sql1 = "insert talk_friend_table (uid,fid,fname,sort) value(?,?,?,?)";
+        mysqlClient.insert(sql1, [fid,uid,uname,sort2], function (err1) {
             if (cb) {
                 cb.call(err1);
             }
@@ -58,23 +58,23 @@ operater.addContent = function(obj,cb){
     });
 };
 operater.updateStatusByUid = function(uid,cb){
-    var sql = "update talk_content_table set status=0 where type!=2 and toUid="+uid;
+    var sql = "update talk_content_table set status=0 where type!=2 and toUid=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, [uid], function (err,res) {
         cb(err);
     });
 };
 operater.updateStatusById = function(id,cb){
-    var sql = "update talk_content_table set status=0 where id="+id;
+    var sql = "update talk_content_table set status=0 where id=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, [id], function (err,res) {
         cb(err);
     });
 };
 operater.updateStatusByVoice = function(content,cb){
-    var sql = "update talk_content_table set status=0 where type=2 and content='"+content+"'";
+    var sql = "update talk_content_table set status=0 where type=2 and content=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, [content], function (err,res) {
         cb(err);
     });
 };

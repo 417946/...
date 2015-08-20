@@ -30,9 +30,9 @@ operater.addFriend = function(name,user_id,sex,birthday,head_img,cb){
             cb("请勿重复添加!")
             return;
         }
-        sql = "insert friends_table (name,user_id,sex,birthday,head_img) value('" + name + "','" + user_id + "','"+sex+"','"+birthday+"','"+head_img+"')";
+        sql = "insert friends_table (name,user_id,sex,birthday,head_img) value(?,?,?,?,?)";
         console.log(sql);
-        mysqlClient.insert(sql, null, function (err) {
+        mysqlClient.insert(sql, [name,user_id,sex,birthday,head_img], function (err) {
             if (cb) {
                 cb.call(err);
             }
@@ -41,12 +41,14 @@ operater.addFriend = function(name,user_id,sex,birthday,head_img,cb){
 };
 
 operater.editFriend = function(id,name,sex,birthday,head_img,cb){
-    var sql = "update friends_table set name='"+name+"',sex="+sex+",birthday='"+birthday+"',head_img='"+head_img+"' where id="+id;
+    var value=[name,sex,birthday,head_img,id];
+    var sql = "update friends_table set name=?,sex=?,birthday=?,head_img=? where id=?";
     if(head_img==""){
-        sql = "update friends_table set name='"+name+"',sex="+sex+",birthday='"+birthday+"' where id="+id;
+        value=[name,sex,birthday,id];
+        sql = "update friends_table set name=?,sex=?,birthday=? where id=?";
     }
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, value, function (err,res) {
         if (cb) {
             cb.call(err);
         }
@@ -55,10 +57,10 @@ operater.editFriend = function(id,name,sex,birthday,head_img,cb){
 
 
 operater.delFriend = function(fid,cb){
-    var sql = "delete from friends_table where id="+fid;
+    var sql = "delete from friends_table where id=?";
     console.log(sql);
 
-    mysqlClient.insert(sql, null, function (err) {
+    mysqlClient.insert(sql, [fid], function (err) {
         if (cb) {
             cb.call(err);
         }
@@ -66,10 +68,10 @@ operater.delFriend = function(fid,cb){
 };
 
 operater.delFriends = function(uid,fid,cb){
-    var sql = "delete from talk_friend_table where (uid="+uid+" and fid= "+fid+") or (uid="+fid+" and fid="+uid+")";
+    var sql = "delete from talk_friend_table where (uid=? and fid=?) or (uid=? and fid=?)";
     console.log(sql);
 
-    mysqlClient.insert(sql, null, function (err) {
+    mysqlClient.insert(sql, [uid,fid,fid,uid], function (err) {
         if (cb) {
             cb.call(err);
         }
@@ -77,48 +79,48 @@ operater.delFriends = function(uid,fid,cb){
 };
 
 operater.getFriendList = function(uid,index,cb){
-    var sql = "select * from friends_table where user_id="+uid+" order by id asc limit 0,"+index;
+    var sql = "select * from friends_table where user_id=? order by id asc limit 0,?";
     console.log(sql);
-    mysqlClient.query(sql,null, function (err,res) {
+    mysqlClient.query(sql,[uid,index], function (err,res) {
         cb(err,res);
     });
 };
 
 operater.getFriendById = function(fid,cb){
-    var sql = "select * from friends_table where fid="+fid;
+    var sql = "select * from friends_table where fid=?";
     console.log(sql);
-    mysqlClient.query(sql,null, function (err,res) {
+    mysqlClient.query(sql,[fid], function (err,res) {
         cb(err,res);
     });
 };
 
 operater.getContractByUid = function(uid,fid,status,cb){
-    var sql = "select * from contracts_table where uid="+uid+" and contracts_uid = "+fid+" and status="+status;
+    var sql = "select * from contracts_table where uid=? and contracts_uid =? and status=?";
     console.log(sql);
-    mysqlClient.query(sql,null, function (err,res) {
+    mysqlClient.query(sql,[uid,fid,status], function (err,res) {
         cb(err,res);
     });
 };
 
 operater.getCountByUid = function(uid,cb){
-    var sql = "select count(*) count from contracts_table where contracts_uid="+uid;
+    var sql = "select count(*) count from contracts_table where contracts_uid=?";
     console.log(sql);
-    mysqlClient.query(sql,null, function (err,res) {
+    mysqlClient.query(sql,[uid], function (err,res) {
         cb(err,res);
     });
 };
 
 operater.getFriendByUid = function(uid,fid,cb){
-    var sql = "select count(*) count from talk_friend_table where uid="+uid+" and fid="+fid;
+    var sql = "select count(*) count from talk_friend_table where uid=? and fid=?";
     console.log(sql);
-    mysqlClient.query(sql,null, function (err,res) {
+    mysqlClient.query(sql,[uid,fid], function (err,res) {
         cb(err,res);
     });
 };
 operater.getGuanzhuByUid = function(uid,fid,cb){
-    var sql = "select count(*) count from contracts_table where uid="+uid+" and contracts_uid="+fid;
+    var sql = "select count(*) count from contracts_table where uid=? and contracts_uid=?";
     console.log(sql);
-    mysqlClient.query(sql,null, function (err,res) {
+    mysqlClient.query(sql,[uid,fid], function (err,res) {
         cb(err,res);
     });
 };

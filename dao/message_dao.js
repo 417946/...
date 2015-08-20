@@ -15,12 +15,12 @@ operater.getMessageByUid = function(user_id,cb){
 };
 
 operater.addMessage = function(cid,uid,uname,fromuid,fromuname,content,type,cb){
-    var sql1 = "select * from message_table where receive_userid = "+uid+" and send_userid = "+fromuid+" and type="+type;
-    mysqlClient.query(sql1, null, function (err1,res) {
+    var sql1 = "select * from message_table where receive_userid = ? and send_userid = ? and type=?";
+    mysqlClient.query(sql1, [uid,fromuid,type], function (err1,res) {
         if(typeof(res)=="undefined"||res.length==0){
-            var sql = "insert message_table (receive_userid,receive_username,send_userid,send_username,content,type,param,status) value(" + uid + ",'"+uname+"',"+fromuid+",'"+fromuname+"','" + content + "','"+type+"','"+cid+"',1)";
+            var sql = "insert message_table (receive_userid,receive_username,send_userid,send_username,content,type,param,status) value(?,?,?,?,?,?,?,?)";
             console.log(sql);
-            mysqlClient.insert(sql, null, function (err) {
+            mysqlClient.insert(sql, [uid,uname,fromuid,fromuname,content,type,cid,1], function (err) {
                 if (cb) {
                     cb.call(err);
                 }
@@ -33,18 +33,18 @@ operater.addMessage = function(cid,uid,uname,fromuid,fromuname,content,type,cb){
     });
 };
 
-operater.updateMessageById = function(uid,detail,cb){
-    var sql = "update message_table set status=0,param='"+detail+"' where id="+mid;
+operater.updateMessageById = function(mid,detail,cb){
+    var sql = "update message_table set status=0,param=? where id=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, [detail,mid], function (err,res) {
         cb(err);
     });
 };
 
 operater.delMessageById = function(mid,cb){
-    var sql = "delete from message_table where id=" + mid;
+    var sql = "delete from message_table where id=?";
     console.log(sql);
-    mysqlClient.delete(sql, null, function (err) {
+    mysqlClient.delete(sql, [mid], function (err) {
         if (cb) {
             cb.call(err);
         }
@@ -52,9 +52,9 @@ operater.delMessageById = function(mid,cb){
 };
 
 operater.delMessageByUid = function(uid,cb){
-    var sql = "delete from message_table where receive_userid='" + uid + "'";
+    var sql = "delete from message_table where receive_userid=?";
     console.log(sql);
-    mysqlClient.delete(sql, null, function (err) {
+    mysqlClient.delete(sql, [uid], function (err) {
         if (cb) {
             cb.call(err);
         }

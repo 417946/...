@@ -6,9 +6,9 @@ var common = require("../common.js");
 
 
 operater.addShield = function(uid,sid,cb){
-    sql = "insert shield_table (uid,sid) value('" + uid + "','" +sid+"')";
+    sql = "insert shield_table (uid,sid) value(?,?)";
     console.log(sql);
-    mysqlClient.insert(sql, null, function (err) {
+    mysqlClient.insert(sql, [uid,sid], function (err) {
         if (cb) {
             cb.call(err);
         }
@@ -17,9 +17,9 @@ operater.addShield = function(uid,sid,cb){
 
 
 operater.delShield = function(uid,sid,cb){
-    var sql = "delete from shield_table where uid="+uid+" and sid="+sid;
+    var sql = "delete from shield_table where uid=? and sid=?";
     console.log(sql);
-    mysqlClient.insert(sql, null, function (err) {
+    mysqlClient.insert(sql, [uid,sid], function (err) {
         if (cb) {
             cb.call(err);
         }

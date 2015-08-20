@@ -34,25 +34,25 @@ operater.getHeadImg = function(user_id,cb){
 };
 
 operater.updateHeadImg = function(uid,head_img,head_url,cb){
-    var sql = "update user_detail_table set head_img="+head_img+",head_url='"+head_url+"' where user_id="+uid;
+    var sql = "update user_detail_table set head_img=?,head_url=? where user_id=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, [head_img,head_url,uid], function (err,res) {
         cb(err);
     });
 };
 
 operater.updateTipMusic = function(uid,tip_music,cb){
-    var sql = "update user_detail_table set tip_music="+tip_music+" where user_id="+uid;
+    var sql = "update user_detail_table set tip_music=? where user_id=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, [tip_music,uid], function (err,res) {
         cb(err);
     });
 };
 
 operater.updateColour = function(uid,colour,colour_index,cb){
-    var sql = "update user_table set colour="+colour+",colour_index="+colour_index+" where user_id="+uid;
+    var sql = "update user_table set colour=?,colour_index=? where user_id=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, [colour,colour_index,uid], function (err,res) {
         cb(err);
     });
 };
@@ -111,7 +111,7 @@ operater.getDaren = function(cb){
 operater.reg = function(uid,uname,pwd,cb){
     var  md5 = crypto.createHash('md5');
     var newPasswd = md5.update(pwd).digest('base64');
-    sql = "insert user_table (user_id,name,passwd) value(?,?,?)";
+    sql = "insert user_table (user_id,name,passwd,birthday,sex) value(?,?,?,'',2)";
     console.log(sql);
     mysqlClient.insert(sql, [uid,uname,newPasswd], function (err) {
         var sql1 = "insert into  user_detail_table(user_id) values ('"+uid+"')";
