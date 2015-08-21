@@ -81,7 +81,7 @@ operater.delFriends = function(uid,fid,cb){
 operater.getFriendList = function(uid,index,cb){
     var sql = "select * from friends_table where user_id=? order by id asc limit 0,?";
     console.log(sql);
-    mysqlClient.query(sql,[uid,index], function (err,res) {
+    mysqlClient.query(sql,[uid,parseInt(index)], function (err,res) {
         cb(err,res);
     });
 };
