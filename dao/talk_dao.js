@@ -29,7 +29,7 @@ operater.getHistory = function(uid1,uid2,page,index,cb){
     var countsql="SELECT count(*) pc FROM talk_content_table WHERE ((fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?)) AND content!='' ";
     mysqlClient.query(countsql, [uid1,uid2,uid2,uid1], function (err,res1) {
         var sql = "SELECT * FROM talk_content_table WHERE ((fromUid=? AND toUid=?) OR( fromUid=? AND toUid=?)) AND content !='' ORDER BY create_time DESC LIMIT ?,?";
-        mysqlClient.query(sql, [uid1,uid2,uid2,uid1,(page-1)*index,index], function (err,res) {
+        mysqlClient.query(sql, [uid1,uid2,uid2,uid1,parseInt((page-1)*index),parseInt(index)], function (err,res) {
             if(res[0]){
                 res[0].pagecount=res1[0].pc;
             }

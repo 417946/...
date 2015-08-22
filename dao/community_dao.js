@@ -71,7 +71,7 @@ operater.getTopicList = function(index,type,cb){
 //    var sql = "select * from topic_table order by id desc limit 0,"+index;
     var sql = "select t.*,u.name,d.identification,d.head_img,d.head_url from topic_table t left join user_table u on u.user_id=t.user_id left join user_detail_table d on t.user_id=d.user_id where t.type=? order by id desc limit 0,?";
     console.log(sql);
-    mysqlClient.query(sql,[type,index], function (err,res) {
+    mysqlClient.query(sql,[type,parseInt(index)], function (err,res) {
         cb(err,res);
     });
 };
@@ -85,7 +85,7 @@ operater.getTopicById = function(tid,cb){
 };
 
 operater.getTopicByUserId = function(user_id,index,cb){
-    var values = [user_id,index];
+    var values = [user_id,parseInt(index)];
     var sql = "select * from topic_table where user_id=? limit 0,?";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
@@ -96,7 +96,7 @@ operater.getTopicByUserId = function(user_id,index,cb){
 operater.getHotTopicList = function(index,cb){
     var sql = "select t.* from topic_table t left join (select topic_id,count(*) count_t from comment_table group by topic_id) c on c.topic_id=t.id order by c.count_t desc limit 0,?";
     console.log(sql);
-    mysqlClient.query(sql,[index], function (err,res) {
+    mysqlClient.query(sql,[parseInt(index)], function (err,res) {
         cb(err,res);
     });
 };
