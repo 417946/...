@@ -111,9 +111,9 @@ operater.getDaren = function(cb){
 operater.reg = function(uid,uname,pwd,cb){
     var  md5 = crypto.createHash('md5');
     var newPasswd = md5.update(pwd).digest('base64');
-    sql = "insert user_table (user_id,name,passwd,birthday,sex) value(?,?,?,'',2)";
+    sql = "insert user_table (user_id,name,passwd,birthday,sex) value(?,?,?,?,?)";
     console.log(sql);
-    mysqlClient.insert(sql, [uid,uname,newPasswd], function (err) {
+    mysqlClient.insert(sql, [uid,uname,newPasswd,'','2'], function (err) {
         var sql1 = "insert into  user_detail_table(user_id) values ('"+uid+"')";
         mysqlClient.update(sql1, null, function (err1) {
             if(cb){
