@@ -1546,7 +1546,7 @@ operater.insertEnergyCache = function(user_id,energy,date,cb){
  */
 operater.updateEnergyCache = function(user_id,energy,date,cb){
     var values = [energy,date,user_id];
-    var sql = "update energycache_table set energy= ?,date=?  where user_id= ?;";
+    var sql = "update energycache_table set energy=energy-?,date=?  where user_id= ?;";
     console.log(sql);
     mysqlClient.update(sql, values, function (err) {
         if (err) {

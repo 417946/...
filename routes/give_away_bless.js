@@ -18,7 +18,7 @@ exports.onGiveAwayBless = function(req,res){
         if(err){
             result.err = err;
         }
-        db.updateEnergyCache(uid,'energy-'+bless,aDate,function(err){
+        db.updateEnergyCache(uid,bless,aDate,function(err){
             if(err){
                 result.err+=err;
             }
