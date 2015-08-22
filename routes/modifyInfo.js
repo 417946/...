@@ -10,7 +10,6 @@ var user = require('./user.js');
 //当用户点击登陆按钮时被触发
 exports.onModify = function (req, res) {
     log("---- user modify info ------");
-
     var info = new userInfo();
     info.uid = req.body['uid'];
     info.name = req.body['name'];
