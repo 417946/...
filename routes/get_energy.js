@@ -54,7 +54,7 @@ exports.onGetEnergy = function(req,res){
                         res.end(JSON.stringify(result));
                     }
                     if(res2.length>0){
-                        db.updateEnergyCache(uid,scores[0],aDate,function(err){
+                        db.updateEnergyCacheDay(uid,scores[0],aDate,function(err){
                             if(err){
                                 result.err=err;
                                 res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });

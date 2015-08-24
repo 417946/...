@@ -47,15 +47,27 @@ operater.ModifyUser = function (info, cb) {
     var values = [];
     var sql = "";
     if(info.password==""){
-        values = [info.name, info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
-            info.birthAddress, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
-        sql = "update user_table set name= ? ,sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+        if(info.name==""){
+            values = [info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
+                info.birthAddress, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
+            sql = "update user_table set sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+        }else{
+            values = [info.name, info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
+                info.birthAddress, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
+            sql = "update user_table set name= ? ,sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+        }
     }else{
         var  md5 = crypto.createHash('md5');
         var newPasswd = md5.update(info.password).digest('base64');
-        values = [info.name, info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
-            info.birthAddress, newPasswd, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
-        sql = "update user_table set name= ? ,sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,passwd= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+        if(info.name==""){
+            values = [info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
+                info.birthAddress, newPasswd, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
+            sql = "update user_table set sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,passwd= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+        }else{
+            values = [info.name, info.sex, info.birthday, user.getStarYear(new Date(info.birthday.substr(0, 4) + "/" + info.birthday.substr(4, 2) + "/" + info.birthday.substr(6, 2))).substr(2, 2),
+                info.birthAddress, newPasswd, info.flystar, (info.sjWS ? "1" : "0"), info.birthWS, info.starNum, info.yangSum, (info.clockWS ? "1" : "0"), info.gz, info.ts, info.sp, info.queNum, info.sjIndex, info.uid];
+            sql = "update user_table set name= ? ,sex= ? ,birthday= ? ,staryear= ? ,birthAddress= ? ,passwd= ? ,flystar= ? ,sjWs= ? ,birthWs= ? ,yueNum= ? ,yangSum= ? ,clockWs= ? ,gz= ? ,ts= ? ,sp= ?,queNum= ? ,sjIndex= ? where user_id= ?;"
+        }
     }
 
         //"(user_id, name, sex, birthday,staryear, birthAddress, regAddress,regTime,passwd,viplevel,flystar,sjWs,birthWs,yueNum,yangSum,clockWs,gz,ts,sp,queNum,sjIndex) values('"+ info.sjIndex + ");"
@@ -1547,6 +1559,18 @@ operater.insertEnergyCache = function(user_id,energy,date,cb){
 operater.updateEnergyCache = function(user_id,energy,date,cb){
     var values = [energy,date,user_id];
     var sql = "update energycache_table set energy=energy-?,date=?  where user_id= ?;";
+    console.log(sql);
+    mysqlClient.update(sql, values, function (err) {
+        if (err) {
+            console.log(err);
+        }
+        cb(err);
+    });
+};
+
+operater.updateEnergyCacheDay = function(user_id,energy,date,cb){
+    var values = [energy,date,user_id];
+    var sql = "update energycache_table set energy=?,date=?  where user_id= ?;";
     console.log(sql);
     mysqlClient.update(sql, values, function (err) {
         if (err) {
