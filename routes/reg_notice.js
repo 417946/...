@@ -99,6 +99,29 @@ exports.onRegNotice = function(req,res){
         }
     });
 };
+exports.onGetSuxie = function(req,res){
+    //解析生日
+    var strDate = req.query['birthday'];
+    var callback=req.query.callback;
+    console.log(strDate)
+    var result = /(\d+).*?(\d+).*?(\d+).*?(\d+)\:(\d+)/g.exec(strDate);
+    //测试功能
+    var reqData = {
+        sex:			parseInt(req.query['sex']),
+        birthAddress:	parseInt(req.query['birthaddress'])-1,
+        year:			parseInt(result[1]),
+        month:			parseInt(result[2]),
+        day:			parseInt(result[3]),
+        clock:			parseInt(result[4])
+    }
+
+    var userInfo = user.getUserInfo(reqData);
+    var r={}
+    user.getSuxie1(userInfo,function(ss){
+        r.s=ss;
+        response.end(res,response.buildResponse(response.OK,r),callback);
+    });
+};
 exports.onFriendJy = function(req,res){
     //解析生日
     var strDate = req.query['birthday'];

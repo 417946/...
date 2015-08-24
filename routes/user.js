@@ -247,107 +247,107 @@ function getTimeGz(gz,clock){
 }
 //获得日运数
 //置闰法
-/**
-function getDayStar(aDate) {
-    var yearStar = 0;
-    var isAdd = true;
-    var yearNum = aDate.getFullYear();
-    var info = comm.getJqData()[yearNum];
 
-    var tempDate = new Date(info[9].date);
-    var tempJiazi = new Date(info[9].jiazi);
-
-    if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
-        tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
-    }
-    //先找在冬至前还是夏至前
-    if(aDate>=tempJiazi){//如果在夏至之后 检查是否在冬至之后
-        isAdd = !isAdd;
-        tempDate = new Date(info[21].date);
-        tempJiazi = new Date(info[21].jiazi);
-        if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
-            tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
-        }
-        if(aDate>=tempJiazi){//如果在冬至之后 找今年夏至
-            isAdd = !isAdd;
-            info = comm.getJqData()[yearNum+1];
-            tempDate = new Date(info[9].date);
-            tempJiazi = new Date(info[9].jiazi);
-            if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
-                tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
-            }
-        }
-    }
-//    if(tempJiazi<tempDate){
-//        isAdd = !isAdd;
+//function getDayStar(aDate) {
+//    var yearStar = 0;
+//    var isAdd = true;
+//    var yearNum = aDate.getFullYear();
+//    var info = comm.getJqData()[yearNum];
+//
+//    var tempDate = new Date(info[9].date);
+//    var tempJiazi = new Date(info[9].jiazi);
+//
+//    if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+//        tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
 //    }
-    if(aDate.getFullYear()==new Date(info[0].date).getFullYear()&&aDate< new Date(info[0].date)){//如果在立春之前 那属于上一年 而且肯定在夏至之前
-        yearNum--;
-        info = comm.getJqData()[yearNum];//年份-1
-        if(aDate>=new Date(info[21].jiazi)){
-            isAdd = true;
-            info = comm.getJqData()[yearNum+1];
-            tempDate=new Date(info[9].date);
-            tempJiazi = new Date(info[9].jiazi);
-            if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
-                tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
-            }
-        }else{
-            isAdd = false;
-            tempDate=new Date(info[21].date);
-            tempJiazi = new Date(info[21].jiazi);
-            if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
-                tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
-            }
-        }
-    }
-    //获得时间差
-    var ydelta;
-    if(aDate<tempJiazi){
-        ydelta = tools.GetDateDiff(aDate, tempJiazi, "day");
-    }else{
-        ydelta = tools.GetDateDiff(tempJiazi, aDate, "day");
-    }
-    var zhirun_dong=[2020,2008,1997,1985,1974,1951];
-    var zhirun_xia=[1963,1940];
-    if(isAdd){//如果是冬至到夏至(顺) 有可能是年初也可能是年末
-        for(var i=0;i<zhirun_xia.length;i++){
-            if(yearNum==zhirun_xia[i]&&tempJiazi.getFullYear()>yearNum){
-                if(ydelta==2){
-                    return 3;
-                }else  if(ydelta==1){
-                    return 2;
-                }else  if(ydelta==0){
-                    return 1;
-                }else{
-                    ydelta=ydelta+3;
-                }
-            }
-        }
-    }else{//如果是夏至到冬至(逆) 6-12月 只可能在本年
-        for(var i=0;i<zhirun_dong.length;i++){
-            if(yearNum==zhirun_dong[i]){
-                if(ydelta==2){
-                    return 7;
-                }else  if(ydelta==1){
-                    return 8;
-                }else  if(ydelta==0){
-                    return 9;
-                }else{
-                    ydelta=ydelta+3;
-                }
-            }
-        }
-    }
-    if (isAdd) {
-        yearStar = 9 - (ydelta % 9);
-    }
-    else {
-        yearStar = (ydelta % 9) + 1;
-    }
-    return yearStar;
-}
- */
+//    //先找在冬至前还是夏至前
+//    if(aDate>=tempJiazi){//如果在夏至之后 检查是否在冬至之后
+//        isAdd = !isAdd;
+//        tempDate = new Date(info[21].date);
+//        tempJiazi = new Date(info[21].jiazi);
+//        if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+//            tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+//        }
+//        if(aDate>=tempJiazi){//如果在冬至之后 找今年夏至
+//            isAdd = !isAdd;
+//            info = comm.getJqData()[yearNum+1];
+//            tempDate = new Date(info[9].date);
+//            tempJiazi = new Date(info[9].jiazi);
+//            if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+//                tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+//            }
+//        }
+//    }
+////    if(tempJiazi<tempDate){
+////        isAdd = !isAdd;
+////    }
+//    if(aDate.getFullYear()==new Date(info[0].date).getFullYear()&&aDate< new Date(info[0].date)){//如果在立春之前 那属于上一年 而且肯定在夏至之前
+//        yearNum--;
+//        info = comm.getJqData()[yearNum];//年份-1
+//        if(aDate>=new Date(info[21].jiazi)){
+//            isAdd = true;
+//            info = comm.getJqData()[yearNum+1];
+//            tempDate=new Date(info[9].date);
+//            tempJiazi = new Date(info[9].jiazi);
+//            if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+//                tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+//            }
+//        }else{
+//            isAdd = false;
+//            tempDate=new Date(info[21].date);
+//            tempJiazi = new Date(info[21].jiazi);
+//            if(tools.GetDateDiff(tempDate, tempJiazi, "day")>=30){
+//                tempJiazi=new Date(tempJiazi.getTime()-60*24*60*60*1000);
+//            }
+//        }
+//    }
+//    //获得时间差
+//    var ydelta;
+//    if(aDate<tempJiazi){
+//        ydelta = tools.GetDateDiff(aDate, tempJiazi, "day");
+//    }else{
+//        ydelta = tools.GetDateDiff(tempJiazi, aDate, "day");
+//    }
+//    var zhirun_dong=[2020,2008,1997,1985,1974,1951];
+//    var zhirun_xia=[1963,1940];
+//    if(isAdd){//如果是冬至到夏至(顺) 有可能是年初也可能是年末
+//        for(var i=0;i<zhirun_xia.length;i++){
+//            if(yearNum==zhirun_xia[i]&&tempJiazi.getFullYear()>yearNum){
+//                if(ydelta==2){
+//                    return 3;
+//                }else  if(ydelta==1){
+//                    return 2;
+//                }else  if(ydelta==0){
+//                    return 1;
+//                }else{
+//                    ydelta=ydelta+3;
+//                }
+//            }
+//        }
+//    }else{//如果是夏至到冬至(逆) 6-12月 只可能在本年
+//        for(var i=0;i<zhirun_dong.length;i++){
+//            if(yearNum==zhirun_dong[i]){
+//                if(ydelta==2){
+//                    return 7;
+//                }else  if(ydelta==1){
+//                    return 8;
+//                }else  if(ydelta==0){
+//                    return 9;
+//                }else{
+//                    ydelta=ydelta+3;
+//                }
+//            }
+//        }
+//    }
+//    if (isAdd) {
+//        yearStar = 9 - (ydelta % 9);
+//    }
+//    else {
+//        yearStar = (ydelta % 9) + 1;
+//    }
+//    return yearStar;
+//}
+
 exports.getDayStar = getDayStar;
 //获得时运数
 function getClockStar(aDate) {
@@ -1415,6 +1415,21 @@ var getSuxie = function (userInfo,cb) {
     });
 }
 exports.getSuxie = getSuxie;//计算素写
+
+var getSuxie1 = function (userInfo,cb) {
+    var dataJson = comm.getSuxieJson();
+    var sxJson = dataJson[userInfo.sex];
+    var flystar=userInfo.flystar;
+    var fkey=(flystar.substr(2,1)+flystar.substr(4,1)+flystar.substr(5,1));
+    webreg.onPostHightScore(userInfo,function(highScore){
+        if(sxJson[fkey][flystar.substr(3,1)]){
+            cb("您的海拔高度"+highScore+"。<br>"+sxJson[fkey][flystar.substr(3,1)]);
+        }else{
+            cb("您的海拔高度"+highScore+"。<br>"+sxJson[fkey]["0"]);
+        }
+    });
+}
+exports.getSuxie1 = getSuxie1;//计算素写
 
 var getZeshi = function (aDate) {
     var dataJson = comm.getZeshiJson();

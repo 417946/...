@@ -135,6 +135,7 @@ app.post('/get_bless', get_bless.onGetBless);//收取祝福
 app.post('/no_bless', get_bless.noBless);//收取祝福
 app.post('/get_luck', get_luck.onGetLuck);
 app.get('/reg_notice', reg_notice.onRegNotice);
+app.get('/get_suxie', reg_notice.onGetSuxie);
 app.get('/friendjy', reg_notice.onFriendJy);
 
 app.get('/add_topic', community.onAddTopic);
