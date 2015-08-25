@@ -164,3 +164,25 @@ exports.onGetInfo = function (req, res) {
     }
 };
 
+
+exports.onGetDayInfo = function (req, res) {
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    result = { error: "" };
+    var result = "";
+    var uid = req.body['uid'];
+    var time_type = consts.TYPE_TIME.TYPE_TIME_TODAY;
+    var cur_time = new Date();
+    analysis.getLuck2(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {
+        result+=answer.desc;
+        analysis.getEnergy(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
+            result+=answer1.desc;
+            analysis.getHealth(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer2){
+                analysis.getYun(uid,time_type,"jk",function(desc){
+                    result+= answer2.desc+"   "+desc;
+                    var result1 = { info:result};
+                    res.end(JSON.stringify(result1));
+                });
+            });
+        });
+    });
+}

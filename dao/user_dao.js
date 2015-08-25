@@ -26,7 +26,7 @@ operater.getTipMusic = function(user_id,cb){
 
 operater.getHeadImg = function(user_id,cb){
     var values = [user_id];
-    var sql = "select d.head_img,d.head_url,u.colour,u.colour_index,u.name from user_detail_table d left join user_table u on d.user_id=u.user_id where d.user_id=? ";
+    var sql = "select d.head_img,d.head_url,u.colour,u.colour_index,u.name,u.sex from user_detail_table d left join user_table u on d.user_id=u.user_id where d.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);
