@@ -6,6 +6,7 @@ var userInfo = require('./userInfo.js').userInfo;
 var util = require('util');
 var analysis = require('./module/analysis');
 var consts = require('./util/consts');
+var user = require('./user.js');
 
 var ThisMgr = null;
 
@@ -172,10 +173,10 @@ exports.onGetDayInfo = function (req, res) {
     var uid = req.body['uid'];
     var time_type = consts.TYPE_TIME.TYPE_TIME_TODAY;
     var cur_time = new Date();
-    analysis.getLuck2(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {
-        result+=answer.desc;
-        analysis.getEnergy(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
-            result+=answer1.desc;
+    analysis.getEnergy(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
+        result+=answer1.desc;
+        analysis.getLuck2(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {
+            result+=answer.desc;
             analysis.getHealth(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer2){
                 analysis.getYun(uid,time_type,"jk",function(desc){
                     result+= answer2.desc+"   "+desc;
@@ -186,3 +187,42 @@ exports.onGetDayInfo = function (req, res) {
         });
     });
 }
+
+exports.onGetNoDayInfo = function (req, res) {
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    result = { error: "" };
+    var result = "";
+    var time_type = consts.TYPE_TIME.TYPE_TIME_TODAY;
+    var cur_time = new Date();
+    var strDate = req.body['birthday'];
+    console.log(strDate)
+    var result1 = /(\d+).*?(\d+).*?(\d+).*?(\d+)\:(\d+)/g.exec(strDate);
+    //测试功能
+    var reqData = {
+        sex:			parseInt(req.body['sex']),
+        birthAddress:	0,
+        year:			parseInt(result1[1]),
+        month:			parseInt(result1[2]),
+        day:			parseInt(result1[3]),
+        clock:			parseInt(result1[4])
+    }
+
+    var info = user.getUserInfo(reqData);
+    analysis.getEnergyInfo(info, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
+        result+=answer1.desc;
+        analysis.getLuck2info(info, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {
+            result+=answer.desc;
+            analysis.getHealthInfo(info,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer2){
+                analysis.getYunInfo(info,time_type,"jk",function(desc){
+                    result+= answer2.desc+"   "+desc;
+                    var result2 = { info:result};
+                    res.end(JSON.stringify(result2));
+                });
+            });
+        });
+    });
+}
+//getLuck2info
+//getEnergyInfo
+//getHealthInfo
+//getYunInfo

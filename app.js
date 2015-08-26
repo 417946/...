@@ -104,6 +104,7 @@ app.post('/todayinfo', todayInfo.onGetInfo);
 app.get('/todayinfo', todayInfo.onGetInfo);
 app.post('/userinfo', userManager.onGetInfo);
 app.post('/dayinfo', userManager.onGetDayInfo);
+app.post('/daynoinfo', userManager.onGetNoDayInfo);
 app.post('/khfk', khfk.onFk);
 app.post('/participle', participle.onParticiple);
 app.post('/voice_query', voice_query.onVoiceQuery);
