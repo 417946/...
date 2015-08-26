@@ -222,7 +222,3 @@ exports.onGetNoDayInfo = function (req, res) {
         });
     });
 }
-//getLuck2info
-//getEnergyInfo
-//getHealthInfo
-//getYunInfo
