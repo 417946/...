@@ -616,74 +616,80 @@ var getXianMiaoFromDB = function (colKey, aType,aNum, cb) {
 
 //获得仙妙描述
 operater.getXianMiao = function (uid,aType,aNum,cb) {
-    var colKey = "";
-    switch (parseInt(aType)) {
-        case 0:
+    if(aType == "6"){
+        var jxJson = common.getJxJson();
+        Math.floor(Math.random()*jxJson.length)
+        cb.call(null, false, jxJson[Math.floor(Math.random()*jxJson.length)]);
+    }else{
+        var colKey = "";
+        switch (parseInt(aType)) {
+            case 0:
             {
                 colKey = 'qg';
             }
-            break;
-        case 1:
+                break;
+            case 1:
             {
                 colKey = 'cx';
             }
-            break;
-        case 2:
+                break;
+            case 2:
             {
                 colKey = 'qc';
             }
-            break;
-        case 3:
+                break;
+            case 3:
             {
                 colKey = 'sex';
                 //求男女，直接查找，不涉及四季五行
                 getXianMiaoFromDB(colKey, aType, aNum, cb);
             }
-            break;
-        case 4:
+                break;
+            case 4:
             {
                 colKey = 'qz';
             }
-            break;
-        case 5:
+                break;
+            case 5:
             {
                 colKey = 'yr';
             }
-            break;
-    }
+                break;
+        }
 
-    if (aType != 3) {
-        var wx = user.getWx(new Date());
-        
-        switch (wx) {
-            case 0:
+        if (aType != 3) {
+            var wx = user.getWx(new Date());
+
+            switch (wx) {
+                case 0:
                 {
                     colKey = colKey + "chun";
                 }
-                break;
-            case 1:
+                    break;
+                case 1:
                 {
                     colKey = colKey + "xia";
                 }
-                break;
-            case 2:
+                    break;
+                case 2:
                 {
                     colKey = colKey + "qiu";
                 }
-                break;
-            case 3:
+                    break;
+                case 3:
                 {
                     colKey = colKey + "dong";
                 }
-                break;
-            case 4:
+                    break;
+                case 4:
                 {
                     colKey = colKey + "tu";
                 }
-                break;
+                    break;
+            }
+            console.log("colKey = " + colKey);
+            getXianMiaoFromDB(colKey, aType, aNum, cb);
         }
-        console.log("colKey = " + colKey);
-        getXianMiaoFromDB(colKey, aType, aNum, cb);
     }
 }
 
