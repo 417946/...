@@ -174,12 +174,12 @@ exports.onGetDayInfo = function (req, res) {
     var time_type = consts.TYPE_TIME.TYPE_TIME_TODAY;
     var cur_time = new Date();
     analysis.getEnergy(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
-        result+=answer1.desc;
+        result+=answer1.desc.split("。")[0]+"。";
         analysis.getLuck2(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {
-            result+=answer.desc;
+            result+=answer.desc.split("。")[0]+"。";
             analysis.getHealth(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer2){
                 analysis.getYun(uid,time_type,"jk",function(desc){
-                    result+= answer2.desc+"   "+desc;
+                    result+= answer2.desc.split("。")[0]+"。"+"   "+desc.split("。")[0]+"。";
                     var result1 = { info:result};
                     res.end(JSON.stringify(result1));
                 });
@@ -209,14 +209,65 @@ exports.onGetNoDayInfo = function (req, res) {
 
     var info = user.getUserInfo(reqData);
     analysis.getEnergyInfo(info, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
-        result+=answer1.desc;
+        result+=answer1.desc.split("。")[0]+"。";
         analysis.getLuck2info(info, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {
-            result+=answer.desc;
+            result+=answer.desc.split("。")[0]+"。";
             analysis.getHealthInfo(info,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer2){
                 analysis.getYunInfo(info,time_type,"jk",function(desc){
-                    result+= answer2.desc+"   "+desc;
+                    result+= answer2.desc.split("。")[0]+"。"+"   "+desc.split("。")[0]+"。";
                     var result2 = { info:result};
                     res.end(JSON.stringify(result2));
+                });
+            });
+        });
+    });
+}
+
+exports.onGetAllInfo = function (req, res) {
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    result = { error: "" };
+    var result = "";
+    var uid = req.body['uid'];
+    var time_type = consts.TYPE_TIME.TYPE_TIME_TODAY;
+    var cur_time = new Date();
+    var r={};
+    analysis.getEnergy(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
+        r.b=answer1.desc.split("。")[0]+"。";
+        analysis.getLuck2(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {
+            r.a=answer.desc.split("。")[0]+"。";
+            analysis.getHealth(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer2){
+                r.d= answer2.desc.split("。")[0]+"。";
+                analysis.getWealth(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer3) {
+                    r.c= answer3.desc.split("。")[0]+"。";
+                    analysis.getPeach(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer4) {
+                        r.e= answer4.desc.split("。")[0]+"。";
+                        analysis.getConfrere(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer5) {
+                            r.f= answer5.desc.split("。")[0]+"。";
+                            analysis.getCompass(uid,1,function(scores) {
+                                var tmpscore=100;
+                                var tmpdirection="";
+                                scores.forEach(function(item,index){
+                                    if(item.score<tmpscore){
+                                        tmpscore=item.score;
+                                        tmpdirection=item.direction;
+                                    }
+                                });
+                                r.g="最破财的方位："+tmpdirection;
+                                analysis.getCompass(uid,3,function(scores) {
+                                    var tmpscore1=100;
+                                    var tmpdirection1="";
+                                    scores.forEach(function(item,index){
+                                        if(item.score<tmpscore1){
+                                            tmpscore1=item.score;
+                                            tmpdirection1=item.direction;
+                                        }
+                                    });
+                                    r.h="桃花最烂的方位："+tmpdirection1;
+                                    res.end(JSON.stringify(r));
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
