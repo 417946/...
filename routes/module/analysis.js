@@ -1586,6 +1586,73 @@ anylysis.getCompassScore = function(uid,type,cb){
     });
 };
 
+anylysis.getCompassScoreByInfo = function(info,type,cb){
+    var yearStar = parseInt(info["flystar"].charAt(2));
+    info.sjIndex = user.getWx(new Date());
+    info.scwxNum = user.getScwxNum(info);
+    info.fxscore = user.getFxScore(info,true);
+    info.bwxNum = user.getWxNum(info, 2);
+    info.flyStarWx = user.getFlyStarWx(info);
+    var curDate = new Date();
+    var hourStar = user.getClockStar(curDate);
+    var dayStar = user.getDayStar(curDate);
+    var compass_fly_star_row = compass_fly_star[0][info.sex][dayStar -1][hourStar -1];
+    var compass_fly_star_scores = [];
+    var luck_compass_scores = compass[type][info.sex][yearStar -1];
+
+    //  fix luck_compass_scores
+    for(var m = 0; m < luck_compass_scores[1].scores.length; ++m){
+        if(!(m % 2)){
+            var string_tmp = luck_compass_scores[1].scores[m].toString();
+            if(string_tmp.length > 1){
+                luck_compass_scores[1].scores[m] = luck_compass_scores[1].scores[m]*10%10;
+            }
+        }
+    }
+    for(var i = 1; i < compass_fly_star_row.scores.length; ++i){
+        compass_fly_star_scores.push([compass_fly_star_row.scores[i], compass_fly_star_row.scores[++i]]);
+    }
+    var scores = [];
+    for(var j = 0; j < compass_fly_star_scores.length; ++j){
+        for(var k = 1; k < luck_compass_scores.length; ++k){
+            if(compass_fly_star_scores[j][1] == luck_compass_scores[k].scores[0]){
+                scores.push(luck_compass_scores[k].scores[compass_fly_star_scores[j][0]*2 - 1]);
+                break;
+            }
+        }
+    }
+    cb(scores);
+};
+
+anylysis.getCompassScoreByFlystar = function(yearStar,dayStar,hourStar,sex,type,cb){
+    var compass_fly_star_row = compass_fly_star[0][sex][dayStar -1][hourStar -1];
+    var compass_fly_star_scores = [];
+    var luck_compass_scores = compass[type][sex][yearStar -1];
+
+    //  fix luck_compass_scores
+    for(var m = 0; m < luck_compass_scores[1].scores.length; ++m){
+        if(!(m % 2)){
+            var string_tmp = luck_compass_scores[1].scores[m].toString();
+            if(string_tmp.length > 1){
+                luck_compass_scores[1].scores[m] = luck_compass_scores[1].scores[m]*10%10;
+            }
+        }
+    }
+    for(var i = 1; i < compass_fly_star_row.scores.length; ++i){
+        compass_fly_star_scores.push([compass_fly_star_row.scores[i], compass_fly_star_row.scores[++i]]);
+    }
+    var scores = [];
+    for(var j = 0; j < compass_fly_star_scores.length; ++j){
+        for(var k = 1; k < luck_compass_scores.length; ++k){
+            if(compass_fly_star_scores[j][1] == luck_compass_scores[k].scores[0]){
+                scores.push(luck_compass_scores[k].scores[compass_fly_star_scores[j][0]*2 - 1]);
+                break;
+            }
+        }
+    }
+    cb(scores);
+};
+
 anylysis.getCompassMax = function(uid,type,cb){
     anylysis.getCompassScore(uid,type,function(scores){
         // sort scores
@@ -1605,6 +1672,30 @@ anylysis.getCompassMax = function(uid,type,cb){
 
 anylysis.getCompass = function(uid,type,cb){
     anylysis.getCompassScore(uid,type,function(scores){
+        var answer = [];
+        console.log(scores.length);
+        for(var i = 0; i < scores.length; ++i){
+            answer.push({"score":scores[i],"direction":directions[i],"text":anylysis.getCompassText(type,scores[i])});
+        }
+        console.log("%j",answer);
+        cb(answer);
+    });
+};
+
+anylysis.getCompassByInfo = function(info,type,cb){
+    anylysis.getCompassScoreByInfo(uid,type,function(scores){
+        var answer = [];
+        console.log(scores.length);
+        for(var i = 0; i < scores.length; ++i){
+            answer.push({"score":scores[i],"direction":directions[i],"text":anylysis.getCompassText(type,scores[i])});
+        }
+        console.log("%j",answer);
+        cb(answer);
+    });
+};
+
+anylysis.getCompassByFlystar = function(yearStar,dayStar,hourStar,sex,type,cb){
+    anylysis.getCompassScoreByFlystar(yearStar,dayStar,hourStar,sex,type,function(scores){
         var answer = [];
         console.log(scores.length);
         for(var i = 0; i < scores.length; ++i){

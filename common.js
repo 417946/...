@@ -42,7 +42,7 @@ function init(isChild_Process) {
     inData = fs.readFileSync("./config/zeshi.json");
     zeshiJson = JSON.parse(inData);
 
-    inData = fs.readFileSync("./config/jx.json");
+    inData = fs.readFileSync("./config/xj.json");
     jxJson = JSON.parse(inData);
 
 

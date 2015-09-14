@@ -1430,6 +1430,17 @@ var getSuxie1 = function (userInfo,cb) {
     });
 }
 exports.getSuxie1 = getSuxie1;//计算素写
+var getSuxie2 = function (yearStar,monthStar,dayStar,hourStar,sex,cb) {
+    var dataJson = comm.getSuxieJson();
+    var sxJson = dataJson[userInfo.sex];
+    var fkey=(yearStar.toString()+dayStar.toString()+hourStar.toString());
+    if(sxJson[fkey][monthStar]){
+        cb(sxJson[fkey][monthStar]);
+    }else{
+        cb(sxJson[fkey]["0"]);
+    }
+}
+exports.getSuxie2 = getSuxie2;//计算素写
 
 var getZeshi = function (aDate) {
     var dataJson = comm.getZeshiJson();

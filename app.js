@@ -115,6 +115,7 @@ app.post('/feedback', feedback.onFeedback);
 app.post('/contacts', contacts.onContract);
 app.post('/edit_contacts', contacts.onEditContracts);
 app.post('/compass', compass.onCompass);
+app.post('/compass_flystar', compass.onCompassByFlystar);
 app.post('/select_date', select_date.onSelectDate);
 app.post('/select_time', select_date.onSelectTime);
 app.post('/match', match.onMatch);
@@ -138,6 +139,7 @@ app.post('/no_bless', get_bless.noBless);//收取祝福
 app.post('/get_luck', get_luck.onGetLuck);
 app.get('/reg_notice', reg_notice.onRegNotice);
 app.get('/get_suxie', reg_notice.onGetSuxie);
+app.get('/get_suxie_flystar', reg_notice.onGetSuxieByFlystar);
 app.get('/friendjy', reg_notice.onFriendJy);
 
 app.get('/add_topic', community.onAddTopic);

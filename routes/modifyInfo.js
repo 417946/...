@@ -66,3 +66,44 @@ exports.onModify = function (req, res) {
         res.end(JSON.stringify(result));
     });
 };
+
+exports.nouserModify = function (bd,sex, res) {
+    var info = new userInfo();
+    info.uid = "0";
+    info.name = "";
+    info.password = "";
+    info.birthday = bd;
+    info.sex = sex;
+    info.birthAddress = "1";
+
+    //构建轴向数据
+    var dateStr = info.birthday;
+    var clock = parseInt(dateStr.substr(8, 2));
+
+    var reqData = {
+        sex: parseInt(info.sex),
+        registAddress: parseInt(info.registAddress),
+        birthAddress: 0,
+        year: parseInt(info.birthday.substr(0, 4)),
+        month: parseInt(info.birthday.substr(4, 2)),
+        day: parseInt(info.birthday.substr(6, 2)),
+        clock: parseInt(clock)
+    }
+
+    var dataInfo = user.getUserInfo(reqData);
+
+
+    info.flystar = dataInfo.bigyun.toString() + dataInfo.smallyun + dataInfo.nianyun + dataInfo.yueyun + dataInfo.riyun + dataInfo.shiyun;
+    info.birthWS = dataInfo.birthWS;
+    info.sjWS = dataInfo.sjWS;
+    info.clockWS = dataInfo.scWS;
+    info.gz = dataInfo.ngz+dataInfo.ygz + dataInfo.rgz + dataInfo.sgz;
+    info.ts = dataInfo.niants + dataInfo.yuets + dataInfo.rits + dataInfo.shits;
+    info.sp = dataInfo.niansp + dataInfo.yuesp + dataInfo.risp + dataInfo.shisp;
+    info.starNum = dataInfo.starNum;
+    info.yangSum = dataInfo.yangSum1;
+    info.queNum = dataInfo.queNum;
+    info.sjIndex = dataInfo.sjIndex;
+
+    return info;
+};

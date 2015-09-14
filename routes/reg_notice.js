@@ -122,6 +122,34 @@ exports.onGetSuxie = function(req,res){
         response.end(res,response.buildResponse(response.OK,r),callback);
     });
 };
+exports.onGetSuxieByFlystar = function(req,res){
+    var callback=req.query.callback;
+    var date=new Date();
+    var nianyun = user.getYearStar(date);
+    var yueyun = user.getMonthStar(date);
+    var riyun = user.getDayStar(riyundate);
+    var shiyun = user.getClockStar(date);
+
+    var nums=[[6,7,8,9,1,2,3,4,5],
+    [7,8,9,1,2,3,4,5,6],
+    [8,9,1,2,3,4,5,6,7],
+    [9,1,2,3,4,5,6,7,8],
+    [1,2,3,4,5,6,7,8,9],
+    [2,3,4,5,6,7,8,9,1],
+    [3,4,5,6,7,8,9,1,2],
+    [4,5,6,7,8,9,1,2,3],
+    [5,6,7,8,9,1,2,3,4]];
+
+    var yearStar = nums[nianyun-1][req.query['yearStar']-1];
+    var monthStar = nums[yueyun-1][req.query['monthStar']-1];
+    var dayStar = nums[riyun-1][req.query['dayStar']-1];
+    var hourStar = nums[shiyun-1][req.query['hourStar']-1];
+    var sex = req.query['sex'];
+    //测试功能
+    user.getSuxie2(yearStar,monthStar,dayStar,hourStar,sex,function(ss){
+        response.end(res,response.buildResponse(response.OK,ss),callback);
+    });
+};
 exports.onFriendJy = function(req,res){
     //解析生日
     var strDate = req.query['birthday'];
