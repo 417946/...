@@ -127,7 +127,7 @@ exports.onGetSuxieByFlystar = function(req,res){
     var date=new Date();
     var nianyun = user.getYearStar(date);
     var yueyun = user.getMonthStar(date);
-    var riyun = user.getDayStar(riyundate);
+    var riyun = user.getDayStar(date);
     var shiyun = user.getClockStar(date);
 
     var nums=[[6,7,8,9,1,2,3,4,5],
@@ -140,10 +140,10 @@ exports.onGetSuxieByFlystar = function(req,res){
     [4,5,6,7,8,9,1,2,3],
     [5,6,7,8,9,1,2,3,4]];
 
-    var yearStar = nums[nianyun-1][req.query['yearStar']-1];
-    var monthStar = nums[yueyun-1][req.query['monthStar']-1];
-    var dayStar = nums[riyun-1][req.query['dayStar']-1];
-    var hourStar = nums[shiyun-1][req.query['hourStar']-1];
+    var yearStar = nums[nianyun-1][req.query['num1']-1];
+    var monthStar = nums[yueyun-1][req.query['num2']-1];
+    var dayStar = nums[riyun-1][req.query['num3']-1];
+    var hourStar = nums[shiyun-1][req.query['num4']-1];
     var sex = req.query['sex'];
     //测试功能
     user.getSuxie2(yearStar,monthStar,dayStar,hourStar,sex,function(ss){
