@@ -1522,9 +1522,9 @@ anylysis.getCompassText = function(type,score){
             break;
         }
         case consts.TYPE_COMPASS.TYPE_COMPASS_PEACH:{
-            if(score > 90 && score <= 98){
+            if(score >= 90 && score <= 98){
                 text = "大旺";
-            }else if(score >= 80 && score <= 89){
+            }else if(score >= 80 && score < 90){
                 text = "旺";
             }else if(score >= 60 && score <= 79){
                 text = "中等";
