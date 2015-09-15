@@ -232,17 +232,17 @@ exports.onGetAllInfo = function (req, res) {
     var cur_time = new Date();
     var r={};
     analysis.getEnergy(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
-        r.b=answer1.desc.split("。")[0]+"。";
+        r.b=answer1.desc.split("，")[0]+"："+answer1.desc.split("，")[1].split("。")[0].split("，")[0];
         analysis.getLuck2(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {
-            r.a=answer.desc.split("。")[0]+"。";
+            r.a=answer.desc.split("，")[0]+"："+answer.desc.split("，")[1].split("。")[0].split("，")[0];
             analysis.getHealth(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer2){
-                r.d= answer2.desc.split("。")[0]+"。";
+                r.d= answer2.desc.split("，")[0].replace("状况","")+"："+answer2.desc.split("，")[1].split("。")[0].split("，")[0];
                 analysis.getWealth(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer3) {
-                    r.c= answer3.desc.split("。")[0]+"。";
+                    r.c= answer3.desc.split("，")[0]+"："+answer3.desc.split("，")[1].split("。")[0].split("，")[0];
                     analysis.getPeach(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer4) {
-                        r.e= answer4.desc.split("。")[0]+"。";
+                        r.e= answer4.desc.split("，")[0]+"："+answer4.desc.split("，")[1].split("。")[0].split("，")[0];
                         analysis.getConfrere(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer5) {
-                            r.f= answer5.desc.split("。")[0]+"。";
+                            r.f= answer5.desc.split("，")[0]+"："+answer5.desc.split("，")[1].split("。")[0].split("，")[0];
                             analysis.getCompass(uid,1,function(scores) {
                                 var tmpscore=100;
                                 var tmpdirection="";
