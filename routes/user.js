@@ -1553,18 +1553,22 @@ var getZeshi = function (aDate) {
         }
     }
     var returnstr="本日最佳吉时为：";
-    for(var i=0;i<ji.length;i++){
-        if(ji[i]!=null&&ji[i]!=""){
-            if(i<=2){
-                returnstr+=ji[i]+"时";
+    var isjiover=0;
+    ji.forEach(function(item,index){
+        if(item!=null&&item!=""){
+            if(index<=2){
+                returnstr+=item+"时";
             }
-            if(i==ji.length-1||i==2){
-                returnstr+="。br";
-            }else{
-                returnstr+=",";
+            if(isjiover==0) {
+                if (index == ji.length - 1 || index == 2) {
+                    returnstr += "。br";
+                    isjiover = 1;
+                } else if (index < 2) {
+                    returnstr += ",";
+                }
             }
         }
-    }
+    });
     if(ji.length==0){
         returnstr="本日没有特别吉利的时辰。br";
     }
@@ -1572,18 +1576,22 @@ var getZeshi = function (aDate) {
         returnstr+="本日没有特别不吉利的时辰。";
     }else{
         returnstr+="本日不吉时辰为：";
-        for(var i=0;i<xiong.length;i++){
-            if(xiong[i]!=null&&xiong[i]!=""){
-                if(i<=2){
-                    returnstr+=xiong[i]+"时";
+        var isover=0;
+        xiong.forEach(function(item,index){
+            if(item!=null&&item!=""){
+                if(index<=2){
+                    returnstr+=item+"时";
                 }
-                if(i==xiong.length-1||i==2){
-                    returnstr+="。";
-                }else{
-                    returnstr+=",";
+                if(isover==0) {
+                    if (index == xiong.length - 1 || index == 2) {
+                        returnstr += "。";
+                        isover = 1;
+                    } else {
+                        returnstr += ",";
+                    }
                 }
             }
-        }
+        });
     }
     return returnstr;
 }
