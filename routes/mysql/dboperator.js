@@ -1214,6 +1214,27 @@ operater.getContract = function(uid,status,cb){
     });
 };
 
+operater.getContractByConUid = function(uid,status,cb){
+    var sql = "select c.uid,u.name,u.sex,u.birthday,c.id,d.head_img,d.head_url " +
+        "from contracts_table c " +
+        "left join user_table u on u.user_id=c.uid " +
+        "left join user_detail_table d on c.uid=d.user_id " +
+        "where c.contracts_uid=?";
+    if(status=="1"){
+        sql+=" and c.status=1 order by c.id asc";
+    }else {
+        sql += " order by c.status desc";
+    }
+    console.log(sql);
+    mysqlClient.query(sql, [uid], function (err,res) {
+        var contracts = [];
+        for(var i = 0; i < res.length; ++i){
+            contracts.push([res[i]["uid"],res[i]["name"],res[i]["sex"],res[i]["birthday"],res[i]["id"],res[i]["head_img"],res[i]["head_url"]]);
+        }
+        cb(err,contracts)
+    });
+};
+
 operater.editContract = function(id,uid,contracts_uid,contracts_name,edit_type,cb){
     if(edit_type=="1"){
         var sql = "update contracts_table set status=0 where id= ?";

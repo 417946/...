@@ -96,6 +96,18 @@ exports.onSendMessage = function(req,res){
                     } else {
                     }
                 });
+        }else if(type=="12"){
+            content=fromuname+"("+fromuid+")"+"已同意您的关注请求。";
+            client.push().setPlatform('ios', 'android')
+                .setAudience(JPush.alias(uid))
+                .setNotification(content, JPush.ios(content, 'happy', '+1'))
+                .setOptions(null, 86400, null, true)
+                .send(function(err, res) {
+                    if (err) {
+                        console.log(err.message);
+                    } else {
+                    }
+                });
         }
 //    }
     if(type=="9"){

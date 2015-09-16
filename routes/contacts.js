@@ -133,63 +133,76 @@ exports.onContract = function(req,res){
     }else if("get" == type){
         var status = req.body["status"];
         db.getContract(uid,status,function(err,contracts){
-            if(err){
-                console.log(err);
-                result.err = err;
-            }
-            //  get push for friend
-            async.parallel([
-                function (callback) {
-                    var contracts_uid = contracts ? (contracts[0] ? contracts[0][0] : 0) : 0;
-                    if(contracts_uid){
-                        analysis.getInfo(contracts_uid, function (info) {
-                            callback(null, info);
-                        });
-                    }else{
-                        callback(null, null);
-                    }
-                },
-                function (callback) {
-                    var contracts_uid = contracts ? (contracts[1] ? contracts[1][0] : 0) : 0;
-                    if(contracts_uid){
-                        analysis.getInfo(contracts_uid, function (info) {
-                            callback(null, info);
-                        });
-                    }else{
-                        callback(null, null);
-                    }
-                },
-                function (callback) {
-                    var contracts_uid = contracts ? (contracts[2] ? contracts[2][0] : 0) : 0;
-                    if(contracts_uid){
-                        analysis.getInfo(contracts_uid, function (info) {
-                            callback(null, info);
-                        });
-                    }else{
-                        callback(null, null);
-                    }
-                },
-                function (callback) {
-                    var contracts_uid = contracts ? (contracts[3] ? contracts[3][0] : 0) : 0;
-                    if(contracts_uid){
-                        analysis.getInfo(contracts_uid, function (info) {
-                            callback(null, info);
-                        });
-                    }else{
-                        callback(null, null);
-                    }
-                },
-                function (callback) {
-                    var contracts_uid = contracts ? (contracts[4] ? contracts[4][0] : 0) : 0;
-                    if(contracts_uid){
-                        analysis.getInfo(contracts_uid, function (info) {
-                            callback(null, info);
-                        });
-                    }else{
-                        callback(null, null);
-                    }
+            db.getContractByConUid(uid,status,function(err1,contracts1){
+                if(err){
+                    console.log(err);
+                    result.err = err;
                 }
-            ],
+                var tmpcon = contracts;
+                contracts1.forEach(function(item1,index1){
+                    var ishave=0;
+                    tmpcon.forEach(function(item2,index2){
+                        if(item1[0]==item2[0]){
+                            ishave=1;
+                        }
+                    })
+                    if(ishave==0){
+                        contracts.push(item1);
+                    }
+                })
+                //  get push for friend
+                async.parallel([
+                    function (callback) {
+                        var contracts_uid = contracts ? (contracts[0] ? contracts[0][0] : 0) : 0;
+                        if(contracts_uid){
+                            analysis.getInfo(contracts_uid, function (info) {
+                                callback(null, info);
+                            });
+                        }else{
+                            callback(null, null);
+                        }
+                    },
+                    function (callback) {
+                        var contracts_uid = contracts ? (contracts[1] ? contracts[1][0] : 0) : 0;
+                        if(contracts_uid){
+                            analysis.getInfo(contracts_uid, function (info) {
+                                callback(null, info);
+                            });
+                        }else{
+                            callback(null, null);
+                        }
+                    },
+                    function (callback) {
+                        var contracts_uid = contracts ? (contracts[2] ? contracts[2][0] : 0) : 0;
+                        if(contracts_uid){
+                            analysis.getInfo(contracts_uid, function (info) {
+                                callback(null, info);
+                            });
+                        }else{
+                            callback(null, null);
+                        }
+                    },
+                    function (callback) {
+                        var contracts_uid = contracts ? (contracts[3] ? contracts[3][0] : 0) : 0;
+                        if(contracts_uid){
+                            analysis.getInfo(contracts_uid, function (info) {
+                                callback(null, info);
+                            });
+                        }else{
+                            callback(null, null);
+                        }
+                    },
+                    function (callback) {
+                        var contracts_uid = contracts ? (contracts[4] ? contracts[4][0] : 0) : 0;
+                        if(contracts_uid){
+                            analysis.getInfo(contracts_uid, function (info) {
+                                callback(null, info);
+                            });
+                        }else{
+                            callback(null, null);
+                        }
+                    }
+                ],
                 // optional callback
                 function (err, results) {
                     // the results array will equal ['one','two'] even though
@@ -219,6 +232,7 @@ exports.onContract = function(req,res){
                     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
                     res.end(JSON.stringify(result));
                 });
+            });
         });
     }
 };
