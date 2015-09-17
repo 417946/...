@@ -1683,7 +1683,7 @@ anylysis.getCompass = function(uid,type,cb){
 };
 
 anylysis.getCompassByInfo = function(info,type,cb){
-    anylysis.getCompassScoreByInfo(uid,type,function(scores){
+    anylysis.getCompassScoreByInfo(info,type,function(scores){
         var answer = [];
         console.log(scores.length);
         for(var i = 0; i < scores.length; ++i){
