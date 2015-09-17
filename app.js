@@ -119,6 +119,7 @@ app.post('/compass', compass.onCompass);
 app.post('/compass_flystar', compass.onCompassByFlystar);
 app.post('/compass_nouser', compass.onCompassNouser);
 app.post('/select_date', select_date.onSelectDate);
+app.post('/select_date_nouser', select_date.onSelectDateNouser);
 app.post('/select_time', select_date.onSelectTime);
 app.post('/match', match.onMatch);
 app.get('/match', match.onMatch2);
@@ -139,7 +140,7 @@ app.post('/find_bless', get_bless.onFindNewReceiveBless);//查看该用户的未
 app.post('/get_bless', get_bless.onGetBless);//收取祝福
 app.post('/no_bless', get_bless.noBless);//收取祝福
 app.post('/get_luck', get_luck.onGetLuck);
-app.get('/reg_notice', reg_notice.onRegNotice);
+//app.get('/reg_notice', reg_notice.onRegNotice);
 app.get('/get_suxie', reg_notice.onGetSuxie);
 app.get('/get_suxie_flystar', reg_notice.onGetSuxieByFlystar);
 app.get('/friendjy', reg_notice.onFriendJy);

@@ -89,6 +89,9 @@ exports.delTalkRecord = function(req,res){
 };
 
 exports.getTalkDel = function(req,res){
+    if(req.query.uid.toString().length>6){
+        return response.end(res,response.buildError("error"),callback);
+    }
     var callback=req.query.callback;
     db.getTalkDel(req.query,function(err,list){
         if(err){

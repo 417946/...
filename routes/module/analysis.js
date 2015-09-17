@@ -2419,6 +2419,254 @@ anylysis.getSelectDate = function (uid, select_date_type, days_type, cb) {
     });
 };
 
+anylysis.getSelectDateNoUser = function (info, select_date_type, days_type, cb) {
+    var days = 10;
+    if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_TEN){
+        days = 10;
+    }else if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_THIRTY){
+        days = 30;
+    }else if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_NINETY){
+        days = 90;
+    }
+    var date = [];
+    var time_to_be_choose;
+    switch (select_date_type) {
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_DO_SOMETHING:
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_MOVING:
+        {
+            var tendency_work = anylysis.getTendencyFuture(info,days,consts.TYPE_SCORE.TYPE_SCORE_WORK);
+            var tendency_luck = anylysis.getTendencyFuture(info,days,consts.TYPE_SCORE.TYPE_SCORE_LUCK);
+            var tendency_energy = anylysis.getTendencyFuture(info,days,consts.TYPE_SCORE.TYPE_SCORE_ENERGY);
+            var tendency_work_to_be_choose = [];
+            var tendency_energy_to_be_choose = [];
+            for(var i = 0; i < tendency_work.length; ++i){
+                if("宜" == tendency_work[i]){
+                    tendency_work_to_be_choose.push(i);
+                }
+            }
+            //key:dayindex value:tendency_energy_to_be_choose eg:{14:8700,19:8630}
+            var tendency_energy_to_be_choose_obj={};
+            for(var j = 0; j < tendency_work_to_be_choose.length; ++j){
+//                    if(tendency_luck[tendency_work_to_be_choose[j]] >= 90 && tendency_luck[tendency_work_to_be_choose[j]] <= 98){
+                    tendency_energy_to_be_choose.push(tendency_energy[tendency_work_to_be_choose[j]]*100 + tendency_work_to_be_choose[j]);
+                    tendency_energy_to_be_choose_obj[tendency_work_to_be_choose[j]]=tendency_energy[tendency_work_to_be_choose[j]]*100 + tendency_work_to_be_choose[j];
+//                    }
+            }
+            if(0 == tendency_energy_to_be_choose.length){
+                cb(date);
+                return;
+            }
+            tendency_energy_to_be_choose.sort(function(a,b){return a<b?1:-1});
+            for(var n = 0; n < tendency_energy_to_be_choose.length,n < 3; ++n){
+                //20150129替换掉下面注释的
+                var days_index_to_be_choose = 0;
+                for(var key in tendency_energy_to_be_choose_obj){
+                    if(tendency_energy_to_be_choose_obj[key]==tendency_energy_to_be_choose[n]){
+                        days_index_to_be_choose=key;
+                    }
+                }
+//                    var days_index_to_be_choose = tendency_energy_to_be_choose[tendency_energy_to_be_choose.length - n - 1]%100; //20150129注释掉
+                time_to_be_choose = Date.now() + 1000 * 60 * 60 * 24 * days_index_to_be_choose;
+                date_to_be_choose = new Date(time_to_be_choose);
+                date.push("" + date_to_be_choose.getFullYear() + '/' +  (date_to_be_choose.getMonth() + 1) + '/' + date_to_be_choose.getDate());
+                if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_TEN){
+                    break;
+                }
+            }
+            break;
+        }
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_WEALTH:
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_TRADE:
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_OPENING:
+        {
+            var tendency_wealth = anylysis.getTendencyFuture(info,days,consts.TYPE_SCORE.TYPE_SCORE_WEALTH);
+            console.log(tendency_wealth);
+            var tendency_wealth_to_be_choose = [];
+            //key:dayindex value:tendency_energy_to_be_choose eg:{14:8700,19:8630}
+            var tendency_wealth_to_be_choose_obj={};
+            for(i = 0; i < tendency_wealth.length; ++i){
+//                    if(tendency_wealth[i] >= 90 && tendency_wealth[i] <= 98){
+                    tendency_wealth_to_be_choose.push(tendency_wealth[i]*100 + i);
+                    tendency_wealth_to_be_choose_obj[i]=tendency_wealth[i]*100 + i;
+//                    }
+            }
+            if(0 == tendency_wealth_to_be_choose.length){
+                cb(date);
+                return;
+            }
+            tendency_wealth_to_be_choose.sort(function(a,b){return a<b?1:-1});
+            for(var n = 0; n < tendency_wealth_to_be_choose.length,n < 3; ++n){
+                //20150129替换掉下面注释的
+                var days_index_to_be_choose = 0;
+                for(var key in tendency_wealth_to_be_choose_obj){
+                    if(tendency_wealth_to_be_choose_obj[key]==tendency_wealth_to_be_choose[n]){
+                        days_index_to_be_choose=key;
+                    }
+                }
+//                    var days_index_to_be_choose = tendency_wealth_to_be_choose[tendency_wealth_to_be_choose.length - n - 1]%100;//20150129注释
+                time_to_be_choose = Date.now() + 1000 * 60 * 60 * 24 * days_index_to_be_choose;
+                date_to_be_choose = new Date(time_to_be_choose);
+                date.push("" + date_to_be_choose.getFullYear() + '/' +  (date_to_be_choose.getMonth() + 1) + '/' + date_to_be_choose.getDate());
+                if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_TEN){
+                    break;
+                }
+            }
+            break;
+        }
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_DATE:
+        {
+            var tendency_peach = anylysis.getTendencyFuture(info,days,consts.TYPE_SCORE.TYPE_SCORE_PEACH);
+            console.log(tendency_peach);
+            var tendency_peach_to_be_choose = [];
+            //key:dayindex value:tendency_energy_to_be_choose eg:{14:8700,19:8630}
+            var tendency_peach_to_be_choose_obj={};
+            for(i = 0; i < tendency_peach.length; ++i){
+//                    if(tendency_peach[i] >= 90 && tendency_peach[i] <= 98){
+                    tendency_peach_to_be_choose.push(tendency_peach[i]*100 + i);
+                    tendency_peach_to_be_choose_obj[i]=tendency_peach[i]*100 + i;
+//                    }
+            }
+            if(0 == tendency_peach_to_be_choose.length){
+                cb(date);
+                return;
+            }
+            tendency_peach_to_be_choose.sort(function(a,b){return a<b?1:-1});
+            for(var n = 0; n < tendency_peach_to_be_choose.length,n < 3; ++n){
+                //20150129替换掉下面注释的
+                var days_index_to_be_choose = 0;
+                for(var key in tendency_peach_to_be_choose_obj){
+                    if(tendency_peach_to_be_choose_obj[key]==tendency_peach_to_be_choose[n]){
+                        days_index_to_be_choose=key;
+                    }
+                }
+//                    var days_index_to_be_choose = tendency_peach_to_be_choose[tendency_peach_to_be_choose.length - n - 1]%100;//20150129
+                time_to_be_choose = Date.now() + 1000 * 60 * 60 * 24 * days_index_to_be_choose;
+                date_to_be_choose = new Date(time_to_be_choose);
+                date.push("" + date_to_be_choose.getFullYear() + '/' +  (date_to_be_choose.getMonth() + 1) + '/' + date_to_be_choose.getDate());
+                if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_TEN){
+                    break;
+                }
+            }
+            break;
+        }
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_TALKING_SOMETHING:
+        {
+            var tendency_luck = anylysis.getTendencyFuture(info,days,consts.TYPE_SCORE.TYPE_SCORE_LUCK);
+            console.log(tendency_luck);
+            var tendency_luck_to_be_choose = [];
+            //key:dayindex value:tendency_energy_to_be_choose eg:{14:8700,19:8630}
+            var tendency_luck_to_be_choose_obj={};
+            for(i = 0; i < tendency_luck.length; ++i){
+//                    if(tendency_luck[i] >= 90 && tendency_luck[i] <= 98){
+                    tendency_luck_to_be_choose.push(tendency_luck[i]*100 + i);
+                    tendency_luck_to_be_choose_obj[i]=tendency_luck[i]*100 + i;
+//                    }
+            }
+            if(0 == tendency_luck_to_be_choose.length){
+                cb(date);
+                return;
+            }
+            tendency_luck_to_be_choose.sort(function(a,b){return a<b?1:-1});
+            for(var n = 0; n < tendency_luck_to_be_choose.length,n < 3; ++n){
+                //20150129替换掉下面注释的
+                var days_index_to_be_choose = 0;
+                for(var key in tendency_luck_to_be_choose_obj){
+                    if(tendency_luck_to_be_choose_obj[key]==tendency_luck_to_be_choose[n]){
+                        days_index_to_be_choose=key;
+                    }
+                }
+                console.log(days_index_to_be_choose)
+//                    var days_index_to_be_choose = tendency_luck_to_be_choose[tendency_luck_to_be_choose.length - n - 1]%100;//20150129
+                time_to_be_choose = Date.now() + 1000 * 60 * 60 * 24 * days_index_to_be_choose;
+                date_to_be_choose = new Date(time_to_be_choose);
+                date.push("" + date_to_be_choose.getFullYear() + '/' +  (date_to_be_choose.getMonth() + 1) + '/' + date_to_be_choose.getDate());
+                if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_TEN){
+                    break;
+                }
+            }
+            break;
+        }
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_MEET_FRIEND:
+        {
+            var tendency_meet_friend = anylysis.getTendencyFuture(info,days,consts.TYPE_SCORE.TYPE_SCORE_EMOTION);
+            console.log(tendency_meet_friend);
+            var tendency_meet_friend_to_be_choose = [];
+            //key:dayindex value:tendency_energy_to_be_choose eg:{14:8700,19:8630}
+            var tendency_meet_friend_to_be_choose_obj={};
+            for(i = 0; i < tendency_meet_friend.length; ++i){
+//                    if(tendency_meet_friend[i] >= 90 && tendency_meet_friend[i] <= 98){
+                    tendency_meet_friend_to_be_choose.push(tendency_meet_friend[i]*100 + i);
+                    tendency_meet_friend_to_be_choose_obj[i]=tendency_meet_friend[i]*100 + i;
+//                    }
+            }
+            if(0 == tendency_meet_friend_to_be_choose.length){
+                cb(date);
+                return;
+            }
+            tendency_meet_friend_to_be_choose.sort(function(a,b){return a<b?1:-1});
+            for(var n = 0; n < tendency_meet_friend_to_be_choose.length,n < 3; ++n){
+                //20150129替换掉下面注释的
+                var days_index_to_be_choose = 0;
+                for(var key in tendency_meet_friend_to_be_choose_obj){
+                    if(tendency_meet_friend_to_be_choose_obj[key]==tendency_meet_friend_to_be_choose[n]){
+                        days_index_to_be_choose=key;
+                    }
+                }
+                console.log(days_index_to_be_choose)
+//                    var days_index_to_be_choose = tendency_meet_friend_to_be_choose[tendency_meet_friend_to_be_choose.length - n - 1]%100;//20150129
+                time_to_be_choose = Date.now() + 1000 * 60 * 60 * 24 * days_index_to_be_choose;
+                date_to_be_choose = new Date(time_to_be_choose);
+                date.push("" + date_to_be_choose.getFullYear() + '/' +  (date_to_be_choose.getMonth() + 1) + '/' + date_to_be_choose.getDate());
+                if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_TEN){
+                    break;
+                }
+            }
+            break;
+        }
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_TRIP:
+        case consts.TYPE_SELECT_DATE.TYPE_SELECT_DATE_INTERVIEW:
+        {
+            var tendency_trip = anylysis.getTendencyFuture(info,days,consts.TYPE_SCORE.TYPE_SCORE_ENERGY);
+            console.log(tendency_trip);
+            var tendency_trip_to_be_choose = [];
+            //key:dayindex value:tendency_energy_to_be_choose eg:{14:8700,19:8630}
+            var tendency_trip_to_be_choose_obj={};
+            for(i = 0; i < tendency_trip.length; ++i){
+//                    if(tendency_trip[i] >= 90 && tendency_trip[i] <= 98){
+                    tendency_trip_to_be_choose.push(tendency_trip[i]*100 + i);
+                    tendency_trip_to_be_choose_obj[i]=tendency_trip[i]*100 + i;
+//                    }
+            }
+            if(0 == tendency_trip_to_be_choose.length){
+                cb(date);
+                return;
+            }
+            tendency_trip_to_be_choose.sort(function(a,b){return a<b?1:-1});
+            console.log(JSON.stringify(tendency_trip_to_be_choose_obj))
+            console.log(tendency_trip_to_be_choose)
+            for(var n = 0; n < tendency_trip_to_be_choose.length,n < 3; ++n){
+                //20150129替换掉下面注释的
+                var days_index_to_be_choose = 0;
+                for(var key in tendency_trip_to_be_choose_obj){
+                    if(tendency_trip_to_be_choose_obj[key]==tendency_trip_to_be_choose[n]){
+                        days_index_to_be_choose=key;
+                    }
+                }
+                console.log(days_index_to_be_choose)
+//                    var days_index_to_be_choose = tendency_trip_to_be_choose[tendency_trip_to_be_choose.length - n - 1]%100;//20150129
+                time_to_be_choose = Date.now() + 1000 * 60 * 60 * 24 * days_index_to_be_choose;
+                date_to_be_choose = new Date(time_to_be_choose);
+                date.push("" + date_to_be_choose.getFullYear() + '/' +  (date_to_be_choose.getMonth() + 1) + '/' + date_to_be_choose.getDate());
+                if(days_type == consts.TYPE_SELECT_DAYS.TYPE_SELECT_DAYS_TEN){
+                    break;
+                }
+            }
+            break;
+        }
+    }
+    cb(date);
+};
+
 anylysis.getLastYangSum = function(yangSum1,yangSum2,yangSum3){
     var the_last_yang_sum = yangSum1;
     if(yangSum2){

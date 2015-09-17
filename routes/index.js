@@ -66,6 +66,9 @@ var sjStr = ['木', '火', '金', '水', '土'];
 */
 exports.dateDetail = function(req, res){
     var sex = req.query.sex;
+    if(sex.toString().length>1){
+        return;
+    }
     var year = req.query.year;
     var month = req.query.month;
     var day = req.query.day;
