@@ -74,7 +74,6 @@ exports.nouserModify = function (bd,sex, res) {
     info.password = "";
     info.birthday = bd;
     info.sex = sex;
-    info.birthAddress = "1";
 
     //构建轴向数据
     var dateStr = info.birthday;
@@ -82,8 +81,8 @@ exports.nouserModify = function (bd,sex, res) {
 
     var reqData = {
         sex: parseInt(info.sex),
-        registAddress: parseInt(info.registAddress),
-        birthAddress: 0,
+        registAddress: 1,
+        birthAddress: 1,
         year: parseInt(info.birthday.substr(0, 4)),
         month: parseInt(info.birthday.substr(4, 2)),
         day: parseInt(info.birthday.substr(6, 2)),

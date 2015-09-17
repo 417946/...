@@ -19,7 +19,7 @@ exports.onCompass = function(req,res){
 };
 
 exports.onCompassNouser = function(req,res){
-    var info = modifyInfo.nouserModify(req.body["birthday"],req.body["sex"]);
+    var info = modifyInfo.nouserModify(new Date(req.body["birthday"]).format("yyyyMMddhhmmss").toString(),req.body["sex"]);
     var type = parseInt(req.body["type"]);
     var result = { error: "" };
     analysis.getCompassByInfo(info,type,function(scores){

@@ -58,12 +58,13 @@ operater.updateColour = function(uid,colour,colour_index,cb){
 };
 
 operater.updateFlower = function(uid,flower_num,cb){
-    var sel_sql="select lotus from user_table where user_id="+uid;
-    mysqlClient.query(sel_sql, null, function (err,res1) {
+    var sel_sql="select lotus from user_table where user_id=?";
+    mysqlClient.query(sel_sql, [uid], function (err,res1) {
+        console.log(res1);
         if(parseInt(res1[0].lotus)+parseInt(flower_num)>=0){
-            var sql = "update user_table set lotus=lotus+"+flower_num+" where user_id="+uid;
+            var sql = "update user_table set lotus=lotus+? where user_id=?";
             console.log(sql);
-            mysqlClient.update(sql, null, function (err,res) {
+            mysqlClient.update(sql, [flower_num,uid], function (err,res) {
                 cb(err);
             });
         }else{
@@ -75,17 +76,17 @@ operater.updateFlower = function(uid,flower_num,cb){
 operater.updatePwd = function(uid,pwd,cb){
     var  md5 = crypto.createHash('md5');
     var newPasswd = md5.update(pwd).digest('base64');
-    var sql = "update user_table set passwd='"+newPasswd+"' where user_id="+uid;
+    var sql = "update user_table set passwd=? where user_id=?";
     console.log(sql);
-    mysqlClient.update(sql, null, function (err,res) {
+    mysqlClient.update(sql, [newPasswd,uid], function (err,res) {
         cb(err);
     });
 };
 
 operater.getUserByMail = function(uid,email,cb){
-    var sql = "select * from user_table where user_id="+uid+" and email='"+email+"' ";
+    var sql = "select * from user_table where user_id=? and email=? ";
     console.log(sql);
-    mysqlClient.query(sql,null, function (err,res) {
+    mysqlClient.query(sql,[uid,email], function (err,res) {
         cb(err,res);
     });
 };

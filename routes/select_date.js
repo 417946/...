@@ -51,7 +51,7 @@ exports.onSelectDate = function(req,res){
 };
 
 exports.onSelectDateNouser = function(req,res){
-    var info = modifyInfo.nouserModify(req.body["birthday"],req.body["sex"]);
+    var info = modifyInfo.nouserModify(new Date(req.body["birthday"]).format("yyyyMMddhhmmss").toString(),req.body["sex"]);
     var select_date_type = parseInt(req.body["select_date_type"]);
     var days_type = parseInt(req.body["days_type"]);
     var result = { error: "" };
