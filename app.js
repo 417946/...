@@ -117,6 +117,7 @@ app.post('/contacts', contacts.onContract);
 app.post('/edit_contacts', contacts.onEditContracts);
 app.post('/compass', compass.onCompass);
 app.post('/compass_flystar', compass.onCompassByFlystar);
+app.post('/compass_nouser', compass.onCompassNouser);
 app.post('/select_date', select_date.onSelectDate);
 app.post('/select_time', select_date.onSelectTime);
 app.post('/match', match.onMatch);
