@@ -243,7 +243,7 @@ exports.onGetAllInfo = function (req, res) {
                         r.e= answer4.desc.split("，")[0]+"："+answer4.desc.split("，")[1].split("。")[0].split("，")[0];
                         analysis.getConfrere(uid,time_type,consts.TYPE_SCORE.TYPE_SCORE_ENERGY,cur_time,function(answer5) {
                             r.f= answer5.desc.split("，")[0]+"："+answer5.desc.split("，")[1].split("。")[0].split("，")[0];
-                            analysis.getCompass(uid,1,function(scores) {
+                            analysis.getCompass(uid,2,function(scores) {
                                 var tmpscore=100;
                                 var tmpdirection="";
                                 scores.forEach(function(item,index){
@@ -252,7 +252,7 @@ exports.onGetAllInfo = function (req, res) {
                                         tmpdirection=item.direction;
                                     }
                                 });
-                                r.g="最破财的方位："+tmpdirection;
+                                r.g="运程最差的方位："+tmpdirection;
                                 analysis.getCompass(uid,3,function(scores) {
                                     var tmpscore1=100;
                                     var tmpdirection1="";
