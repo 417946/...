@@ -26,6 +26,9 @@ exports.onSendMessage = function(req,res){
     var flower=0;
 //    if(req.body["systemType"]=="android"||req.body["systemType"]=="ios"){
         if(type=="1"||type=="5"||type=="10"||type=="11"||type=="13"||type=="14"){
+            if(type=="14"){
+                content="来自"+fromuname+"("+fromuid+")的未读消息。";
+            }
             client.push().setPlatform('ios', 'android')
                 .setAudience(JPush.alias(uid))
                 .setNotification(content, JPush.ios(content, 'happy', '+1'))
@@ -147,6 +150,9 @@ exports.onAddMessage = function(req,res){
     var content = req.body["content"];
     var type = req.body["type"];
     if(type=="1"||type=="5"||type=="10"||type=="11"||type=="13"||type=="14"){
+        if(type=="14"){
+            content="来自"+fromuname+"("+fromuid+")的未读消息。";
+        }
         client.push().setPlatform('ios', 'android')
             .setAudience(JPush.alias(uid))
             .setNotification(content, JPush.ios(content, 'happy', '+1'))
