@@ -38,3 +38,15 @@ operater.addFlower = function(uid,uname,flower,rmb,cb){
         });
     });
 };
+
+operater. songFlower = function(uid,uname,flower,rmb,cb){
+    var sql = "insert pay_record_table (uid,type,value,flower) value(?,?,?,?)";
+    mysqlClient.insert(sql, [uid,'system_song',rmb,flower], function (err) {
+        var sql2 = "update user_table set lotus=lotus+? where user_id=?";
+        mysqlClient.update(sql2, [flower,uid], function (err2) {
+            if (cb) {
+                cb.call(err2);
+            }
+        });
+    });
+};

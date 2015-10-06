@@ -52,7 +52,7 @@ exports.onSendMessage = function(req,res){
                     }
                 });
         }else if(type=="3"){
-            content=fromuname+"("+fromuid+")"+"请求关注您。";
+            content=fromuname+"("+fromuid+")"+"请求关注您："+content;
             client.push().setPlatform('ios', 'android')
                 .setAudience(JPush.alias(uid))
                 .setNotification(content, JPush.ios(content, 'happy', '+1'))
