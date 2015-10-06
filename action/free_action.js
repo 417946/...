@@ -8,7 +8,7 @@ exports.onAddFree = function(req,res){
     var uid = req.body.uid;
     var type = req.body.type;
     var detail = req.body.detail;
-    var date = new Date().format("yy-MM-dd");
+    var date = new Date().format("yyyy-MM-dd");
     db.addFree(uid,type,date,detail,function(err,result){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
@@ -20,7 +20,7 @@ exports.onAddFree = function(req,res){
 
 exports.onGetFree = function(req,res){
     var callback=null;
-    var date= new Date().format("yy-MM-dd");
+    var date= new Date().format("yyyy-MM-dd");
     var uid=req.body.uid;
     var type=req.body.type;
     db.getFree(uid,date,type,function(err,list){
@@ -42,7 +42,7 @@ exports.onAddFreeFlower = function(req,res){
     var uid = req.body.uid;
     var type = req.body.type;
     var detail = req.body.detail;
-    var date = new Date().format("yy-MM-dd");
+    var date = new Date().format("yyyy-MM-dd");
     db.addFree(uid,type,date,detail,function(err,result){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
@@ -74,7 +74,13 @@ exports.onAddFreeFlower = function(req,res){
                                                             if(err){
                                                                 return response.end(res,response.buildError(err.code),callback);
                                                             }else{
-                                                                return response.end(res,response.buildResponse(response.OK,'add'),callback);
+                                                                db.addFree(uid,'getflowers',date,'',function(err,result) {
+                                                                    if (err) {
+                                                                        return response.end(res, response.buildError(err.code), callback);
+                                                                    } else {
+                                                                        return response.end(res, response.buildResponse(response.OK, 'add'), callback);
+                                                                    }
+                                                                });
                                                             }
                                                         });
                                                     }else{
