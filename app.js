@@ -58,6 +58,7 @@ var payrecord = require('./action/payrecord_action.js');
 var zizhu = require('./action/zizhu_action.js');
 var user_score = require('./action/score_action.js');
 var flower = require('./action/flower_action.js');
+var free = require('./action/free_action.js');
 
 var segment = require("nodejieba");
 segment.loadDict("./node_modules/nodejieba/dict/jieba.dict.utf8", "./node_modules/nodejieba/dict/hmm_model.utf8");
@@ -225,6 +226,10 @@ app.post('/add_flower',flower.onAddFlower);
 
 app.post('/upload', upload.upload_img);
 app.post('/upload_voice', upload.upload_voice);
+
+app.post('/add_free', free.onAddFree);
+app.post('/get_free', free.onGetFree);
+app.post('/add_freeflower', free.onAddFreeFlower);
 
 userManager.GetInstance();
 
