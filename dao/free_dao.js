@@ -28,14 +28,14 @@ operater.delFree = function(uid,type,date,cb){
     });
 };
 
-operater.getFreeCount1 = function(uid,date,type,cb){
+operater.getFreeCount1 = function(uid,type,date,cb){
     var sql = "select count(*) sum from free_flower_table where uid=? and date=? and type=? order by detail";
     mysqlClient.query(sql, [uid,date,type], function (err,res) {
         cb(err,res);
     });
 };
 
-operater.getFreeCount2 = function(uid,date,type,cb){
+operater.getFreeCount2 = function(uid,type,date,cb){
     var sql = "select count(*) sum from free_flower_table where uid=? and date=? and type=?";
     mysqlClient.query(sql, [uid,date,type], function (err,res) {
         cb(err,res);
