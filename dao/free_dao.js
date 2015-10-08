@@ -28,6 +28,15 @@ operater.delFree = function(uid,type,date,cb){
     });
 };
 
+operater.delAllFree = function(uid,date,cb){
+    var sql = "delete from free_flower_table where uid=? and date!=?";
+    mysqlClient.delete(sql, [uid,date], function (err) {
+        if (cb) {
+            cb(err);
+        }
+    });
+};
+
 operater.getFreeCount1 = function(uid,type,date,cb){
     var sql = "select count(*) sum from free_flower_table where uid=? and date=? and type=? order by detail";
     mysqlClient.query(sql, [uid,date,type], function (err,res) {

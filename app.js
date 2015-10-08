@@ -111,6 +111,7 @@ app.post('/khfk', khfk.onFk);
 app.post('/participle', participle.onParticiple);
 app.post('/voice_query', voice_query.onVoiceQuery);
 app.get('/voice_query', voice_query1.onVoiceQuery);
+app.get('/qa_free', voice_query1.isFree);
 app.post('/set_colour', set_colour.onSetColour);
 app.post('/get_colour', get_colour.onGetColour);
 app.post('/feedback', feedback.onFeedback);

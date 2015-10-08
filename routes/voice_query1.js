@@ -10,6 +10,7 @@ var consts = require('./util/consts');
 var mongodb = require("./nosql/mongodb");
 var user = require('./user.js');
 var comm = require('../common');
+var response = require('./common/response');
 
 exports.onVoiceQuery = function(req,res){
     var uid = parseInt(req.query["uid"]);
@@ -618,3 +619,48 @@ function getGzZs(word,uid,time_type,gz,callback){
         }
     });
 }
+
+exports.isFree = function(req,res){
+    var callback=req.query.callback;
+    var voice_content = req.query["voice_content"];
+    var word_list = segment.cutSync(voice_content);
+    if (word_list.constructor == Array)
+    {
+        word_list.forEach(function(word) {
+            console.log(word);
+        });
+    }
+    var word_match = [];
+    word_list.forEach(function(word) {
+        for(var i = 0; i < keywords.length; ++i){
+            for(var j = 0; j < keywords[i].length; ++j){
+                if(word == keywords[i][j])
+                {
+                    word_match.push(keywords[i][j]);
+                }
+            }
+        }
+    });
+    var time_type;
+    for(var m = 0; m < word_match.length; ++m){
+        if(word_match[m] == "今天" || word_match[m] == "今日"|| word_match[m] == "本日"|| word_match[m] == "当日"){
+            time_type = consts.TYPE_TIME.TYPE_TIME_TODAY;
+            break;
+        }
+    }
+
+    for(var m = 0; m < word_match.length; ++m){
+        if((word_match[m] == "运程"|| word_match[m] == "助运") && time_type == consts.TYPE_TIME.TYPE_TIME_TODAY){
+            return response.end(res,response.buildResponse(response.OK,"free"),callback);
+        }else if(word_match[m] == "能量" && time_type == consts.TYPE_TIME.TYPE_TIME_TODAY){
+            return response.end(res,response.buildResponse(response.OK,"free"),callback);
+        }else if((word_match[m] == "健康" || word_match[m] == "身体") && time_type == consts.TYPE_TIME.TYPE_TIME_TODAY){
+            return response.end(res,response.buildResponse(response.OK,"free"),callback);
+        }else if((word_match[m] == "财富" || word_match[m] == "钱财" || word_match[m] == "财运") && time_type == consts.TYPE_TIME.TYPE_TIME_TODAY){
+            return response.end(res,response.buildResponse(response.OK,"free"),callback);
+        }else if((word_match[m] == "桃花" || word_match[m] == "动情" || word_match[m] == "爱情" || word_match[m] == "婚姻" || word_match[m] == "姻缘") && time_type == consts.TYPE_TIME.TYPE_TIME_TODAY){
+            return response.end(res,response.buildResponse(response.OK,"free"),callback);
+        }
+    }
+    return response.end(res,response.buildResponse(response.OK,"cost"),callback);
+};

@@ -1199,11 +1199,11 @@ operater.delFromContract = function(uid,contracts_uid,cb){
  */
 operater.getContract = function(uid,status,cb){
     var sql = "select c.contracts_uid,c.contracts_name,u.name,u.sex,u.birthday,c.id,d.head_img,d.head_url from contracts_table c left join user_table u on u.user_id=c.contracts_uid left join user_detail_table d on c.contracts_uid=d.user_id where c.uid=?";
-    if(status=="1"){
-        sql+=" and c.status=1 order by c.id asc";
-    }else {
+//    if(status=="1"){
+//        sql+=" and c.status=1 order by c.id asc";
+//    }else {
         sql += " order by c.status desc";
-    }
+//    }
     console.log(sql);
     mysqlClient.query(sql, [uid], function (err,res) {
         var contracts = [];
