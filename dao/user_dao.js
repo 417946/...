@@ -8,7 +8,10 @@ var crypto = require('crypto');
 
 operater.getUserDetailById = function(user_id,cb){
     var values = [user_id];
-    var sql = "select u.user_id uid,u.name,u.bless,u.sex,u.birthday,u.lotus,u.colour,u.colour_index,d.* from user_table u left join user_detail_table d on u.user_id=d.user_id where u.user_id=? ";
+    var sql = "select u.user_id uid,u.name,u.bless,u.sex,u.birthday,u.lotus,u.colour,u.colour_index,d.*,b.bless tazhu " +
+        "from user_table u left join user_detail_table d on u.user_id=d.user_id " +
+        "left join bless_table b on u.user_id=b.target_uid "
+        "where u.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);
