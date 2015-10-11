@@ -48,6 +48,30 @@ exports.onGetFree = function(req,res){
     });
 };
 
+exports.onIsFree = function(req,res){
+    var callback=null;
+    var date= new Date().format("yyyy-MM-dd");
+    var uid=req.body.uid;
+    var type=req.body.type;
+    db.getFree(uid,date,type,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }else{
+            db.delFree(uid,type,date,function(err1,result){
+                if(err1){
+                    return response.end(res,response.buildError(err1.code),callback);
+                }else{
+                    if(list.length>0){
+                        response.end(res,response.buildResponse(response.OK,'1'),callback);
+                    }else{
+                        response.end(res,response.buildResponse(response.OK,'0'),callback);
+                    }
+                }
+            })
+        }
+    });
+};
+
 exports.onAddFreeFlower = function(req,res){
     var callback=null;
     var uid = req.body.uid;

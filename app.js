@@ -230,6 +230,7 @@ app.post('/upload_voice', upload.upload_voice);
 
 app.post('/add_free', free.onAddFree);
 app.post('/get_free', free.onGetFree);
+app.post('/is_free', free.onIsFree);
 app.post('/add_freeflower', free.onAddFreeFlower);
 
 userManager.GetInstance();
