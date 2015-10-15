@@ -10,9 +10,19 @@ operater.getFree = function(uid,date,type,cb){
 };
 
 operater.addFree = function(uid,type,date,detail,cb){
-    sql = "insert free_flower_table (uid,type,date,detail) value(?,?,?,?)";
+    var sql = "insert free_flower_table (uid,type,date,detail) value(?,?,?,?)";
     console.log(sql);
     mysqlClient.insert(sql, [uid,type,date,detail], function (err) {
+        if (cb) {
+            cb.call(err);
+        }
+    });
+};
+
+operater.updateFree = function(uid,type,date,detail,cb){
+    var sql = "update free_flower_table set detail=? where uid=? and type=? and date=? ";
+    console.log(sql);
+    mysqlClient.update(sql, [detail,uid,type,date], function (err) {
         if (cb) {
             cb.call(err);
         }

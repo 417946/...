@@ -6,11 +6,12 @@ var common = require("../common.js");
 var crypto = require('crypto');
 
 
-operater.getUserDetailById = function(user_id,cb){
-    var values = [user_id];
-    var sql = "select u.user_id uid,u.name,u.bless,u.sex,u.birthday,u.lotus,u.colour,u.colour_index,d.*,sum(b.bless) tazhu " +
+operater.getUserDetailById = function(user_id,date,cb){
+    var values = [date,user_id];
+    var sql = "select u.user_id uid,u.name,u.bless,u.sex,u.birthday,u.lotus,u.colour,u.colour_index,d.*,sum(b.bless) tazhu,f.detail " +
         "from user_table u left join user_detail_table d on u.user_id=d.user_id " +
         "left join bless_table b on u.user_id=b.target_uid " +
+        "left join free_flower_table f on u.user_id=f.uid and f.date=? and f.type='color' " +
         "where u.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
@@ -27,9 +28,10 @@ operater.getTipMusic = function(user_id,cb){
     });
 };
 
-operater.getHeadImg = function(user_id,cb){
-    var values = [user_id];
-    var sql = "select d.head_img,d.head_url,u.colour,u.colour_index,u.name,u.sex from user_detail_table d left join user_table u on d.user_id=u.user_id where d.user_id=? ";
+operater.getHeadImg = function(user_id,date,cb){
+    var values = [date,user_id];
+    var sql = "select d.head_img,d.head_url,u.colour,u.colour_index,u.name,u.sex,f.detail from user_detail_table d left join user_table u on d.user_id=u.user_id" +
+        " left join free_flower_table f on u.user_id=f.uid and f.date=? and f.type='color' where d.user_id=? ";
     console.log(sql);
     mysqlClient.query(sql, values, function (err,res) {
         cb(err,res);

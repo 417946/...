@@ -9,11 +9,27 @@ exports.onAddFree = function(req,res){
     var type = req.body.type;
     var detail = req.body.detail;
     var date = new Date().format("yyyy-MM-dd");
-    db.addFree(uid,type,date,detail,function(err,result){
-        if(err){
-            return response.end(res,response.buildError(err.code),callback);
-        }else{
-            return response.end(res,response.buildOK(),callback);
+    db.getFree(uid,date,type,function(err1,list){
+        if (err1) {
+            return response.end(res, response.buildError(err1.code), callback);
+        } else {
+            if(list.length>0){
+                db.updateFree(uid, type, date, detail, function (err, result) {
+                    if (err) {
+                        return response.end(res, response.buildError(err.code), callback);
+                    } else {
+                        return response.end(res, response.buildOK(), callback);
+                    }
+                });
+            }else{
+                db.addFree(uid, type, date, detail, function (err, result) {
+                    if (err) {
+                        return response.end(res, response.buildError(err.code), callback);
+                    } else {
+                        return response.end(res, response.buildOK(), callback);
+                    }
+                });
+            }
         }
     });
 };

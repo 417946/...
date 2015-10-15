@@ -6,7 +6,8 @@ var response = require('../routes/common/response');
 
 exports.onGetUserDetailById = function(req,res){
     var callback=req.query.callback;
-    db.getUserDetailById(req.query.user_id,function(err,list){
+    var date= new Date().format("yyyy-MM-dd");
+    db.getUserDetailById(req.query.user_id,date,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
@@ -24,7 +25,8 @@ exports.onGetMusicTip = function(req,res){
 };
 exports.onGetHeadImg = function(req,res){
     var callback=req.query.callback;
-    db.getHeadImg(req.query.user_id,function(err,list){
+    var date= new Date().format("yyyy-MM-dd");
+    db.getHeadImg(req.query.user_id,date,function(err,list){
         if(err){
             return response.end(res,response.buildError(err.code),callback);
         }
