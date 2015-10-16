@@ -188,6 +188,7 @@ app.post('/find_pwd', user_detail.onFindPwd);
 app.post('/get_daren', user_detail.onGetDaren);
 app.post('/reg1', user_detail.onReg);
 app.post('/highScore', user_detail.onHighScore);
+app.post('/everyday_tip', user_detail.onEverydayTip);
 
 app.get('/lunarToSolar', lunar_calendar.lunarToSolar);
 app.get('/survey_feedback', survey_feedback.onSurveyFeedback);
