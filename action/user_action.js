@@ -251,42 +251,59 @@ exports.onEverydayTip = function(req,res){
                                             console.log(err);
                                         }
                                         var push_message = [];
+                                        var push_uid = [];
+                                        var push_uname = [];
+                                        var push_desc = [];
                                         for (var i = 0; i < results.length; ++i) {
                                             if (results[i]) {
                                                 var today_energy = analysis.getScore(results[i], consts.TYPE_TIME.TYPE_TIME_TODAY, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, new Date());
                                                 var today_luck = analysis.getScore(results[i], consts.TYPE_TIME.TYPE_TIME_TODAY, consts.TYPE_SCORE.TYPE_SCORE_LUCK, new Date());
-                                                var message = null;
+                                                var message = "";
+                                                var desc="";
                                                 if (today_luck[0] < 60) {
                                                     if(results[i].sex=='1'){
                                                         message = "今日好友" + results[i].name + "运程较低，告诉他么？";
+                                                        desc = "你今天运程好低！诸事小心。";
                                                     }else{
                                                         message = "今日好友" + results[i].name + "运程较低，告诉她么？";
+                                                        desc = "你今天运程好低！诸事小心。";
                                                     }
                                                 }else if (today_energy[0] < 60) {
                                                     if(results[i].sex=='1'){
                                                         message = "今日好友" + results[i].name + "能量较低，告诉他么？";
+                                                        desc = "你今天能量较低。";
                                                     }else{
                                                         message = "今日好友" + results[i].name + "能量较低，告诉她么？";
+                                                        desc = "你今天能量较低。";
                                                     }
                                                 }else if(today_luck[0]>=75){
                                                     if(results[i].sex=='1'){
                                                         message = "今日好友" + results[i].name + "运程较高，快告诉他。";
+                                                        desc = "你今天运程这么高！";
                                                     }else{
                                                         message = "今日好友" + results[i].name + "运程较高，快告诉他。";
+                                                        desc = "你今天运程这么高！";
                                                     }
                                                 }else if(today_energy[0] >= 75){
                                                     if(results[i].sex=='1'){
                                                         message = "今日好友" + results[i].name + "能量较高，快告诉他。";
+                                                        desc = "你今天能量这么高！还不送我一些。";
                                                     }else{
                                                         message = "今日好友" + results[i].name + "能量较高，快告诉他。";
+                                                        desc = "你今天能量这么高！还不送我一些。";
                                                     }
                                                 }
                                                 if (message) {
                                                     push_message.push(message);
+                                                    push_uname.push(results[i].name);
+                                                    push_uid.push(results[i].uid);
+                                                    push_desc.push(desc);
                                                 }
                                             }
                                         }
                                         result.push_message = push_message;
+                                        result.push_uname = push_uname;
+                                        result.push_uid = push_uid;
                                         result.contracts = contracts;
                                         console.log(result);
                                         response.end(res,response.buildResponse(response.OK,result),callback);
