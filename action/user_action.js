@@ -304,6 +304,7 @@ exports.onEverydayTip = function(req,res){
                                         result.push_message = push_message;
                                         result.push_uname = push_uname;
                                         result.push_uid = push_uid;
+                                        result.push_desc = push_desc;
                                         result.contracts = contracts;
                                         console.log(result);
                                         response.end(res,response.buildResponse(response.OK,result),callback);
