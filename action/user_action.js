@@ -150,6 +150,25 @@ exports.onReg = function(req,res){
     });
 };
 
+exports.onHighScoreById = function(req,res){
+    var callback=null;
+    var date= new Date().format("yyyy-MM-dd");
+    db.getUserDetailById(req.body["uid"],date,function(err,list){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }else{
+            var userInfo={
+                username:list[0].name,
+                sex:list[0].sex,
+                birthday:list[0].birthday
+            }
+            webreg.onPostHightScore(userInfo,function(highScore){
+                response.end(res,response.buildResponse(response.OK,highScore),callback);
+            });
+        }
+    });
+};
+
 exports.onHighScore = function(req,res){
     var userInfo={
         username:req.body["uname"],
