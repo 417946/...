@@ -3,6 +3,7 @@ var dboper = require('../routes/mysql/dboperator');
 var freedb = require('./../dao/free_dao');
 var prdao = require('./../dao/payrecord_dao');
 var userManager = require('../routes/userManager.js');
+var voicequery = require('../routes/voice_query1.js');
 var webreg = require('../routes/webreg.js');
 var response = require('../routes/common/response');
 var analysis = require('../routes/module/analysis');
@@ -197,10 +198,10 @@ exports.onEverydayTip = function(req,res){
                     if(list.length>0){
                         response.end(res,response.buildResponse(response.OK,'1'),callback);
                     }else{
-                        var tiplist=['haoyou'];//,'qa','mine','sf','xm','zz','zr','pp'];
+                        var tiplist=['haoyou','qa'];//,'mine','sf','xm','zz','zr','pp'];
                         var qalist=['今日运程','今日能量','今日财运','今日身体','今日桃花'];
                         var colorlist=['今日运程','今日财运','今日桃花'];
-                        var num=Math.floor(new Date().getTime()/(24*60*60*1000))%1;
+                        var num=Math.floor(new Date().getTime()/(24*60*60*1000))%tiplist.length;
                         var result={};
                         result.tip=tiplist[num];
                         if(tiplist[num]=="haoyou"){
@@ -330,7 +331,16 @@ exports.onEverydayTip = function(req,res){
                                     });
                             });
                         }else if(tiplist[num]=="qa"){
-
+                            var question = qalist[Math.floor(Math.random()*(qalist.length-1))];
+                            var nd = new Date();
+                            voicequery.qa(uid,question,1,nd.getFullYear(),nd.getMonth()-1,nd.getDate(),function(err,answer){
+                                if(err){
+                                    response.end(res,response.buildResponse(response.OK,'1'),callback);
+                                }
+                                result.push_message = question;
+                                result.push_desc = answer.answer.desc.split("。")[0]+"。";
+                                response.end(res,response.buildResponse(response.OK,result),callback);
+                            });
                         }else if(tiplist[num]=="mine"){
 
                         }else if(tiplist[num]=="sf"){
