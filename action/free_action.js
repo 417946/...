@@ -125,13 +125,13 @@ exports.onAddFreeFlower = function(req,res){
                                                             return response.end(res,response.buildResponse(response.OK,''),callback);
                                                         }else{
                                                             if(result1[0].sum>=(result4[0].sum+1)*2 && result2[0].sum>=(result4[0].sum+1)*2 && result3[0].sum>=(result4[0].sum+1)*2){//增加1莲花
-                                                                flowerdb.songFlower(uid,'',1,0,function(err,result){
-                                                                    if(err){
-                                                                        return response.end(res,response.buildError(err.code),callback);
+                                                                flowerdb.songFlower(uid,'','1',0,function(erra,resulta){
+                                                                    if(erra){
+                                                                        return response.end(res,response.buildError(erra.code),callback);
                                                                     }else{
-                                                                        db.addFree(uid,'getflowers',date,'',function(err,result) {
-                                                                            if (err) {
-                                                                                return response.end(res, response.buildError(err.code), callback);
+                                                                        db.addFree(uid,'getflowers',date,'',function(errb,resultb) {
+                                                                            if (errb) {
+                                                                                return response.end(res, response.buildError(errb.code), callback);
                                                                             } else {
                                                                                 return response.end(res, response.buildResponse(response.OK, 'add'), callback);
                                                                             }
