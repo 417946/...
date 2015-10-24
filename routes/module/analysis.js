@@ -3626,7 +3626,7 @@ anylysis.getYun = function(uid,time_type,column,cb){
             xx=parseInt(currInfo["flystar"].charAt(1));
         }
         var dataJson=comm.getDataJson();
-        var descArray=dataJson["yun"]["desc"][0][info.year_star-1];
+        var descArray=dataJson["yun"]["desc"][info.sex][info.year_star-1];
         console.log("code:  "+info.year_star+","+(x));
         var columnValue="";
         if(column=="yc"){
@@ -3678,7 +3678,7 @@ anylysis.getYunInfo = function(info,time_type,column,cb){
     }
     var dataJson=comm.getDataJson();
     var year_star=parseInt(currInfo["flystar"].charAt(2));
-    var descArray=dataJson["yun"]["desc"][0][year_star-1];
+    var descArray=dataJson["yun"]["desc"][info.sex][year_star-1];
     console.log("code:  "+year_star+","+(x));
     var columnValue="";
     if(column=="yc"){
