@@ -8,6 +8,9 @@ var webreg = require('../routes/webreg.js');
 var response = require('../routes/common/response');
 var analysis = require('../routes/module/analysis');
 var consts = require('../routes/util/consts');
+var colour_json = require('../config/colour');
+var user = require("../routes/user.js");
+var userInfo = require('../routes/userInfo.js').userInfo;
 var async = require('async');
 
 exports.onGetUserDetailById = function(req,res){
@@ -198,7 +201,7 @@ exports.onEverydayTip = function(req,res){
                     if(list.length>0){
                         response.end(res,response.buildResponse(response.OK,'1'),callback);
                     }else{
-                        var tiplist=['haoyou','qa'];//,'mine','sf','xm','zz','zr','pp'];
+                        var tiplist=['haoyou','qa','mine'];//,'sf','xm','zz','zr','pp'];
                         var qalist=['今日运程','今日能量','今日财运','今日身体','今日桃花'];
                         var colorlist=['今日运程','今日财运','今日桃花'];
                         var num=Math.floor(new Date().getTime()/(24*60*60*1000))%tiplist.length;
@@ -342,7 +345,98 @@ exports.onEverydayTip = function(req,res){
                                 response.end(res,response.buildResponse(response.OK,result),callback);
                             });
                         }else if(tiplist[num]=="mine"){
+                            var nd = new Date();
+                            var score1=100;
+                            var score2=100;
+                            var score3=100;
+                            voicequery.qa(uid,'今日运程',1,nd.getFullYear(),nd.getMonth()-1,nd.getDate(),function(errm1,answer1){
+                                if(errm1){
+                                    response.end(res,response.buildResponse(response.OK,'1'),callback);
+                                }else{
+                                    score1 = answer1.answer.score;
+                                    voicequery.qa(uid,'今日财运',1,nd.getFullYear(),nd.getMonth()-1,nd.getDate(),function(errm2,answer2){
+                                        if(errm2){
+                                            response.end(res,response.buildResponse(response.OK,'1'),callback);
+                                        }else{
+                                            score2 = answer2.answer.score;
+                                            voicequery.qa(uid,'今日桃花',1,nd.getFullYear(),nd.getMonth()-1,nd.getDate(),function(errm3,answer3){
+                                                if(errm3){
+                                                    response.end(res,response.buildResponse(response.OK,'1'),callback);
+                                                }
+                                                score3 = answer3.answer.score;
+                                                if(answer1<=answer2&&answer1<=answer3){
+                                                    result.push_desc="我今天运程较低，一定要换个旺运程的颜色。"
+                                                    var info = new userInfo();
+                                                    info.uid = uid;
+                                                    dboper.getUserBaseInfo(info,function (errm0){
+                                                        if (errm0) {
+                                                            response.end(res,response.buildResponse(response.OK,'1'),callback);
+                                                        }
+                                                        var year_star = parseInt(info["flystar"].charAt(2));
+                                                        var sex = info.sex;
+                                                        var day_star = user.getDayStar(new Date());
+                                                        //男女运数区别
+                                                        if(sex == 0){
+                                                            day_star = user.getNvYun(day_star);
+                                                        }
+                                                        result.color = colour_json[sex][1][year_star-1];
+                                                        if(day_star == result.color){
+                                                            result.color = 0;
+                                                            result.push_desc="我今天运程较低，已经将颜色换成旺运程的颜色了。"
+                                                        }
+                                                        response.end(res,response.buildResponse(response.OK,result),callback);
+                                                    });
+                                                }else if(answer2<=answer3&&answer2<=answer3){
+                                                    result.push_desc="我今天财运较低，一定要换个旺财运的颜色。"
+                                                    var info = new userInfo();
+                                                    info.uid = uid;
+                                                    dboper.getUserBaseInfo(info,function (errm0){
+                                                        if (errm0) {
+                                                            response.end(res,response.buildResponse(response.OK,'1'),callback);
+                                                        }
+                                                        var year_star = parseInt(info["flystar"].charAt(2));
+                                                        var sex = info.sex;
+                                                        var day_star = user.getDayStar(new Date());
+                                                        //男女运数区别
+                                                        if(sex == 0){
+                                                            day_star = user.getNvYun(day_star);
+                                                        }
+                                                        result.color = colour_json[sex][2][year_star-1];
+                                                        if(day_star == result.color){
+                                                            result.color = 0;
+                                                            result.push_desc="我今天财运较低，已经将颜色换成旺财运的颜色了。"
+                                                        }
+                                                        response.end(res,response.buildResponse(response.OK,result),callback);
+                                                    });
+                                                }else{
+                                                    result.push_desc="我今天桃花较低，一定要换个旺桃花的颜色。"
+                                                    var info = new userInfo();
+                                                    info.uid = uid;
+                                                    dboper.getUserBaseInfo(info,function (errm0){
+                                                        if (errm0) {
+                                                            response.end(res,response.buildResponse(response.OK,'1'),callback);
+                                                        }
+                                                        var year_star = parseInt(info["flystar"].charAt(2));
+                                                        var sex = info.sex;
+                                                        var day_star = user.getDayStar(new Date());
+                                                        //男女运数区别
+                                                        if(sex == 0){
+                                                            day_star = user.getNvYun(day_star);
+                                                        }
+                                                        result.color = colour_json[sex][3][year_star-1];
+                                                        if(day_star == result.color){
+                                                            result.color = 0;
+                                                            result.push_desc="我今天桃花较低，已经将颜色换成旺桃花的颜色了。"
+                                                        }
+                                                        response.end(res,response.buildResponse(response.OK,result),callback);
+                                                    });
+                                                }
+                                            });
+                                        }
 
+                                    });
+                                }
+                            });
                         }else if(tiplist[num]=="sf"){
 
                         }else if(tiplist[num]=="xm"){
