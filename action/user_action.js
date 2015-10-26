@@ -201,9 +201,8 @@ exports.onEverydayTip = function(req,res){
                     if(list.length>0){
                         response.end(res,response.buildResponse(response.OK,'1'),callback);
                     }else{
-                        var tiplist=['haoyou','qa','mine'];//,'sf','xm','zz','zr','pp'];
+                        var tiplist=['haoyou','qa','mine','xm','addhaoyou','pp','zr'];//,'sf','xm','zz','zr','pp'];
                         var qalist=['今日运程','今日能量','今日财运','今日身体','今日桃花'];
-                        var colorlist=['今日运程','今日财运','今日桃花'];
                         var num=Math.floor(new Date().getTime()/(24*60*60*1000))%tiplist.length;
                         var result={};
                         result.tip=tiplist[num];
@@ -440,13 +439,54 @@ exports.onEverydayTip = function(req,res){
                         }else if(tiplist[num]=="sf"){
 
                         }else if(tiplist[num]=="xm"){
-
+                            result.push_desc="心里有事总犯嘀咕，不如拿仙妙预测一下。就是太准了！必须要做好心里准备呀！";
+                            response.end(res,response.buildResponse(response.OK,result),callback);
                         }else if(tiplist[num]=="zz"){
 
                         }else if(tiplist[num]=="zr"){
-
+                            var zrlist = ["做事","搬家","求财","开业","约会","会友","出行","面试"];
+                            var zrnum=Math.floor(Math.random()*(zrlist.length-1));
+                            var zrtype=zrlist[zrnum];
+                            var select_date_type = zrnum;
+                            var days_type = 0;
+                            analysis.getSelectDate(uid,select_date_type,days_type,function(date){
+//                                result.date = date;
+                                if(date.length){
+                                    date.sort(function(a,b){
+                                        var m1=parseInt(a.split("/")[1]);
+                                        var m2=parseInt(b.split("/")[1]);
+                                        if(m1< m2){
+                                            return 1;
+                                        }
+                                        return 0;
+                                    })
+                                    var maxMonth=parseInt(date[0].split("/")[1]);
+                                    date.sort(function(a,b){
+                                        var m1=parseInt(a.split("/")[1]);
+                                        var m2=parseInt(b.split("/")[1]);
+                                        var d1=parseInt(a.split("/")[2]);
+                                        var d2=parseInt(b.split("/")[2]);
+                                        if(m1<maxMonth||m2<maxMonth){
+                                            return 0;
+                                        }
+                                        if(d1 < d2){
+                                            return 1;
+                                        }
+                                        return 0;
+                                    })
+                                    result.push_desc = "10天内，我"+zrtype+"最好的日子是"+date[0]+"，好机会别错过了。";
+//                                    result.date = date.splice(1);
+                                }else{
+                                    result.push_desc = "10天内，没有适合我"+zrtype+"的日子。";
+                                }
+                                response.end(res,response.buildResponse(response.OK,result),callback);
+                            });
                         }else if(tiplist[num]=="pp"){
-
+                            result.push_desc="做事谈感情可要看看搭不搭，要是不搭也别让对方知道，怪尴尬的。";
+                            response.end(res,response.buildResponse(response.OK,result),callback);
+                        }else if(tiplist[num]=="addhaoyou"){
+                            result.push_desc="多加好友就有机会多收福，多好运，还不快加。";
+                            response.end(res,response.buildResponse(response.OK,result),callback);
                         }
                     }
                 }
