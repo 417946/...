@@ -7,6 +7,7 @@ var util = require('util');
 var analysis = require('./module/analysis');
 var consts = require('./util/consts');
 var user = require('./user.js');
+var userdao = require('../dao/user_dao');
 
 var ThisMgr = null;
 
@@ -263,7 +264,15 @@ exports.onGetAllInfo = function (req, res) {
                                         }
                                     });
                                     r.h="桃花最烂的方位："+tmpdirection1;
-                                    res.end(JSON.stringify(r));
+                                    var date_now= new Date().format("yyyy-MM-dd");
+                                    userdao.getUserDetailById(uid,date_now,function(err_u,user_list){
+                                        if(err_u){
+                                            res.end(JSON.stringify(r));
+                                        }else{
+                                            r.i="改运指数："+user_list[0].bless;
+                                            res.end(JSON.stringify(r));
+                                        }
+                                    });
                                 });
                             });
                         });
