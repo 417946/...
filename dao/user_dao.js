@@ -19,6 +19,13 @@ operater.getUserDetailById = function(user_id,date,cb){
     });
 };
 
+operater.getAllUser = function(cb){
+    var sql = "select * from user_table where flystar is not null and birthday!='' ";
+    mysqlClient.query(sql, null, function (err,res) {
+        cb(err,res);
+    });
+};
+
 operater.getTipMusic = function(user_id,cb){
     var values = [user_id];
     var sql = "select tip_music from user_detail_table where user_id=? ";
