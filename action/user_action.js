@@ -190,6 +190,7 @@ exports.onEverydayTip = function(req,res){
     var date= new Date().format("yyyy-MM-dd");
     var uid=req.body.uid;
     var type='maintip';
+//    response.end(res,response.buildResponse(response.OK,'1'),callback);
     freedb.getFree(uid,date,type,function(err0,list){
         if(err0){
             return response.end(res,response.buildError(err0.code),callback);
