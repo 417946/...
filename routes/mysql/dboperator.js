@@ -1166,14 +1166,29 @@ operater.addToContract = function(uid,contracts_uid,contracts_name,cb){
 //            cb("请勿重复添加!")
 //            return;
 //        }
-        sql = "insert contracts_table(uid,contracts_uid,contracts_name,status) value(?,?,?,?);";
-        console.log(sql);
-        mysqlClient.insert(sql, [uid,contracts_uid,contracts_name,1], function (err) {
+
+
+//        sql = "insert contracts_table(uid,contracts_uid,contracts_name,status) value(?,?,?,?);";
+//        console.log(sql);
+//        mysqlClient.insert(sql, [uid,contracts_uid,contracts_name,1], function (err) {
+//            if (cb) {
+//                cb.call(err);
+//            }
+//        });
+
+
+//    });
+
+    var sql = "insert contracts_table(uid,contracts_uid,contracts_name,status) value(?,?,?,?);";
+    console.log(sql);
+    mysqlClient.insert(sql, [uid,contracts_uid,'',1], function (err) {
+        var sql1 = "insert contracts_table(uid,contracts_uid,contracts_name,status) value(?,?,?,?);";
+        mysqlClient.insert(sql1, [contracts_uid,uid,'',1], function (err1) {
             if (cb) {
-                cb.call(err);
+                cb.call(err1);
             }
         });
-//    });
+    });
 };
 
 /**
