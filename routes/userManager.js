@@ -231,7 +231,9 @@ exports.onGetAllInfo = function (req, res) {
     var uid = req.body['uid'];
     var time_type = consts.TYPE_TIME.TYPE_TIME_TODAY;
     var cur_time = new Date();
+    var msg_time=(cur_time.getMonth()+1)+"月"+cur_time.getDate()+"日";
     var r={};
+    r.msg_time=msg_time;
     analysis.getEnergy(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, cur_time, function (answer1) {
         r.b=answer1.desc.split("，")[0]+"："+answer1.desc.split("，")[1].split("。")[0].split("，")[0];
         analysis.getLuck2(uid, time_type, consts.TYPE_SCORE.TYPE_SCORE_LUCK, cur_time, function (answer) {

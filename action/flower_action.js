@@ -33,6 +33,20 @@ exports.onAddFlower = function(req,res){
     });
 };
 
+exports.onBackFlower = function(req,res){
+    var callback=null;
+    var uid = req.body.uid;
+    var type = req.body.type;
+    var flower = req.body.flower;
+    db.backFlower(uid,type,flower,function(err,result){
+        if(err){
+            return response.end(res,response.buildError(err.code),callback);
+        }else{
+            return response.end(res,response.buildOK(),callback);
+        }
+    });
+};
+
 //exports.onGetScore = function(req,res){
 //    var callback=null;
 //    var score_uid=req.body.score_uid;

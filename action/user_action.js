@@ -204,7 +204,7 @@ exports.onEverydayTip = function(req,res){
                     }else{
                         var tiplist=['haoyou','qa','mine','xm','addhaoyou','pp','zr'];//,'sf','xm','zz','zr','pp'];
                         var qalist=['今日运程','今日能量','今日财运','今日身体','今日桃花'];
-                        var num=Math.floor(new Date().getTime()/(24*60*60*1000))%tiplist.length;
+                        var num=new Date().getDay();
                         var result={};
                         result.tip=tiplist[num];
                         if(tiplist[num]=="haoyou"){
@@ -277,29 +277,17 @@ exports.onEverydayTip = function(req,res){
                                         var push_uid = [];
                                         var push_uname = [];
                                         var push_desc = [];
+                                        var luck = [];
+                                        var energy = [];
                                         for (var i = 0; i < results.length; ++i) {
                                             if (results[i]) {
                                                 var today_energy = analysis.getScore(results[i], consts.TYPE_TIME.TYPE_TIME_TODAY, consts.TYPE_SCORE.TYPE_SCORE_ENERGY, new Date());
                                                 var today_luck = analysis.getScore(results[i], consts.TYPE_TIME.TYPE_TIME_TODAY, consts.TYPE_SCORE.TYPE_SCORE_LUCK, new Date());
                                                 var message = "";
                                                 var desc="";
-                                                if (today_luck[0] < 60) {
-                                                    if(results[i].sex=='1'){
-                                                        message = "今日好友" + results[i].name + "运程较低，告诉他么？";
-                                                        desc = "你今天运程好低！诸事小心。";
-                                                    }else{
-                                                        message = "今日好友" + results[i].name + "运程较低，告诉她么？";
-                                                        desc = "你今天运程好低！诸事小心。";
-                                                    }
-                                                }else if (today_energy[0] < 60) {
-                                                    if(results[i].sex=='1'){
-                                                        message = "今日好友" + results[i].name + "能量较低，告诉他么？";
-                                                        desc = "你今天能量较低。";
-                                                    }else{
-                                                        message = "今日好友" + results[i].name + "能量较低，告诉她么？";
-                                                        desc = "你今天能量较低。";
-                                                    }
-                                                }else if(today_luck[0]>=75){
+                                                var today_luck=today_luck[0];
+                                                var today_energy=today_energy[0];
+                                                if(today_luck[0]>=75){
                                                     if(results[i].sex=='1'){
                                                         message = "今日好友" + results[i].name + "运程较高，快告诉他。";
                                                         desc = "你今天运程这么高！";
@@ -315,12 +303,30 @@ exports.onEverydayTip = function(req,res){
                                                         message = "今日好友" + results[i].name + "能量较高，快告诉他。";
                                                         desc = "你今天能量这么高！还不送我一些。";
                                                     }
+                                                }else if (today_luck[0] < 60) {
+                                                    if(results[i].sex=='1'){
+                                                        message = "今日好友" + results[i].name + "运程较低，告诉他么？";
+                                                        desc = "你今天运程好低！诸事小心。";
+                                                    }else{
+                                                        message = "今日好友" + results[i].name + "运程较低，告诉她么？";
+                                                        desc = "你今天运程好低！诸事小心。";
+                                                    }
+                                                }else if (today_energy[0] < 60) {
+                                                    if(results[i].sex=='1'){
+                                                        message = "今日好友" + results[i].name + "能量较低，告诉他么？";
+                                                        desc = "你今天能量较低。";
+                                                    }else{
+                                                        message = "今日好友" + results[i].name + "能量较低，告诉她么？";
+                                                        desc = "你今天能量较低。";
+                                                    }
                                                 }
                                                 if (message) {
                                                     push_message.push(message);
                                                     push_uname.push(results[i].name);
                                                     push_uid.push(results[i].uid);
                                                     push_desc.push(desc);
+                                                    energy.push(today_energy);
+                                                    luck.push(today_luck);
                                                 }
                                             }
                                         }
@@ -328,6 +334,8 @@ exports.onEverydayTip = function(req,res){
                                         result.push_uname = push_uname;
                                         result.push_uid = push_uid;
                                         result.push_desc = push_desc;
+                                        result.luck = luck;
+                                        result.energy = energy;
                                         result.contracts = contracts;
                                         console.log(result);
                                         response.end(res,response.buildResponse(response.OK,result),callback);
@@ -336,7 +344,7 @@ exports.onEverydayTip = function(req,res){
                         }else if(tiplist[num]=="qa"){
                             var question = qalist[Math.floor(Math.random()*(qalist.length-1))];
                             var nd = new Date();
-                            voicequery.qa(uid,question,1,nd.getFullYear(),nd.getMonth()-1,nd.getDate(),function(err,answer){
+                            voicequery.qa(uid,question,1,nd.getFullYear(),nd.getMonth(),nd.getDate(),function(err,answer){
                                 if(err){
                                     response.end(res,response.buildResponse(response.OK,'1'),callback);
                                 }
@@ -349,17 +357,17 @@ exports.onEverydayTip = function(req,res){
                             var score1=100;
                             var score2=100;
                             var score3=100;
-                            voicequery.qa(uid,'今日运程',1,nd.getFullYear(),nd.getMonth()-1,nd.getDate(),function(errm1,answer1){
+                            voicequery.qa(uid,'今日运程',1,nd.getFullYear(),nd.getMonth(),nd.getDate(),function(errm1,answer1){
                                 if(errm1){
                                     response.end(res,response.buildResponse(response.OK,'1'),callback);
                                 }else{
                                     score1 = answer1.answer.score;
-                                    voicequery.qa(uid,'今日财运',1,nd.getFullYear(),nd.getMonth()-1,nd.getDate(),function(errm2,answer2){
+                                    voicequery.qa(uid,'今日财运',1,nd.getFullYear(),nd.getMonth(),nd.getDate(),function(errm2,answer2){
                                         if(errm2){
                                             response.end(res,response.buildResponse(response.OK,'1'),callback);
                                         }else{
                                             score2 = answer2.answer.score;
-                                            voicequery.qa(uid,'今日桃花',1,nd.getFullYear(),nd.getMonth()-1,nd.getDate(),function(errm3,answer3){
+                                            voicequery.qa(uid,'今日桃花',1,nd.getFullYear(),nd.getMonth(),nd.getDate(),function(errm3,answer3){
                                                 if(errm3){
                                                     response.end(res,response.buildResponse(response.OK,'1'),callback);
                                                 }

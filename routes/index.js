@@ -103,15 +103,25 @@ exports.dateDetail = function(req, res){
     }else{
         var termList=term.getYearTerm(year);
         var prevKey;
+        var isTerm=0;
+        var termNum=0;
         for(var key in termList){
             if(term.formateDayD4(month-1,day)<key){
-                result+='节气：'+termList[prevKey]+'中\n';
+                isTerm=1;
+                if(termNum==0){
+                    result+='节气：冬至中\n';
+                }else{
+                    result+='节气：'+termList[prevKey]+'中\n';
+                }
                 break;
             }else{
                 prevKey = key;
             }
+            termNum++;
         }
-
+        if(isTerm==0){
+            result+='节气：'+termList[prevKey]+'中\n';
+        }
     }
     result+='四季五行：'+sjStr[user.getWx(time)]+'\n';
     if(ob.solarFestival){

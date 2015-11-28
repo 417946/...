@@ -226,6 +226,7 @@ app.post('/get_score',user_score.onGetScore);
 
 app.post('/send_flower',flower.onSendFlower);
 app.post('/add_flower',flower.onAddFlower);
+app.post('/back_flower',flower.onBackFlower);
 
 app.post('/upload', upload.upload_img);
 app.post('/upload_voice', upload.upload_voice);
