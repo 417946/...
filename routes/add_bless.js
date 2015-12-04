@@ -14,13 +14,13 @@ exports.onAddBless = function(req,res){
             result.err = err;
         }
         bless += before_bless;
-        var lotus =/*Math.floor(bless / 300) + */5;
-        db.setBless(uid,bless,lotus,function(err){
+//        var lotus =/*Math.floor(bless / 300) + */5;
+        db.setBless(uid,bless,function(err){
             if(err){
                 console.log(err);
             }
             result.bless = bless;
-            result.lotus = lotus;
+//            result.lotus = lotus;
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             res.end(JSON.stringify(result));
         });
