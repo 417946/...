@@ -285,8 +285,8 @@ exports.onEverydayTip = function(req,res){
                                                 var today_luck = analysis.getScore(results[i], consts.TYPE_TIME.TYPE_TIME_TODAY, consts.TYPE_SCORE.TYPE_SCORE_LUCK, new Date());
                                                 var message = "";
                                                 var desc="";
-                                                var today_luck=today_luck[0];
-                                                var today_energy=today_energy[0];
+                                                var todayluck=today_luck[0];
+                                                var todayenergy=today_energy[0];
                                                 if(today_luck[0]>=75){
                                                     if(results[i].sex=='1'){
                                                         message = "今日好友" + results[i].name + "运程较高，快告诉他。";
@@ -325,8 +325,8 @@ exports.onEverydayTip = function(req,res){
                                                     push_uname.push(results[i].name);
                                                     push_uid.push(results[i].uid);
                                                     push_desc.push(desc);
-                                                    energy.push(today_energy);
-                                                    luck.push(today_luck);
+                                                    energy.push(todayenergy);
+                                                    luck.push(todayluck);
                                                 }
                                             }
                                         }
